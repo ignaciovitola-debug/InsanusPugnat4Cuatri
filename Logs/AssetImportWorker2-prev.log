@@ -1,0 +1,440 @@
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Built from '6000.0/staging' branch; Version is '6000.0.62f1 (f99f05b3e950) revision 16359173'; Using compiler version '193933523'; Build Type 'Release'
+OS: 'Windows 11  (10.0.26200) 64bit Core' Language: 'es' Physical Memory: 32472 MB
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-MSI" at "2026-08-21T20:55:16.0990487Z"
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
+Date: 2026-08-21T20:55:16Z
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\6000.0.62f1\Editor\Unity.exe
+-adb2
+-batchMode
+-noUpm
+-name
+AssetImportWorker2
+-projectPath
+D:/GladiusAI/InsanusPugnat/InsanusPugnat
+-logFile
+Logs/AssetImportWorker2.log
+-srvPort
+60812
+-licensingIpc
+LicenseClient-MSI
+-job-worker-count
+7
+-background-job-worker-count
+8
+-gc-helper-count
+1
+-name
+AssetImport
+Successfully changed project path to: D:/GladiusAI/InsanusPugnat/InsanusPugnat
+D:/GladiusAI/InsanusPugnat/InsanusPugnat
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gfx=262144"
+Player connection [22040]  Target information:
+
+Player connection [22040]  * "[IP] 192.168.1.236 [Port] 0 [Flags] 2 [Guid] 4150674544 [EditorId] 4150674544 [Version] 1048832 [Id] WindowsEditor(7,IgnacioV626) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [22040] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [22040] Host joined alternative multi-casting on [225.0.0.222:34997]...
+JobSystem: Creating JobQueue using job-worker-count value 7
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 21348, path: "C:/Program Files/Unity Hub/UnityLicensingClient_V1/Unity.Licensing.Client.exe")
+[Licensing::Module] LicensingClient has failed validation; ignoring
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.17.4+4293ba1
+  Session Id:              2976241aa6844267add8b7f33b030af8
+  Correlation Id:          465849967c5c12cf3a2d9e3dd6540155
+  External correlation Id: 194200032392331600
+  Machine Id:              SIe7ruXKEGkCkOaX6w8xMmOfaBs=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-MSI" (connect: 0.00s, validation: 0.00s, handshake: 0.04s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-MSI-notifications" at "2026-08-21T20:55:16.1417186Z"
+[Licensing::Module] Licensing Background thread has ended after 0.04s
+Library Redirect Path: Library/
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: 4674107322931-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+Refreshing native plugins compatible for Editor in 1.13 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 6000.0.62f1 (f99f05b3e950)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/6000.0.62f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path D:/GladiusAI/InsanusPugnat/InsanusPugnat/Assets
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 4060 Laptop GPU (ID=0x28a0)
+    Vendor:   NVIDIA
+    VRAM:     7956 MB
+    Driver:   32.0.16.1088
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/6000.0.62f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/6000.0.62f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/6000.0.62f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56552
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.0.62f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.0.62f1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll
+Registered in 0.008491 seconds.
+- Loaded All Assemblies, in  0.462 seconds
+Native extension for Android target not found
+Android Extension - Scanning For ADB Devices 368 ms
+Native extension for WindowsStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.807 seconds
+Domain Reload Profiling: 1266ms
+	BeginReloadAssembly (145ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (0ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (1ms)
+	RebuildCommonClasses (41ms)
+	RebuildNativeTypeToScriptingClass (12ms)
+	initialDomainReloadingComplete (61ms)
+	LoadAllAssembliesAndSetupDomain (200ms)
+		LoadAssemblies (142ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (195ms)
+			TypeCache.Refresh (193ms)
+				TypeCache.ScanAssembly (174ms)
+			BuildScriptInfoCaches (0ms)
+			ResolveRequiredComponents (1ms)
+	FinalizeReload (808ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (770ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (465ms)
+			SetLoadedEditorAssemblies (6ms)
+			BeforeProcessingInitializeOnLoad (73ms)
+			ProcessInitializeOnLoadAttributes (157ms)
+			ProcessInitializeOnLoadMethodAttributes (69ms)
+			AfterProcessingInitializeOnLoad (0ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (0ms)
+========================================================================
+Worker process is ready to serve import requests
+Import Worker Mode flag is 0x00
+Begin MonoManager ReloadAssembly
+[Licensing::Client] Successfully resolved entitlement details
+- Loaded All Assemblies, in  1.158 seconds
+Refreshing native plugins compatible for Editor in 0.72 ms, found 3 plugins.
+Native extension for Android target not found
+Native extension for WindowsStandalone target not found
+Package Manager log level set to [2]
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  1.133 seconds
+Domain Reload Profiling: 2282ms
+	BeginReloadAssembly (192ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (6ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (30ms)
+	RebuildCommonClasses (44ms)
+	RebuildNativeTypeToScriptingClass (19ms)
+	initialDomainReloadingComplete (46ms)
+	LoadAllAssembliesAndSetupDomain (848ms)
+		LoadAssemblies (644ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (306ms)
+			TypeCache.Refresh (227ms)
+				TypeCache.ScanAssembly (210ms)
+			BuildScriptInfoCaches (60ms)
+			ResolveRequiredComponents (14ms)
+	FinalizeReload (1134ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (890ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (15ms)
+			SetLoadedEditorAssemblies (7ms)
+			BeforeProcessingInitializeOnLoad (218ms)
+			ProcessInitializeOnLoadAttributes (582ms)
+			ProcessInitializeOnLoadMethodAttributes (63ms)
+			AfterProcessingInitializeOnLoad (6ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (6ms)
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.01 seconds
+Refreshing native plugins compatible for Editor in 0.70 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6137 unused Assets / (4.9 MB). Loaded Objects now: 6825.
+Memory consumption went from 130.6 MB to 125.7 MB.
+Total: 11.277900 ms (FindLiveObjects: 0.613200 ms CreateObjectMapping: 0.683000 ms MarkObjects: 7.639200 ms  DeleteObjects: 2.340700 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 430710.304845 seconds.
+  path: Assets/Art/Assets/isometric-miniature-library/Isometric/bookcaseGlass_W.png
+  artifactKey: Guid(f10eafed9905dd14f971652e6c39189f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-library/Isometric/bookcaseGlass_W.png using Guid(f10eafed9905dd14f971652e6c39189f) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'a334ce828ba9289d8bdddc9784dd9346') in 0.1348138 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000026 seconds.
+  path: Assets/Art/Assets/isometric-miniature-library/Isometric/bookcaseEmptyLadder_N.png
+  artifactKey: Guid(1cff3fe2ed4521b47be451b5abd284be) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-library/Isometric/bookcaseEmptyLadder_N.png using Guid(1cff3fe2ed4521b47be451b5abd284be) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'f0f67de7dcf8031e9858fc73ddebcfb0') in 0.0382391 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000020 seconds.
+  path: Assets/Art/Assets/isometric-miniature-library/Isometric/bookcaseGlass_N.png
+  artifactKey: Guid(78b97f0da17a03f47bef5f658c003829) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-library/Isometric/bookcaseGlass_N.png using Guid(78b97f0da17a03f47bef5f658c003829) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '38b600309ce55395ccf431c93e2b690f') in 0.0378951 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/Art/Assets/isometric-miniature-library/Isometric/bookcaseEmpty_E.png
+  artifactKey: Guid(b0ef1948f0e2b1d49a114e9ba435ac87) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-library/Isometric/bookcaseEmpty_E.png using Guid(b0ef1948f0e2b1d49a114e9ba435ac87) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '3563b0924646ed68f33a5e5ab1ec3338') in 0.0313346 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000020 seconds.
+  path: Assets/Art/Assets/isometric-miniature-library/Isometric/bookcaseHalfWideEmpty_S.png
+  artifactKey: Guid(8deeea69fc635ee4aa7b73b59176112c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-library/Isometric/bookcaseHalfWideEmpty_S.png using Guid(8deeea69fc635ee4aa7b73b59176112c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'd2d4c33f4ff0308583a8c0b63d46bb7b') in 0.0320683 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000016 seconds.
+  path: Assets/Art/Assets/isometric-miniature-library/Isometric/bookcaseHalfWideEmpty_N.png
+  artifactKey: Guid(e02ffa800ddce3c4f862474f37234053) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-library/Isometric/bookcaseHalfWideEmpty_N.png using Guid(e02ffa800ddce3c4f862474f37234053) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'ea2acc8ca489bc8d5ef3d235e36225a9') in 0.035527 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000015 seconds.
+  path: Assets/Art/Assets/isometric-miniature-library/Isometric/bookcaseEmpty_N.png
+  artifactKey: Guid(992ac98ac41d48d488dde2e94d2dc93c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-library/Isometric/bookcaseEmpty_N.png using Guid(992ac98ac41d48d488dde2e94d2dc93c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '1b37b9175715f90c8fb1927a532d0d35') in 0.0367192 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000027 seconds.
+  path: Assets/Art/Assets/isometric-miniature-library/Isometric/bookcaseHalfWideEmpty_W.png
+  artifactKey: Guid(893656c7912d12f4e93c19a6c28e88d9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-library/Isometric/bookcaseHalfWideEmpty_W.png using Guid(893656c7912d12f4e93c19a6c28e88d9) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '5b5d4ec6b7a0cafcc5af27873fbbfc72') in 0.030331 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000016 seconds.
+  path: Assets/Art/Assets/isometric-miniature-library/Isometric/bookcaseGlass_E.png
+  artifactKey: Guid(a547bce8c4370cd46b1f4b52c67a43a6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-library/Isometric/bookcaseGlass_E.png using Guid(a547bce8c4370cd46b1f4b52c67a43a6) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'a85abda27b68131799062eecc1896439') in 0.0348862 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000014 seconds.
+  path: Assets/Art/Assets/isometric-miniature-library/Isometric/bookcaseWideBooks_N.png
+  artifactKey: Guid(ef16bbaba3d4fbf418477137ee08b26b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-library/Isometric/bookcaseWideBooks_N.png using Guid(ef16bbaba3d4fbf418477137ee08b26b) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'd60a59a09c076fa6e39aedead8d8c277') in 0.033516 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000021 seconds.
+  path: Assets/Art/Assets/isometric-miniature-library/Isometric/bookcaseHalfWideBooks_S.png
+  artifactKey: Guid(d06d580a26744c24f98059d4554d4f16) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-library/Isometric/bookcaseHalfWideBooks_S.png using Guid(d06d580a26744c24f98059d4554d4f16) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '70f39ab2212103f4af33facf94bfc56f') in 0.0375294 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 1.067894 seconds.
+  path: Assets/Art/Assets/isometric-miniature-library/Isometric/bookcaseWideBooksDesk_E.png
+  artifactKey: Guid(ae0436a4670470742ac1c767a00b6bdb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-library/Isometric/bookcaseWideBooksDesk_E.png using Guid(ae0436a4670470742ac1c767a00b6bdb) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '0f23241e94f9cc0c8cbb46e69cff9980') in 0.029504 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 16.035411 seconds.
+  path: Assets/Art/Assets/isometric-miniature-library/Isometric/bookcaseWideBooksDesk_N.png
+  artifactKey: Guid(db7169ce2846d1e4b996cbbbe722a2c8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-library/Isometric/bookcaseWideBooksDesk_N.png using Guid(db7169ce2846d1e4b996cbbbe722a2c8) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '226240d9c851b9983316ba6a15a38f54') in 0.0494775 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000017 seconds.
+  path: Assets/Art/Assets/isometric-miniature-library/Isometric/bookcaseWideEmptyLadder_N.png
+  artifactKey: Guid(928676658057df940ad0b779b6c9ff59) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-library/Isometric/bookcaseWideEmptyLadder_N.png using Guid(928676658057df940ad0b779b6c9ff59) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '25ffa376df6c1388c5fb4f6c2b7ddef6') in 0.0318049 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000016 seconds.
+  path: Assets/Art/Assets/isometric-miniature-library/Isometric/bookcaseWideEmptyLadder_E.png
+  artifactKey: Guid(538839e3f8df6854db80bc372fb0a9da) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-library/Isometric/bookcaseWideEmptyLadder_E.png using Guid(538839e3f8df6854db80bc372fb0a9da) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'dc623ad9198b7ca7ecce7d9248ea1940') in 0.04285 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000017 seconds.
+  path: Assets/Art/Assets/isometric-miniature-library/Isometric/bookcaseWideEmptyLadder_S.png
+  artifactKey: Guid(474cc7f26b6810046b6172f1b463ba5e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-library/Isometric/bookcaseWideEmptyLadder_S.png using Guid(474cc7f26b6810046b6172f1b463ba5e) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '6b25120c84a26e64cb42aab6473154fe') in 0.0411348 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000029 seconds.
+  path: Assets/Art/Assets/isometric-miniature-library/Isometric/bookcaseWideBooksLadder_W.png
+  artifactKey: Guid(f25f1099d2fd26c46af2c93c011dc04a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-library/Isometric/bookcaseWideBooksLadder_W.png using Guid(f25f1099d2fd26c46af2c93c011dc04a) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'b654a45106884da243b341c965dc6bb7') in 0.0340811 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000020 seconds.
+  path: Assets/Art/Assets/isometric-miniature-library/Isometric/candleStandDouble_N.png
+  artifactKey: Guid(6c01e71e5f1a4d949a129f56771d5361) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-library/Isometric/candleStandDouble_N.png using Guid(6c01e71e5f1a4d949a129f56771d5361) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'c7b19817a28b2d97549ab159360d499f') in 0.0363785 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000014 seconds.
+  path: Assets/Art/Assets/isometric-miniature-library/Isometric/displayCase_S.png
+  artifactKey: Guid(e983cfa42c3eccd43b1a2d0b62e3c9ab) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-library/Isometric/displayCase_S.png using Guid(e983cfa42c3eccd43b1a2d0b62e3c9ab) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'ba3c88415fd6b1ec8d2dba0e3967139d') in 0.0328671 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000017 seconds.
+  path: Assets/Art/Assets/isometric-miniature-library/Isometric/floorCarpetEnd_E.png
+  artifactKey: Guid(d299b8d348bedae448f00d013d863b03) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-library/Isometric/floorCarpetEnd_E.png using Guid(d299b8d348bedae448f00d013d863b03) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '33b01b703befbce1a36a7ec571580549') in 0.0347059 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000031 seconds.
+  path: Assets/Art/Assets/isometric-miniature-library/Isometric/floorCarpetEnd_W.png
+  artifactKey: Guid(bf95b26aeca09e842b816e1adadfd0c9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-library/Isometric/floorCarpetEnd_W.png using Guid(bf95b26aeca09e842b816e1adadfd0c9) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '11007bad2ca6714617aee1ecd506951c') in 0.0297868 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000016 seconds.
+  path: Assets/Art/Assets/isometric-miniature-library/Isometric/displayCaseSword_S.png
+  artifactKey: Guid(05423d06858cc804a9b35ce77753b04d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-library/Isometric/displayCaseSword_S.png using Guid(05423d06858cc804a9b35ce77753b04d) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'c2613adc3b7dc4d5b44d11238d4f7549') in 0.0321322 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000017 seconds.
+  path: Assets/Art/Assets/isometric-miniature-library/Isometric/displayCaseOpen_W.png
+  artifactKey: Guid(9ec0f8ffaffb4de4c9d7dad370dc863e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-library/Isometric/displayCaseOpen_W.png using Guid(9ec0f8ffaffb4de4c9d7dad370dc863e) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '87835e08cad4904360744fe07b99157d') in 0.0374204 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000016 seconds.
+  path: Assets/Art/Assets/isometric-miniature-library/Isometric/floorCarpetEnd_N.png
+  artifactKey: Guid(53ef547e50b85ee46bb31d6f7a97cab7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-library/Isometric/floorCarpetEnd_N.png using Guid(53ef547e50b85ee46bb31d6f7a97cab7) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'b259b82c6909f48e903f8e9ae849dd3f') in 0.0280702 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000027 seconds.
+  path: Assets/Art/Assets/isometric-miniature-library/Isometric/floorCarpet_W.png
+  artifactKey: Guid(1d25b769abc3d094fb9517384e2a1fbe) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-library/Isometric/floorCarpet_W.png using Guid(1d25b769abc3d094fb9517384e2a1fbe) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'a4c84ea46d54a81906613114ccd1ad4d') in 0.0344736 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000015 seconds.
+  path: Assets/Art/Assets/isometric-miniature-library/Isometric/bookcaseWideBooksLadder_N.png
+  artifactKey: Guid(d0349c65250fe684aaa27e6266eb3b5b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-library/Isometric/bookcaseWideBooksLadder_N.png using Guid(d0349c65250fe684aaa27e6266eb3b5b) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '20ad21bdf7cfb42915466389fbbcdfa6') in 0.0265411 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 106.450206 seconds.
+  path: Assets/Scenes/EscenaDePrueba.unity
+  artifactKey: Guid(99c9720ab356a0642a771bea13969a05) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/EscenaDePrueba.unity using Guid(99c9720ab356a0642a771bea13969a05) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'a643ea0ae123e72108e832fe9b67d989') in 0.0009753 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.519802 seconds.
+  path: Assets/Scenes/EscenaDePrueba.unity
+  artifactKey: Guid(99c9720ab356a0642a771bea13969a05) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Scenes/EscenaDePrueba.unity using Guid(99c9720ab356a0642a771bea13969a05) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: 'f953ce9df22b9fdacc9012be4a9fac25') in 0.1960432 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
