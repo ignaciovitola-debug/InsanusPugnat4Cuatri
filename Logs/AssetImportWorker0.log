@@ -2,8 +2,8 @@
 Built from '6000.0/staging' branch; Version is '6000.0.62f1 (f99f05b3e950) revision 16359173'; Using compiler version '193933523'; Build Type 'Release'
 OS: 'Windows 11  (10.0.26200) 64bit Core' Language: 'es' Physical Memory: 32472 MB
 BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-MSI" at "2026-08-21T21:14:51.0120924Z"
-Date: 2026-08-21T21:14:51Z
+Date: 2026-08-21T22:59:17Z
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-MSI" at "2026-08-21T22:59:17.253314Z"
 
 COMMAND LINE ARGUMENTS:
 C:\Program Files\Unity\Hub\Editor\6000.0.62f1\Editor\Unity.exe
@@ -13,11 +13,11 @@ C:\Program Files\Unity\Hub\Editor\6000.0.62f1\Editor\Unity.exe
 -name
 AssetImportWorker0
 -projectPath
-D:/GladiusAI/InsanusPugnat/InsanusPugnat
+D:/GladiusAI/InsanusPugnat4Cuatri
 -logFile
 Logs/AssetImportWorker0.log
 -srvPort
-55917
+58859
 -licensingIpc
 LicenseClient-MSI
 -job-worker-count
@@ -28,8 +28,8 @@ LicenseClient-MSI
 1
 -name
 AssetImport
-Successfully changed project path to: D:/GladiusAI/InsanusPugnat/InsanusPugnat
-D:/GladiusAI/InsanusPugnat/InsanusPugnat
+Successfully changed project path to: D:/GladiusAI/InsanusPugnat4Cuatri
+D:/GladiusAI/InsanusPugnat4Cuatri
 [UnityMemory] Configuration Parameters - Can be set up in boot.config
     "memorysetup-bucket-allocator-granularity=16"
     "memorysetup-bucket-allocator-bucket-count=8"
@@ -65,12 +65,12 @@ D:/GladiusAI/InsanusPugnat/InsanusPugnat
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gfx=262144"
-Player connection [20640]  Target information:
+Player connection [12640]  Target information:
 
-Player connection [20640]  * "[IP] 192.168.1.236 [Port] 0 [Flags] 2 [Guid] 2100891372 [EditorId] 2100891372 [Version] 1048832 [Id] WindowsEditor(7,IgnacioV626) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+Player connection [12640]  * "[IP] 192.168.1.236 [Port] 0 [Flags] 2 [Guid] 1355337312 [EditorId] 1355337312 [Version] 1048832 [Id] WindowsEditor(7,IgnacioV626) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
 
-Player connection [20640] Host joined multi-casting on [225.0.0.222:54997]...
-Player connection [20640] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Player connection [12640] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [12640] Host joined alternative multi-casting on [225.0.0.222:34997]...
 JobSystem: Creating JobQueue using job-worker-count value 7
 Input System module state changed to: Initialized.
 [Physics::Module] Initialized fallback backend.
@@ -79,13 +79,13 @@ Input System module state changed to: Initialized.
 [Licensing::Module] LicensingClient has failed validation; ignoring
 [Licensing::Client] Handshaking with LicensingClient:
   Version:                 1.17.4+4293ba1
-  Session Id:              70762ae8d84c4e35b66a132ff865b25b
+  Session Id:              ea7d6867737040bfb87246d03f882c4d
   Correlation Id:          72eceab9bf8163b305d1c8685a400bf9
-  External correlation Id: 1150181511377058678
+  External correlation Id: 2730304846700056069
   Machine Id:              SIe7ruXKEGkCkOaX6w8xMmOfaBs=
-[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-MSI" (connect: 0.00s, validation: 0.00s, handshake: 0.05s)
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-MSI-notifications" at "2026-08-21T21:14:51.0656607Z"
-[Licensing::Module] Licensing Background thread has ended after 0.05s
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-MSI" (connect: 0.00s, validation: 0.00s, handshake: 0.07s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-MSI-notifications" at "2026-08-21T22:59:17.3239445Z"
+[Licensing::Module] Licensing Background thread has ended after 0.07s
 Library Redirect Path: Library/
 [Physics::Module] Selected backend.
 [Physics::Module] Name: PhysX
@@ -93,17 +93,11 @@ Library Redirect Path: Library/
 [Physics::Module] SDK Version: 4.1.2
 [Physics::Module] Integration Version: 1.0.0
 [Physics::Module] Threading Mode: Multi-Threaded
-[Licensing::Client] Successfully resolved entitlement details
-[Licensing::Module] License group:
-  Id: 4674107322931-UnityPersXXXX
-  Product: Unity Personal
-  Type: Assigned
-  Expiration: Unlimited
-Refreshing native plugins compatible for Editor in 2.04 ms, found 3 plugins.
+Refreshing native plugins compatible for Editor in 13.23 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 6000.0.62f1 (f99f05b3e950)
 [Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/6000.0.62f1/Editor/Data/Resources/UnitySubsystems
-[Subsystems] Discovering subsystems at path D:/GladiusAI/InsanusPugnat/InsanusPugnat/Assets
+[Subsystems] Discovering subsystems at path D:/GladiusAI/InsanusPugnat4Cuatri/Assets
 GfxDevice: creating device client; kGfxThreadingModeNonThreaded
 Direct3D:
     Version:  Direct3D 11.0 [level 11.1]
@@ -115,46 +109,52 @@ Initialize mono
 Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/6000.0.62f1/Editor/Data/Managed'
 Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/6000.0.62f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
 Mono config path = 'C:/Program Files/Unity/Hub/Editor/6000.0.62f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56816
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56328
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.0.62f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: 4674107322931-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
 Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.0.62f1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll
-Registered in 0.006451 seconds.
-- Loaded All Assemblies, in  0.517 seconds
+Registered in 0.012017 seconds.
+- Loaded All Assemblies, in  0.530 seconds
 Native extension for Android target not found
-Android Extension - Scanning For ADB Devices 455 ms
+Android Extension - Scanning For ADB Devices 1857 ms
 Native extension for WindowsStandalone target not found
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.930 seconds
-Domain Reload Profiling: 1444ms
-	BeginReloadAssembly (169ms)
+- Finished resetting the current domain, in  2.342 seconds
+Domain Reload Profiling: 2869ms
+	BeginReloadAssembly (197ms)
 		ExecutionOrderSort (0ms)
 		DisableScriptedObjects (0ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
 		CreateAndSetChildDomain (1ms)
-	RebuildCommonClasses (50ms)
-	RebuildNativeTypeToScriptingClass (13ms)
-	initialDomainReloadingComplete (62ms)
-	LoadAllAssembliesAndSetupDomain (219ms)
-		LoadAssemblies (165ms)
+	RebuildCommonClasses (47ms)
+	RebuildNativeTypeToScriptingClass (15ms)
+	initialDomainReloadingComplete (79ms)
+	LoadAllAssembliesAndSetupDomain (189ms)
+		LoadAssemblies (193ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (215ms)
-			TypeCache.Refresh (213ms)
-				TypeCache.ScanAssembly (199ms)
+		AnalyzeDomain (184ms)
+			TypeCache.Refresh (182ms)
+				TypeCache.ScanAssembly (168ms)
 			BuildScriptInfoCaches (0ms)
 			ResolveRequiredComponents (1ms)
-	FinalizeReload (931ms)
+	FinalizeReload (2343ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (887ms)
+		SetupLoadedEditorAssemblies (2287ms)
 			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (562ms)
-			SetLoadedEditorAssemblies (5ms)
+			InitializePlatformSupportModulesInManaged (1969ms)
+			SetLoadedEditorAssemblies (4ms)
 			BeforeProcessingInitializeOnLoad (78ms)
-			ProcessInitializeOnLoadAttributes (167ms)
-			ProcessInitializeOnLoadMethodAttributes (74ms)
+			ProcessInitializeOnLoadAttributes (162ms)
+			ProcessInitializeOnLoadMethodAttributes (73ms)
 			AfterProcessingInitializeOnLoad (0ms)
 			EditorAssembliesLoaded (0ms)
 		ExecutionOrderSort2 (0ms)
@@ -164,8 +164,8 @@ Worker process is ready to serve import requests
 Import Worker Mode flag is 0x00
 Begin MonoManager ReloadAssembly
 [Licensing::Client] Successfully resolved entitlement details
-- Loaded All Assemblies, in  1.208 seconds
-Refreshing native plugins compatible for Editor in 0.61 ms, found 3 plugins.
+- Loaded All Assemblies, in  1.200 seconds
+Refreshing native plugins compatible for Editor in 1.46 ms, found 3 plugins.
 Native extension for Android target not found
 Native extension for WindowsStandalone target not found
 Package Manager log level set to [2]
@@ -173,144 +173,716 @@ Package Manager log level set to [2]
 [Package Manager] Unable to send message (not connected to server process).
 [Package Manager] Cannot connect to Unity Package Manager local server
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  1.106 seconds
-Domain Reload Profiling: 2308ms
-	BeginReloadAssembly (210ms)
+- Finished resetting the current domain, in  1.186 seconds
+Domain Reload Profiling: 2378ms
+	BeginReloadAssembly (230ms)
 		ExecutionOrderSort (0ms)
 		DisableScriptedObjects (7ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (34ms)
-	RebuildCommonClasses (43ms)
-	RebuildNativeTypeToScriptingClass (18ms)
-	initialDomainReloadingComplete (42ms)
-	LoadAllAssembliesAndSetupDomain (889ms)
-		LoadAssemblies (675ms)
+		CreateAndSetChildDomain (37ms)
+	RebuildCommonClasses (46ms)
+	RebuildNativeTypeToScriptingClass (16ms)
+	initialDomainReloadingComplete (51ms)
+	LoadAllAssembliesAndSetupDomain (848ms)
+		LoadAssemblies (612ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (325ms)
-			TypeCache.Refresh (255ms)
-				TypeCache.ScanAssembly (232ms)
-			BuildScriptInfoCaches (55ms)
-			ResolveRequiredComponents (11ms)
-	FinalizeReload (1107ms)
+		AnalyzeDomain (359ms)
+			TypeCache.Refresh (270ms)
+				TypeCache.ScanAssembly (247ms)
+			BuildScriptInfoCaches (68ms)
+			ResolveRequiredComponents (15ms)
+	FinalizeReload (1187ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (869ms)
+		SetupLoadedEditorAssemblies (943ms)
 			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (14ms)
-			SetLoadedEditorAssemblies (7ms)
-			BeforeProcessingInitializeOnLoad (173ms)
-			ProcessInitializeOnLoadAttributes (613ms)
-			ProcessInitializeOnLoadMethodAttributes (55ms)
-			AfterProcessingInitializeOnLoad (6ms)
+			InitializePlatformSupportModulesInManaged (16ms)
+			SetLoadedEditorAssemblies (5ms)
+			BeforeProcessingInitializeOnLoad (188ms)
+			ProcessInitializeOnLoadAttributes (653ms)
+			ProcessInitializeOnLoadMethodAttributes (72ms)
+			AfterProcessingInitializeOnLoad (8ms)
 			EditorAssembliesLoaded (0ms)
 		ExecutionOrderSort2 (0ms)
 		AwakeInstancesAfterBackupRestoration (6ms)
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.02 seconds
-Refreshing native plugins compatible for Editor in 0.93 ms, found 3 plugins.
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.01 seconds
+Refreshing native plugins compatible for Editor in 0.99 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 13 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 6137 unused Assets / (4.6 MB). Loaded Objects now: 6825.
-Memory consumption went from 130.7 MB to 126.1 MB.
-Total: 9.637200 ms (FindLiveObjects: 0.583000 ms CreateObjectMapping: 0.586900 ms MarkObjects: 6.243300 ms  DeleteObjects: 2.222500 ms)
+Unloading 6143 unused Assets / (4.5 MB). Loaded Objects now: 6831.
+Memory consumption went from 130.1 MB to 125.7 MB.
+Total: 9.895100 ms (FindLiveObjects: 0.560700 ms CreateObjectMapping: 0.522300 ms MarkObjects: 6.106300 ms  DeleteObjects: 2.704100 ms)
 
 ========================================================================
 Received Import Request.
-  Time since last request: 431885.501041 seconds.
-  path: Assets/Art/Assets/isometric-miniature-bases/Angle/base_snow_flat_N.png
-  artifactKey: Guid(7871ce4c4e8fd3f47a277a65860d907c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Assets/isometric-miniature-bases/Angle/base_snow_flat_N.png using Guid(7871ce4c4e8fd3f47a277a65860d907c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'd5c6aaa159e01878239fe0560fe5376d') in 0.1389666 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+  Time since last request: 438153.327264 seconds.
+  path: Assets/InputSystem_Actions.inputactions
+  artifactKey: Guid(052faaac586de48259a63d0c4782560b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/InputSystem_Actions.inputactions using Guid(052faaac586de48259a63d0c4782560b) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'ff20acd24eca582d759e8ba294868811') in 0.028743 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 20
 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000024 seconds.
-  path: Assets/Art/Assets/isometric-miniature-bases/Angle/base_grass_high_detail_N.png
-  artifactKey: Guid(4f31d7c7e78a7594ba154736186678ad) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Assets/isometric-miniature-bases/Angle/base_grass_high_detail_N.png using Guid(4f31d7c7e78a7594ba154736186678ad) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'f1bd8265c0594abf08377566db50131d') in 0.0336688 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+  Time since last request: 3.891825 seconds.
+  path: Assets/Scenes
+  artifactKey: Guid(9c804a54efcc7344889c6f43befafa2d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes using Guid(9c804a54efcc7344889c6f43befafa2d) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '0b58d55dc4dc4b7358e410bf9f903aad') in 0.0006408 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000020 seconds.
-  path: Assets/Art/Assets/isometric-miniature-bases/Angle/base_snow_high_detail_S.png
-  artifactKey: Guid(d323f146df95f6743af97afaa1c0777e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Assets/isometric-miniature-bases/Angle/base_snow_high_detail_S.png using Guid(d323f146df95f6743af97afaa1c0777e) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '1c5420c0d8e053cb03c8a493f3ae4c6f') in 0.0334373 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+  Time since last request: 1.479678 seconds.
+  path: Assets/Scenes/EscenaDePrueba.unity
+  artifactKey: Guid(99c9720ab356a0642a771bea13969a05) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/EscenaDePrueba.unity using Guid(99c9720ab356a0642a771bea13969a05) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'd8a8f12360db556c0999bd3b726f2831') in 0.0007007 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000027 seconds.
+  Time since last request: 8.766521 seconds.
+  path: Assets/Art
+  artifactKey: Guid(0a799a04edc4dba48bec6b1beb9a578f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art using Guid(0a799a04edc4dba48bec6b1beb9a578f) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'd708bd86d9e4a464de8c80740def9b8b') in 0.0008709 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.588511 seconds.
+  path: Assets/Art/Assets
+  artifactKey: Guid(cd9d0772d8e2556448cc92e5614cfdc5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets using Guid(cd9d0772d8e2556448cc92e5614cfdc5) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'ce3537f6117ac6dae38270fb631b1775') in 0.0009607 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 1.017686 seconds.
+  path: Assets/Art/Assets/isometric-miniature-bases
+  artifactKey: Guid(e48437c00130ae046b9b7a0d6fe7250a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-bases using Guid(e48437c00130ae046b9b7a0d6fe7250a) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'e30b43c43bf93d172ceb22b9a263eb53') in 0.0007617 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.673948 seconds.
+  path: Assets/Art/Assets/isometric-miniature-bases/Angle
+  artifactKey: Guid(102d6abeca805804cb22f8d0c7473ec9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-bases/Angle using Guid(102d6abeca805804cb22f8d0c7473ec9) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'fa08e49280717332323b0959b3821ffb') in 0.0009462 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.008701 seconds.
   path: Assets/Art/Assets/isometric-miniature-bases/Angle/base_dirt_detail_E.png
   artifactKey: Guid(aeddd7314bf5ca84c81fe4c88efed5b6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Assets/isometric-miniature-bases/Angle/base_dirt_detail_E.png using Guid(aeddd7314bf5ca84c81fe4c88efed5b6) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '2e41751ea5975bf3f103006d72c33fce') in 0.0342317 seconds
+Start importing Assets/Art/Assets/isometric-miniature-bases/Angle/base_dirt_detail_E.png using Guid(aeddd7314bf5ca84c81fe4c88efed5b6) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'ff71c6f722a3f24126126d6a405436c2') in 0.1547731 seconds
 Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000022 seconds.
-  path: Assets/Art/Assets/isometric-miniature-bases/Angle/base_dirt_detail_N.png
-  artifactKey: Guid(cb2724bc668e49b4da037d2daad2f010) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Assets/isometric-miniature-bases/Angle/base_dirt_detail_N.png using Guid(cb2724bc668e49b4da037d2daad2f010) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'd8806cc49563ab94392f71b93cf1fe24') in 0.0318071 seconds
+  Time since last request: 0.000037 seconds.
+  path: Assets/Art/Assets/isometric-miniature-bases/Angle/base_grass_detail_W.png
+  artifactKey: Guid(5afb9da8d29c4884294afc5b93fac27f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-bases/Angle/base_grass_detail_W.png using Guid(5afb9da8d29c4884294afc5b93fac27f) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'bac330c7ecd0cdb7abaf69de48129010') in 0.0676074 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000029 seconds.
+  path: Assets/Art/Assets/isometric-miniature-bases/Angle/base_dirt_high_detail_W.png
+  artifactKey: Guid(a59e65a5ea25a8b4aadb7f068108477b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-bases/Angle/base_dirt_high_detail_W.png using Guid(a59e65a5ea25a8b4aadb7f068108477b) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '8cbf494d77eb54cb4798042dc944ed25') in 0.0378556 seconds
 Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
 
 ========================================================================
 Received Import Request.
   Time since last request: 0.000017 seconds.
-  path: Assets/Art/Assets/isometric-miniature-bases/Angle/base_grass_high_E.png
-  artifactKey: Guid(308fe115fed844145b049e29d2a01c97) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Assets/isometric-miniature-bases/Angle/base_grass_high_E.png using Guid(308fe115fed844145b049e29d2a01c97) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '3c2bc3a68e9371ee22225557b9cf0a1c') in 0.0325303 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000019 seconds.
-  path: Assets/Art/Assets/isometric-miniature-bases/Angle/base_dirt_high_detail_W.png
-  artifactKey: Guid(a59e65a5ea25a8b4aadb7f068108477b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Assets/isometric-miniature-bases/Angle/base_dirt_high_detail_W.png using Guid(a59e65a5ea25a8b4aadb7f068108477b) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '94cd5b4acdfb38404a2653aede690bd3') in 0.0414798 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000026 seconds.
-  path: Assets/Art/Assets/isometric-miniature-bases/Angle/base_grass_high_detail_S.png
-  artifactKey: Guid(2092850828b277c44b58227bcf9763ab) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Assets/isometric-miniature-bases/Angle/base_grass_high_detail_S.png using Guid(2092850828b277c44b58227bcf9763ab) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'd20fb24458f165fd5e7f7c7595f5ead0') in 0.0341305 seconds
+  path: Assets/Art/Assets/isometric-miniature-bases/Angle/base_grass_flat_S.png
+  artifactKey: Guid(f20f0769bd134b94ca114556def08e72) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-bases/Angle/base_grass_flat_S.png using Guid(f20f0769bd134b94ca114556def08e72) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '8edee54438c50136c8708cb7d2fa2eea') in 0.0340063 seconds
 Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
 
 ========================================================================
 Received Import Request.
   Time since last request: 0.000020 seconds.
-  path: Assets/Art/Assets/isometric-miniature-bases/Angle/base_grass_high_S.png
-  artifactKey: Guid(cb39576bae322a84484a0cf7d1c4356b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Assets/isometric-miniature-bases/Angle/base_grass_high_S.png using Guid(cb39576bae322a84484a0cf7d1c4356b) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '19648363abf09307afb71d0fad9f930c') in 0.0397249 seconds
+  path: Assets/Art/Assets/isometric-miniature-bases/Angle/base_grass_high_detail_S.png
+  artifactKey: Guid(2092850828b277c44b58227bcf9763ab) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-bases/Angle/base_grass_high_detail_S.png using Guid(2092850828b277c44b58227bcf9763ab) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '4aa425096cc820b867d586ba768e39e2') in 0.0328771 seconds
 Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000013 seconds.
-  path: Assets/Art/Assets/isometric-miniature-bases/Angle/base_snow_detail_E.png
-  artifactKey: Guid(ef9e745b4bb49cc4fb91250251bf0cd3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Assets/isometric-miniature-bases/Angle/base_snow_detail_E.png using Guid(ef9e745b4bb49cc4fb91250251bf0cd3) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '8d7d316d509f94d7b86d12c8a6236e92') in 0.0394084 seconds
+  Time since last request: 0.000027 seconds.
+  path: Assets/Art/Assets/isometric-miniature-bases/Angle/base_grass_detail_E.png
+  artifactKey: Guid(91b90462bfad0c64ea2d790e34fe2c0b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-bases/Angle/base_grass_detail_E.png using Guid(91b90462bfad0c64ea2d790e34fe2c0b) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '0d5b57271a19f9f51d4f0c4e0acd17d5') in 0.0383817 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000029 seconds.
+  path: Assets/Art/Assets/isometric-miniature-bases/Angle/base_dirt_detail_S.png
+  artifactKey: Guid(ba096f8a90255b64b97ee2df2d7da28b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-bases/Angle/base_dirt_detail_S.png using Guid(ba096f8a90255b64b97ee2df2d7da28b) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '363d39fe8d147959fb6e7b3c6c9ecdb3') in 0.0618909 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/Art/Assets/isometric-miniature-bases/Angle/base_grass_flat_N.png
+  artifactKey: Guid(ee51a4dde9a2a3e4cbd5234ac17dc18d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-bases/Angle/base_grass_flat_N.png using Guid(ee51a4dde9a2a3e4cbd5234ac17dc18d) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'bdd1e8891146bd4f4b263c50ddba8e0f') in 0.0301782 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000031 seconds.
+  path: Assets/Art/Assets/isometric-miniature-bases/Angle/base_dirt_high_detail_S.png
+  artifactKey: Guid(66b56f1cd1566d2428bc59254408ab54) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-bases/Angle/base_dirt_high_detail_S.png using Guid(66b56f1cd1566d2428bc59254408ab54) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'e06f4c62d3512ea80ec7ade2b4afa464') in 0.0332757 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000021 seconds.
+  path: Assets/Art/Assets/isometric-miniature-bases/Angle/base_dirt_high_W.png
+  artifactKey: Guid(65b3be1d61c8f754f9dadb0159ea5dec) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-bases/Angle/base_dirt_high_W.png using Guid(65b3be1d61c8f754f9dadb0159ea5dec) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '9d66a7692e884c4aa706792f6e05adc4') in 0.0242626 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000031 seconds.
+  path: Assets/Art/Assets/isometric-miniature-bases/Angle/base_dirt_detail_W.png
+  artifactKey: Guid(5ecab4d78a0ddba41831ba911cc9eb09) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-bases/Angle/base_dirt_detail_W.png using Guid(5ecab4d78a0ddba41831ba911cc9eb09) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '671ec92aa6fb6df0a741802a130d374b') in 0.0299014 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000015 seconds.
+  path: Assets/Art/Assets/isometric-miniature-bases/Angle/base_dirt_high_detail_N.png
+  artifactKey: Guid(ba35bfcea7244ba40848a90955671748) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-bases/Angle/base_dirt_high_detail_N.png using Guid(ba35bfcea7244ba40848a90955671748) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'd15c4bde068be288b5de3cb98a851627') in 0.0301411 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/Art/Assets/isometric-miniature-bases/Angle/base_dirt_high_S.png
+  artifactKey: Guid(840e1878ec4cf5b40b4c819b7212f9eb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-bases/Angle/base_dirt_high_S.png using Guid(840e1878ec4cf5b40b4c819b7212f9eb) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '79b3b3365983ac59e455e0dc084cd964') in 0.0350493 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000018 seconds.
+  path: Assets/Art/Assets/isometric-miniature-bases/Angle/base_dirt_float_E.png
+  artifactKey: Guid(89e20d12270b02a47b5cc507ed66587c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-bases/Angle/base_dirt_float_E.png using Guid(89e20d12270b02a47b5cc507ed66587c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '6a985889b507c30a58ab975491793e14') in 0.03177 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000031 seconds.
+  path: Assets/Art/Assets/isometric-miniature-bases/Angle/base_dirt_high_E.png
+  artifactKey: Guid(9fff1cbed834d314d8dce61c5764df85) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-bases/Angle/base_dirt_high_E.png using Guid(9fff1cbed834d314d8dce61c5764df85) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'ffa94a2c75b24e20430cae97ab611a3e') in 0.028926 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000021 seconds.
+  path: Assets/Art/Assets/isometric-miniature-bases/Angle/base_grass_detail_N.png
+  artifactKey: Guid(bb7ae950d2658824aa939d6bade53606) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-bases/Angle/base_grass_detail_N.png using Guid(bb7ae950d2658824aa939d6bade53606) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'f14f9a10515b049dcbadaadbfbd72866') in 0.0251104 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/Art/Assets/isometric-miniature-bases/Angle/base_grass_detail_S.png
+  artifactKey: Guid(2f88d4ced8e170946a60f34e90d159db) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-bases/Angle/base_grass_detail_S.png using Guid(2f88d4ced8e170946a60f34e90d159db) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'dea810925f4cc40ae09a9f2328a08a09') in 0.0262233 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 3.637023 seconds.
+  path: Assets/Art/Assets/isometric-miniature-bases/Isometric
+  artifactKey: Guid(3392148bc539405409c58cfcd8ba0a79) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-bases/Isometric using Guid(3392148bc539405409c58cfcd8ba0a79) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '9ab7d9b09f3511a21cc3a87d4169fc69') in 0.0008487 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.031065 seconds.
+  path: Assets/Art/Assets/isometric-miniature-bases/Isometric/base_dirt_detail_E.png
+  artifactKey: Guid(dc1ee2566eafbaa44b89820a502d561d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-bases/Isometric/base_dirt_detail_E.png using Guid(dc1ee2566eafbaa44b89820a502d561d) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '3a538732e289ef2530eab818557556bb') in 0.0349634 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000017 seconds.
+  path: Assets/Art/Assets/isometric-miniature-bases/Isometric/base_grass_detail_N.png
+  artifactKey: Guid(4d47a3f41cec37d44bd29fb566d50d0a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-bases/Isometric/base_grass_detail_N.png using Guid(4d47a3f41cec37d44bd29fb566d50d0a) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '731db94afb5309e6e614625eba1ad813') in 0.0357474 seconds
 Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
 
 ========================================================================
 Received Import Request.
   Time since last request: 0.000016 seconds.
-  path: Assets/Art/Assets/isometric-miniature-bases/Angle/base_snow_high_detail_W.png
-  artifactKey: Guid(7964d75ce06595944b0d3989e560866e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Assets/isometric-miniature-bases/Angle/base_snow_high_detail_W.png using Guid(7964d75ce06595944b0d3989e560866e) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '0cf556eb7c589ea5adc6a8000092e9bb') in 0.035154 seconds
+  path: Assets/Art/Assets/isometric-miniature-bases/Isometric/base_grass_high_detail_W.png
+  artifactKey: Guid(a218ab5501bd0b942b0fbb09bc73b9f8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-bases/Isometric/base_grass_high_detail_W.png using Guid(a218ab5501bd0b942b0fbb09bc73b9f8) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'f7b099c91b8ef860e1156d709ddf50c0') in 0.0332951 seconds
 Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000028 seconds.
-  path: Assets/Art/Assets/isometric-miniature-bases/Angle/base_dirt_high_S.png
-  artifactKey: Guid(840e1878ec4cf5b40b4c819b7212f9eb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Assets/isometric-miniature-bases/Angle/base_dirt_high_S.png using Guid(840e1878ec4cf5b40b4c819b7212f9eb) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '998dfff621f7391289a3ac5cb238e945') in 0.0421106 seconds
+  Time since last request: 0.000025 seconds.
+  path: Assets/Art/Assets/isometric-miniature-bases/Isometric/base_dirt_high_detail_E.png
+  artifactKey: Guid(a364d5a4b12bb6b479b204cd2e9ab4ca) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-bases/Isometric/base_dirt_high_detail_E.png using Guid(a364d5a4b12bb6b479b204cd2e9ab4ca) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'a53301eb130525a548dd911cd7388a5c') in 0.0302415 seconds
 Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
 
-Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
-AssetImportWorker is now disconnected from the server
-Process exiting
-Exiting without the bug reporter. Application will terminate with return code 0
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/Art/Assets/isometric-miniature-bases/Isometric/base_grass_flat_W.png
+  artifactKey: Guid(7f3e4cd6a7dabcb428c7b8a5aa19f656) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-bases/Isometric/base_grass_flat_W.png using Guid(7f3e4cd6a7dabcb428c7b8a5aa19f656) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '809cce786811adca6e4e219cde6e9cdd') in 0.0325437 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/Art/Assets/isometric-miniature-bases/Isometric/base_grass_high_E.png
+  artifactKey: Guid(228532b37784f2049a0be6f06bc618c4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-bases/Isometric/base_grass_high_E.png using Guid(228532b37784f2049a0be6f06bc618c4) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '8e97ba87fe441224faa4343c953313ee') in 0.0292369 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/Art/Assets/isometric-miniature-bases/Isometric/base_dirt_float_E.png
+  artifactKey: Guid(a60de043b41138742b035a4b9c1bb3c4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-bases/Isometric/base_dirt_float_E.png using Guid(a60de043b41138742b035a4b9c1bb3c4) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '1fc502ecb7590f512a11f44f357745ec') in 0.0273475 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000192 seconds.
+  path: Assets/Art/Assets/isometric-miniature-bases/Isometric/base_dirt_high_W.png
+  artifactKey: Guid(8474dd49783d44b47b6d38fe1944720d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-bases/Isometric/base_dirt_high_W.png using Guid(8474dd49783d44b47b6d38fe1944720d) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '5d87810626138e099160cb367f125364') in 0.0322655 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000051 seconds.
+  path: Assets/Art/Assets/isometric-miniature-bases/Isometric/base_grass_flat_E.png
+  artifactKey: Guid(f8c47e9c558cc674c951fc6b29ba5e8e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-bases/Isometric/base_grass_flat_E.png using Guid(f8c47e9c558cc674c951fc6b29ba5e8e) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'c1cb56586c2e41025313c33d1ae0e2f6') in 0.0358853 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000019 seconds.
+  path: Assets/Art/Assets/isometric-miniature-bases/Isometric/base_dirt_detail_W.png
+  artifactKey: Guid(b5d50fe0dc819454eb1ac86d28824ef4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-bases/Isometric/base_dirt_detail_W.png using Guid(b5d50fe0dc819454eb1ac86d28824ef4) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '557748b83c219876d0112b8bedb62158') in 0.0336315 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000017 seconds.
+  path: Assets/Art/Assets/isometric-miniature-bases/Isometric/base_grass_flat_S.png
+  artifactKey: Guid(d70f48facbc21964394ca0e0fbb11a4a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-bases/Isometric/base_grass_flat_S.png using Guid(d70f48facbc21964394ca0e0fbb11a4a) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '63b25db8599932c5fc4cb4e4cdbd10b1') in 0.0301136 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000021 seconds.
+  path: Assets/Art/Assets/isometric-miniature-bases/Isometric/base_grass_high_detail_S.png
+  artifactKey: Guid(451d738f62c795c4ebc07dd83e0df1a8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-bases/Isometric/base_grass_high_detail_S.png using Guid(451d738f62c795c4ebc07dd83e0df1a8) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '2e1df1fd698ef11a0f0e8b5165a1d028') in 0.0269255 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000030 seconds.
+  path: Assets/Art/Assets/isometric-miniature-bases/Isometric/base_dirt_float_N.png
+  artifactKey: Guid(186b49151d6a1a34e8898ace26113994) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-bases/Isometric/base_dirt_float_N.png using Guid(186b49151d6a1a34e8898ace26113994) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '78c0724e6d8d6a970f9a6617227c76f4') in 0.0282838 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/Art/Assets/isometric-miniature-bases/Isometric/base_grass_detail_E.png
+  artifactKey: Guid(f086983ade5a2634ebf46b1823956e23) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-bases/Isometric/base_grass_detail_E.png using Guid(f086983ade5a2634ebf46b1823956e23) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '6758c2bd6139be3f9a84e11fb70fbd53') in 0.0285952 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000019 seconds.
+  path: Assets/Art/Assets/isometric-miniature-bases/Isometric/base_grass_flat_N.png
+  artifactKey: Guid(2ff0295f30ae030488c86dcb6efcc078) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-bases/Isometric/base_grass_flat_N.png using Guid(2ff0295f30ae030488c86dcb6efcc078) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'b0b7c431143d42117f1a5138890306b5') in 0.025195 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 9.238547 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/barrel_N.png
+  artifactKey: Guid(0ed2b2bde2748a249aa945cb64adb074) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/barrel_N.png using Guid(0ed2b2bde2748a249aa945cb64adb074) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '8c7e855617870603f3631d3cb699683b') in 0.0451426 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000018 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/chair_N.png
+  artifactKey: Guid(f369dbf856f6aa94aa4c51b9b80389ed) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/chair_N.png using Guid(f369dbf856f6aa94aa4c51b9b80389ed) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '73d90e080bd9dd1be06747aab562a610') in 0.0402083 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000032 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/bridge_E.png
+  artifactKey: Guid(095142c7e00165b45bb76e3600da30ab) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/bridge_E.png using Guid(095142c7e00165b45bb76e3600da30ab) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'd435a97d10431b9689410a18326be508') in 0.0457245 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/chestClosed_E.png
+  artifactKey: Guid(48daba8448b178b4e8ce523020654613) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/chestClosed_E.png using Guid(48daba8448b178b4e8ce523020654613) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '6c7d4c67f9adc7868801a92a4cbdfa78') in 0.0367777 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000019 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/bridge_S.png
+  artifactKey: Guid(513d4be723a68424d9b514950dc8196b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/bridge_S.png using Guid(513d4be723a68424d9b514950dc8196b) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'f560672de8c739dd76cb942b94984746') in 0.0392215 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000029 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/barrels_S.png
+  artifactKey: Guid(016e8f046b1fae24e978efa2e2a4ceee) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/barrels_S.png using Guid(016e8f046b1fae24e978efa2e2a4ceee) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '7e0000b3527ec2e13f958a9beaa303c2') in 0.0364613 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000031 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/chestOpen_E.png
+  artifactKey: Guid(2d86a3e5fcaa02d45abca4b2d2b6e932) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/chestOpen_E.png using Guid(2d86a3e5fcaa02d45abca4b2d2b6e932) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'a1254dbbf286d1f4bc24a0e48a17de59') in 0.0390673 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000015 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/chestClosed_N.png
+  artifactKey: Guid(7df3ff50817527b43a9bad17392a8b6c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/chestClosed_N.png using Guid(7df3ff50817527b43a9bad17392a8b6c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'cc11b2280eeec9e116f852eeca24df53') in 0.0350833 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.254043 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/dirt_S.png
+  artifactKey: Guid(28e33c5f58fa8934e85f0eacad6dc493) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/dirt_S.png using Guid(28e33c5f58fa8934e85f0eacad6dc493) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'c92167ece96a51377c4186c05f8061b1') in 0.0438972 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000017 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/dirtTiles_N.png
+  artifactKey: Guid(1363d3f5422739f4f89588dfbb5f18b9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/dirtTiles_N.png using Guid(1363d3f5422739f4f89588dfbb5f18b9) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '142370d9424870613546344bbe580760') in 0.051042 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000017 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/planksBroken_S.png
+  artifactKey: Guid(1444e74fab1150448a77109a0a643d17) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/planksBroken_S.png using Guid(1444e74fab1150448a77109a0a643d17) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'a27c33cec8e5307a4dbd3ba6575f8401') in 0.0508355 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000032 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/planksBroken_E.png
+  artifactKey: Guid(bba3014700f2d704e856574a5463e783) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/planksBroken_E.png using Guid(bba3014700f2d704e856574a5463e783) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'ce5dcf5af91301f945b20526e6f0aa4b') in 0.0407194 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000020 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stairs_N.png
+  artifactKey: Guid(07df5bd280a3bb544a968fb305bcbe45) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stairs_N.png using Guid(07df5bd280a3bb544a968fb305bcbe45) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'd47b1eb531fc81f19e4c7acf1aefe684') in 0.031879 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000017 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stairsAged_S.png
+  artifactKey: Guid(d473e1a386a581744aa90c25c0673623) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stairsAged_S.png using Guid(d473e1a386a581744aa90c25c0673623) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'bea091efb4ea057f8f58ce9a72854219') in 0.0441372 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000019 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stairs_W.png
+  artifactKey: Guid(852717127d708714881d46baea3e728c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stairs_W.png using Guid(852717127d708714881d46baea3e728c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '7667813083e269a897d1268a56229d4a') in 0.0403982 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/planksHole_W.png
+  artifactKey: Guid(6cef25e9b67fb1c4b857f04b7caa8dcf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/planksHole_W.png using Guid(6cef25e9b67fb1c4b857f04b7caa8dcf) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '5bd57eaf11691ebaf6ed380f6df24a1c') in 0.0399676 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000017 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneColumn_S.png
+  artifactKey: Guid(e2bdd713f2c37e443965a390b82e18a3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneColumn_S.png using Guid(e2bdd713f2c37e443965a390b82e18a3) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'd2f3c312aef90317c6694c2f67e4192f') in 0.035932 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stone_N.png
+  artifactKey: Guid(4faa5876df362634c9a3194a3e7512da) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stone_N.png using Guid(4faa5876df362634c9a3194a3e7512da) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '085365a7e226cb80442b382a286043a0') in 0.0449349 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneColumn_W.png
+  artifactKey: Guid(b07c3f816b52dec4eb6b61f29d79cda5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneColumn_W.png using Guid(b07c3f816b52dec4eb6b61f29d79cda5) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'b46f1c9e7cb8d5310b205a255f5abfb6') in 0.0417879 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000026 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneLeft_E.png
+  artifactKey: Guid(6b226cfff0a0360438aa1afb407c54bb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneLeft_E.png using Guid(6b226cfff0a0360438aa1afb407c54bb) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '5fd18a061660badaf5e844b81f3dd66c') in 0.0387013 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000017 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneSide_S.png
+  artifactKey: Guid(ae8caf4e2d4e7bb4281eeea29496c8aa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneSide_S.png using Guid(ae8caf4e2d4e7bb4281eeea29496c8aa) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '7f168de92bf84ec0b6f9ef8c6a2ba867') in 0.041788 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000019 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneRight_E.png
+  artifactKey: Guid(5c02e19cb1365994092faa5aa8286ba4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneRight_E.png using Guid(5c02e19cb1365994092faa5aa8286ba4) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '78b80b716ff40f9b42fd6c040d4ab574') in 0.0404699 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneSide_W.png
+  artifactKey: Guid(6536864d3e87aaa4cbf5b82b3246f0c9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneSide_W.png using Guid(6536864d3e87aaa4cbf5b82b3246f0c9) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '73a50ddfba1fa683f2a4d049577811e9') in 0.047677 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000032 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stairsSpiral_W.png
+  artifactKey: Guid(165e8572704521d409b4c01407e80b70) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stairsSpiral_W.png using Guid(165e8572704521d409b4c01407e80b70) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '6c43d982ae0c6b57e88c7065f033b0ac') in 0.0369027 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000019 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneSideUneven_E.png
+  artifactKey: Guid(9c61cf6ef1e76db4692d2dc986d8c939) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneSideUneven_E.png using Guid(9c61cf6ef1e76db4692d2dc986d8c939) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'fb10f58b5b5bc1354e121891aaf21297') in 0.0391424 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000019 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneMissingTiles_E.png
+  artifactKey: Guid(30f93362fa4b9f5488d3e9c6c27ccb72) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneMissingTiles_E.png using Guid(30f93362fa4b9f5488d3e9c6c27ccb72) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '26e496fe04a1bc684667e8621cf1f0c6') in 0.0500018 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000014 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneSteps_E.png
+  artifactKey: Guid(29d584e37a36cdd4bb23d9a5f64552ba) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneSteps_E.png using Guid(29d584e37a36cdd4bb23d9a5f64552ba) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'a8f9e2123e0c157288e047a3e91a3a81') in 0.0387928 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000036 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneSideUneven_S.png
+  artifactKey: Guid(914e8cf431e01b8439d1f26d1ebf64f5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneSideUneven_S.png using Guid(914e8cf431e01b8439d1f26d1ebf64f5) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '5d70089e7ba89f5be716f897625a7bb5') in 0.0317939 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.301142 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneSteps_S.png
+  artifactKey: Guid(ba2cd0f1c44e6624791fd5cc5c9bf117) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneSteps_S.png using Guid(ba2cd0f1c44e6624791fd5cc5c9bf117) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '44e7a65c3fe43565624b2c800cb20a8a') in 0.0444779 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneTile_W.png
+  artifactKey: Guid(9c7b3d1d46620ae4882c8b65c7557f3a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneTile_W.png using Guid(9c7b3d1d46620ae4882c8b65c7557f3a) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '2ebe550d7ca26a29304c3bfd24bc358b') in 0.0475203 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.094392 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneUneven_S.png
+  artifactKey: Guid(83a935b77c97fe4418623ed215c64991) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneUneven_S.png using Guid(83a935b77c97fe4418623ed215c64991) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '9be402dfb3124c382f6ff116700c9543') in 0.0613144 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneWallAged_E.png
+  artifactKey: Guid(027acac05f5b895489ef5dc4a5ec4400) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneWallAged_E.png using Guid(027acac05f5b895489ef5dc4a5ec4400) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '27cbb3d3d85d1fe63b9f284ad9cf1d0f') in 0.0393033 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000021 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneWallAged_S.png
+  artifactKey: Guid(11658939974ad5442ba0f07d85bfda2c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneWallAged_S.png using Guid(11658939974ad5442ba0f07d85bfda2c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '6fa77db200692cec37bbba1329c47c21') in 0.0479572 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000030 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneWallArchway_W.png
+  artifactKey: Guid(6ca56add8bdfe2f4e8b8034ad91d1f36) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneWallArchway_W.png using Guid(6ca56add8bdfe2f4e8b8034ad91d1f36) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'b83ea6e182088f1461c6536009f4d5ef') in 0.043641 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000016 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneWallArchway_E.png
+  artifactKey: Guid(d27578769d3e8a547a7b4bc3b23c6d06) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneWallArchway_E.png using Guid(d27578769d3e8a547a7b4bc3b23c6d06) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'cd0b5bfedf197fd9c94849ceb6aa8313') in 0.0517618 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneWallAgedLeft_S.png
+  artifactKey: Guid(96c990e642cf4004998d62aa8959e61c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneWallAgedLeft_S.png using Guid(96c990e642cf4004998d62aa8959e61c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '1b1d8843c3efbb9599e7e3fcb3da85cf') in 0.0406991 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000020 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneWallBrokenRight_E.png
+  artifactKey: Guid(81b978326d9bfc94bbe54d71e5469a9b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneWallBrokenRight_E.png using Guid(81b978326d9bfc94bbe54d71e5469a9b) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '3b64c0b3983fc3780a93420805fcf25b') in 0.0468752 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000027 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneWallDoor_N.png
+  artifactKey: Guid(0cb96fcb6bc127a4dbeb4ee913d0d8f1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneWallDoor_N.png using Guid(0cb96fcb6bc127a4dbeb4ee913d0d8f1) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'fb052c2a9469cbfd612ef5f41b0a8760') in 0.0507304 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000021 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneWallBrokenLeft_E.png
+  artifactKey: Guid(09b88284b33a1bb45867ff2746c2ee5a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneWallBrokenLeft_E.png using Guid(09b88284b33a1bb45867ff2746c2ee5a) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'fc7f7c009b94b50d22eb27ffc2bd2a26') in 0.0500332 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000054 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneWallCorner_E.png
+  artifactKey: Guid(ef5357d2b04dd5344b094fc05ef9f8cf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneWallCorner_E.png using Guid(ef5357d2b04dd5344b094fc05ef9f8cf) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'bf2f24598043c0c2a7bc7887d2e4f4c7') in 0.0359906 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000030 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneWallBrokenRight_S.png
+  artifactKey: Guid(09b9fdefbe6687d4cb5144600619a46f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneWallBrokenRight_S.png using Guid(09b9fdefbe6687d4cb5144600619a46f) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'cc07ac15088c0beddd4c0af6eb3c6de3') in 0.0412492 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000016 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneWallDoorBars_E.png
+  artifactKey: Guid(c1b8c6f296dc4bb4897e0f3b5ac5b889) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneWallDoorBars_E.png using Guid(c1b8c6f296dc4bb4897e0f3b5ac5b889) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'e9f310710d61fd709617112943451dfb') in 0.0421952 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000016 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneWallBrokenLeft_N.png
+  artifactKey: Guid(744868d73d3065849a0aadb61c6fa1e0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneWallBrokenLeft_N.png using Guid(744868d73d3065849a0aadb61c6fa1e0) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'b9a50ced97351f2f3311131df216c39a') in 0.046346 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000015 seconds.
+  path: Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneWallBroken_N.png
+  artifactKey: Guid(017a77780b85cd94a90accfb65b90238) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Assets/isometric-miniature-dungeon/Isometric/stoneWallBroken_N.png using Guid(017a77780b85cd94a90accfb65b90238) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'cf321565311f5420e02d584aa60f449e') in 0.0374841 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
