@@ -400,6 +400,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &384768675
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 384768677}
+  - component: {fileID: 384768676}
+  m_Layer: 0
+  m_Name: CombatSimulator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &384768676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 384768675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56a4039b8e98d1c4bb655e1875bc3684, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  numFights: 1000
+  hpA: 100
+  minDmgA: 10
+  maxDmgA: 20
+  cooldownA: 1.2
+  staggerA: 0.4
+  hpB: 100
+  minDmgB: 10
+  maxDmgB: 20
+  cooldownB: 1.2
+  staggerB: 0.4
+  simulatedDeltaTime: 0.02
+  maxTicksPerFight: 50000
+--- !u!4 &384768677
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 384768675}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.67983943, y: 1.2979257, z: 0.35112578}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -648,10 +705,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54a52da500d785947a6775ef8213c81e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gladiatorName: PLAYER
   target: {fileID: 661117494}
   moveSpeed: 2.5
   detectionRange: 6
   attackRange: 1.5
+  maxHP: 100
+  minDamage: 10
+  maxDamage: 20
+  attackCooldown: 1.2
+  knockbackForce: 10
+  staggerDuration: 0.4
   bodyRenderer: {fileID: 0}
 --- !u!54 &500819860
 Rigidbody:
@@ -872,10 +936,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54a52da500d785947a6775ef8213c81e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gladiatorName: ENEMY
   target: {fileID: 500819858}
   moveSpeed: 2.5
   detectionRange: 6
   attackRange: 1.5
+  maxHP: 100
+  minDamage: 1
+  maxDamage: 40
+  attackCooldown: 1.2
+  knockbackForce: 10
+  staggerDuration: 0.4
   bodyRenderer: {fileID: 0}
 --- !u!54 &661117496
 Rigidbody:
@@ -1310,3 +1381,4 @@ SceneRoots:
   - {fileID: 1086221367}
   - {fileID: 631094656}
   - {fileID: 381472146}
+  - {fileID: 384768677}
