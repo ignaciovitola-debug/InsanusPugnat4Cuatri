@@ -14,6 +14,12 @@ namespace GladiusAI
         [Header("Movimiento")]
         [SerializeField] private float moveSpeed = 2.5f;
 
+        [Header("Evasión de obstáculos")]
+        [SerializeField] private float avoidCastDistance = 1.5f;
+        [SerializeField] private float avoidRadius = 0.4f;
+        [SerializeField] private LayerMask obstacleLayer; // asignar capa "Obstaculo" en el Inspector
+
+
         [Header("Rangos")]
         [SerializeField] private float detectionRange = 6f;
         [SerializeField] private float attackRange = 1.5f;
@@ -75,6 +81,25 @@ namespace GladiusAI
             Blackboard.Set("self", this);
             behaviorTreeRoot.Tick(Blackboard);
         }
+
+        private Vector3 GetAvoidanceDir(Vector3 desiredDir)
+        {
+            if (Physics.SphereCast(transform.position, avoidRadius, desiredDir,
+                out RaycastHit hit, avoidCastDistance, obstacleLayer))
+            {
+                // Dirección perpendicular a la normal del obstáculo (en el plano horizontal)
+                Vector3 avoidDir = Vector3.Cross(Vector3.up, hit.normal).normalized;
+
+                // Elige el lado más corto para bordear según hacia dónde ya estoy mirando
+                if (Vector3.Dot(avoidDir, transform.right) < 0f)
+                    avoidDir = -avoidDir;
+
+                return avoidDir;
+            }
+            return Vector3.zero;
+        }
+
+
 
         //  Selector (Root)
         //  ├── "¿Estoy muerto?" → Morir
@@ -232,7 +257,10 @@ namespace GladiusAI
             dir.y = 0f;
             dir = dir.sqrMagnitude > 0.0001f ? dir.normalized : Vector3.zero;
 
-            Vector3 vel = dir * moveSpeed;
+            Vector3 avoid = GetAvoidanceDir(dir);
+            Vector3 finalDir = (dir + avoid * 1.5f).normalized; // el 1.5 le da "prioridad" a esquivar
+
+            Vector3 vel = finalDir * moveSpeed;
             vel.y = rb.linearVelocity.y;
             rb.linearVelocity = vel;
         }

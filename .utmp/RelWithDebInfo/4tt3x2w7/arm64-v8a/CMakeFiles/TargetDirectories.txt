@@ -1,0 +1,5 @@
+D:/GladiusAI/InsanusPugnat4Cuatri/.utmp/RelWithDebInfo/4tt3x2w7/arm64-v8a/CMakeFiles/edit_cache.dir
+D:/GladiusAI/InsanusPugnat4Cuatri/.utmp/RelWithDebInfo/4tt3x2w7/arm64-v8a/CMakeFiles/rebuild_cache.dir
+D:/GladiusAI/InsanusPugnat4Cuatri/.utmp/RelWithDebInfo/4tt3x2w7/arm64-v8a/GameActivity/CMakeFiles/game.dir
+D:/GladiusAI/InsanusPugnat4Cuatri/.utmp/RelWithDebInfo/4tt3x2w7/arm64-v8a/GameActivity/CMakeFiles/edit_cache.dir
+D:/GladiusAI/InsanusPugnat4Cuatri/.utmp/RelWithDebInfo/4tt3x2w7/arm64-v8a/GameActivity/CMakeFiles/rebuild_cache.dir
