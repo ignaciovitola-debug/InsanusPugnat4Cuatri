@@ -2,10 +2,6 @@ using UnityEngine;
 
 namespace GladiusAI
 {
-    /// <summary>
-    /// Encapsula todo el movimiento: perseguir, patrullar, retroceder y
-    /// evadir obstáculos. No sabe nada de combate ni de vida.
-    /// </summary>
     public class GladiatorMovement
     {
         private readonly Transform self;
@@ -14,9 +10,11 @@ namespace GladiusAI
         private readonly float avoidCastDistance;
         private readonly float avoidRadius;
         private readonly LayerMask obstacleLayer;
+        private readonly float knockbackForce;
 
         public GladiatorMovement(Transform self, Rigidbody rb, float moveSpeed,
-            float avoidCastDistance, float avoidRadius, LayerMask obstacleLayer)
+            float avoidCastDistance, float avoidRadius, LayerMask obstacleLayer,
+            float knockbackForce)
         {
             this.self = self;
             this.rb = rb;
@@ -24,6 +22,7 @@ namespace GladiusAI
             this.avoidCastDistance = avoidCastDistance;
             this.avoidRadius = avoidRadius;
             this.obstacleLayer = obstacleLayer;
+            this.knockbackForce = knockbackForce;
         }
 
         public void MoveToward(Vector3 targetPos)
@@ -50,6 +49,13 @@ namespace GladiusAI
         {
             Vector3 vel = rb.linearVelocity;
             rb.linearVelocity = new Vector3(0f, vel.y, 0f);
+        }
+
+        public void ApplyKnockback(Vector3 attackerPos)
+        {
+            Vector3 knockDir = (self.position - attackerPos).normalized;
+            knockDir.y = 0f;
+            rb.AddForce(knockDir * knockbackForce, ForceMode.Impulse);
         }
 
         private void SetVelocity(Vector3 dir)

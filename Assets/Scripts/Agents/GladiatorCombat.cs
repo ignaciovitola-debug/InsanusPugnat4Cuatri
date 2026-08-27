@@ -2,29 +2,27 @@ using UnityEngine;
 
 namespace GladiusAI
 {
-    /// <summary>
-    /// Encapsula el cálculo de daño, el cooldown de ataque y el knockback.
-    /// No sabe nada de movimiento ni del árbol de decisiones.
-    /// </summary>
     public class GladiatorCombat
     {
         private readonly float minDamage;
         private readonly float maxDamage;
         private readonly float attackCooldown;
-        private readonly float knockbackForce;
         private readonly float staggerDuration;
 
         private float attackTimer;
+        private float stunTimer;
+        private float defendTimer;
 
         public bool IsOnCooldown => attackTimer > 0f;
+        public bool IsStunned => stunTimer > 0f;
+        public bool IsDefending => defendTimer > 0f;
 
         public GladiatorCombat(float minDamage, float maxDamage, float attackCooldown,
-            float knockbackForce, float staggerDuration)
+            float staggerDuration)
         {
             this.minDamage = minDamage;
             this.maxDamage = maxDamage;
             this.attackCooldown = attackCooldown;
-            this.knockbackForce = knockbackForce;
             this.staggerDuration = staggerDuration;
         }
 
@@ -32,18 +30,18 @@ namespace GladiusAI
         {
             if (attackTimer > 0f)
                 attackTimer -= deltaTime;
+            if (stunTimer > 0f)
+                stunTimer -= deltaTime;
+            if (defendTimer > 0f)
+                defendTimer -= deltaTime;
         }
 
         public void ResetCooldown() => attackTimer = 0f;
         public void RegisterAttack() => attackTimer = attackCooldown;
         public float RollDamage() => Mathf.Round(Random.Range(minDamage, maxDamage));
 
-        public void ApplyKnockback(Rigidbody targetRb, Vector3 targetPos, Vector3 attackerPos, out float staggerOut)
-        {
-            Vector3 knockDir = (targetPos - attackerPos).normalized;
-            knockDir.y = 0f;
-            targetRb.AddForce(knockDir * knockbackForce, ForceMode.Impulse);
-            staggerOut = staggerDuration;
-        }
+        public void ApplyStagger() => stunTimer = staggerDuration;
+
+        public void StartDefend(float duration) => defendTimer = duration;
     }
 }

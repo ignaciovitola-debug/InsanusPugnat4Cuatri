@@ -8,7 +8,7 @@ namespace GladiusAI
         [SerializeField] private GladiatorNPC playerPrefab;
         [SerializeField] private GladiatorNPC enemyPrefab;
 
-        private GladiatorNPC CreateFrom(GladiatorNPC prefab, GladiatorStats stats, Vector3 position, Quaternion rotation)
+        private GladiatorNPC Create(GladiatorNPC prefab, Vector3 position, Quaternion rotation)
         {
             if (prefab == null)
             {
@@ -16,28 +16,13 @@ namespace GladiusAI
                 return null;
             }
 
-            GladiatorNPC instance = Instantiate(prefab, position, rotation);
-            instance.ApplyStats(stats);
-            return instance;
+            return Instantiate(prefab, position, rotation);
         }
 
-        public GladiatorNPC CreatePlayer(GladiatorStats stats, Vector3 position, Quaternion rotation)
-            => CreateFrom(playerPrefab, stats, position, rotation);
+        public GladiatorNPC CreatePlayer(Vector3 position, Quaternion rotation)
+            => Create(playerPrefab, position, rotation);
 
-        public GladiatorNPC CreateEnemy(GladiatorStats stats, Vector3 position, Quaternion rotation)
-            => CreateFrom(enemyPrefab, stats, position, rotation);
-
-        public GladiatorNPC CreateFromPlayerPrefs(Vector3 position, Quaternion rotation)
-        {
-            var stats = new GladiatorStats(
-                name: "Jugador",
-                hp: PlayerPrefs.GetInt("PlayerHP", 100),
-                minDmg: 10f,
-                maxDmg: PlayerPrefs.GetInt("PlayerDamage", 20),
-                cooldown: 1.2f
-            );
-
-            return CreatePlayer(stats, position, rotation);
-        }
+        public GladiatorNPC CreateEnemy(Vector3 position, Quaternion rotation)
+            => Create(enemyPrefab, position, rotation);
     }
 }

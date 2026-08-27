@@ -567,8 +567,8 @@
     <Compile Include="Library\PackageCache\com.unity.shadergraph@ed1bdfe1a012\Editor\Data\Nodes\Input\Texture\Texture3DAssetNode.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@ed1bdfe1a012\Editor\Generation\Contexts\TargetPropertyGUIContext.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@ed1bdfe1a012\Editor\Data\Nodes\Math\Trigonometry\ArccosineNode.cs" />
-    <Compile Include="Library\PackageCache\com.unity.shadergraph@ed1bdfe1a012\Editor\Data\Attributes\BuiltinKeywordAttribute.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@ed1bdfe1a012\Editor\Drawing\Colors\CustomColorData.cs" />
+    <Compile Include="Library\PackageCache\com.unity.shadergraph@ed1bdfe1a012\Editor\Data\Attributes\BuiltinKeywordAttribute.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@ed1bdfe1a012\Editor\Drawing\EdgeConnectorListener.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@ed1bdfe1a012\Editor\Data\ContextData.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@ed1bdfe1a012\Editor\Data\Graphs\GraphDataReadOnly.cs" />
@@ -739,8 +739,8 @@
     <Compile Include="Library\PackageCache\com.unity.shadergraph@ed1bdfe1a012\Editor\Data\Graphs\GraphSetup.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@ed1bdfe1a012\Editor\Data\Nodes\Math\Vector\DotProductNode.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@ed1bdfe1a012\Editor\Data\Nodes\Math\Round\FloorNode.cs" />
-    <Compile Include="Library\PackageCache\com.unity.shadergraph@ed1bdfe1a012\Editor\Data\Nodes\Artistic\Blend\BlendNode.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@ed1bdfe1a012\Editor\Data\Interfaces\IMayRequireBitangent.cs" />
+    <Compile Include="Library\PackageCache\com.unity.shadergraph@ed1bdfe1a012\Editor\Data\Nodes\Artistic\Blend\BlendNode.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@ed1bdfe1a012\Editor\Generation\TargetResources\StructFields.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@ed1bdfe1a012\Editor\Data\Nodes\Input\Basic\Vector4Node.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@ed1bdfe1a012\Editor\Generation\Collections\FieldCollection.cs" />

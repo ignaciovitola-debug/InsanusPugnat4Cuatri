@@ -13,11 +13,6 @@ namespace GladiusAI
         [SerializeField] private Transform playerSpawnPoint;
         [SerializeField] private Transform enemySpawnPoint;
 
-        [Header("Stats del enemigo (por ahora fijos)")]
-        [SerializeField] private float enemyHP = 100f;
-        [SerializeField] private float enemyMinDamage = 8f;
-        [SerializeField] private float enemyMaxDamage = 15f;
-
         [Header("Cuenta regresiva")]
         [SerializeField] private float countdownSeconds = 3f;
         [SerializeField] private TMP_Text countdownLabel;
@@ -27,10 +22,8 @@ namespace GladiusAI
 
         private void Start()
         {
-            var player = factory.CreateFromPlayerPrefs(playerSpawnPoint.position, Quaternion.identity);
-
-            var enemyStats = new GladiatorStats("Enemy", enemyHP, enemyMinDamage, enemyMaxDamage);
-            var enemy = factory.CreateEnemy(enemyStats, enemySpawnPoint.position, Quaternion.identity);
+            var player = factory.CreatePlayer(playerSpawnPoint.position, Quaternion.identity);
+            var enemy = factory.CreateEnemy(enemySpawnPoint.position, Quaternion.identity);
 
             if (player != null && enemy != null)
             {
@@ -60,7 +53,7 @@ namespace GladiusAI
             }
 
             if (countdownLabel != null)
-                countdownLabel.text = "¡FIGHT!";
+                countdownLabel.text = "Â¡FIGHT!";
 
             player?.SetCombatEnabled(true);
             enemy?.SetCombatEnabled(true);
