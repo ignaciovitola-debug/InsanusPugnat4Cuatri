@@ -2913,7 +2913,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bffe3ed7c83f274fb46a135b4d598c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  intentWeight: 0.85
+  intentWeight: 0.7
 --- !u!4 &1957611420
 Transform:
   m_ObjectHideFlags: 0
@@ -2950,6 +2950,10 @@ PrefabInstance:
     - target: {fileID: 2117095477906233033, guid: d8a00ac8d0715fd4a8782c06454c604e, type: 3}
       propertyPath: m_Name
       value: Obstaculo (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2117095477906233033, guid: d8a00ac8d0715fd4a8782c06454c604e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6648612445967944692, guid: d8a00ac8d0715fd4a8782c06454c604e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3079,6 +3083,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Obstaculo
       objectReference: {fileID: 0}
+    - target: {fileID: 4865045695041647441, guid: 134cc5e9814542448a120e49e2504d49, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6476363255654966647, guid: 134cc5e9814542448a120e49e2504d49, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.53002954
@@ -3118,6 +3126,10 @@ PrefabInstance:
     - target: {fileID: 6476363255654966647, guid: 134cc5e9814542448a120e49e2504d49, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8276345133565915261, guid: 134cc5e9814542448a120e49e2504d49, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8655232128325540762, guid: 134cc5e9814542448a120e49e2504d49, type: 3}
       propertyPath: m_LocalScale.x

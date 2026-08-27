@@ -33,22 +33,27 @@ namespace GladiusAI
         [SerializeField] private float knockbackForce = 5f;
         [SerializeField] private float staggerDuration = 0.4f;
 
-        [Header("Debug visual")]
-        [SerializeField] private Renderer bodyRenderer;
-
         [Header("Consigna del jugador (solo en el gladiador del jugador)")]
         [SerializeField] private PlayerIntentController intentController;
+
+        [Header("Debug visual")]
+        [SerializeField] private Renderer bodyRenderer;
 
         public Blackboard Blackboard { get; private set; }
         public float CurrentHP { get; private set; }
         public bool IsDead => CurrentHP <= 0f;
-
-        private bool combatEnabled = true;
+        public bool HasSurrendered { get; private set; }
 
         private Node behaviorTreeRoot;
         private Rigidbody rb;
-        private float attackTimer;
+
+        private GladiatorMovement movement;
+        private GladiatorCombat combat;
+        private GladiatorIntentHandler intentHandler;
+
         private float stunTimer;
+        private float defendTimer;
+        private bool combatEnabled = true;
         private string lastAction;
 
         private void Awake()
@@ -60,14 +65,26 @@ namespace GladiusAI
                 bodyRenderer = GetComponent<Renderer>();
 
             CurrentHP = maxHP;
+
+            BuildComponents();
             Blackboard = new Blackboard();
             behaviorTreeRoot = BuildTree();
 
             Debug.Log($"[{gladiatorName}] Listo para combate. HP: {CurrentHP}/{maxHP}");
         }
 
-        // =================== Para la Factory  ==============
-        /// Configura este gladiador con los stats que le pase la Factory.
+        private void BuildComponents()
+        {
+            movement = new GladiatorMovement(transform, rb, moveSpeed,
+                avoidCastDistance, avoidRadius, obstacleLayer);
+
+            combat = new GladiatorCombat(minDamage, maxDamage, attackCooldown,
+                knockbackForce, staggerDuration);
+
+            intentHandler = new GladiatorIntentHandler(intentController);
+        }
+
+        // ============ Para la Factory / wiring externo ============
         public void ApplyStats(GladiatorStats stats)
         {
             gladiatorName = stats.gladiatorName;
@@ -76,47 +93,41 @@ namespace GladiusAI
             maxDamage = stats.maxDamage;
             attackCooldown = stats.attackCooldown;
 
-            CurrentHP = maxHP; // repisamos la vida actual con el nuevo máximo
+            CurrentHP = maxHP;
+            BuildComponents(); // recreamos combat con los stats nuevos
         }
-        public void SetTarget(Transform newTarget)
+
+        public void SetTarget(Transform newTarget) => target = newTarget;
+        public void SetCombatEnabled(bool enabled) => combatEnabled = enabled;
+
+        public void SetIntentController(PlayerIntentController controller)
         {
-            target = newTarget;
+            intentController = controller;
+            intentHandler = new GladiatorIntentHandler(controller);
         }
+        // ============================================================
 
         private void Update()
         {
             if (IsDead) return;
             if (!combatEnabled) return;
 
-            if (attackTimer > 0f)
-                attackTimer -= Time.deltaTime;
+            combat.Tick(Time.deltaTime);
+
+            if (defendTimer > 0f)
+                defendTimer -= Time.deltaTime;
 
             if (stunTimer > 0f)
             {
                 stunTimer -= Time.deltaTime;
                 SetColor(Color.white);
-                Stop();
+                movement.Stop();
                 return;
             }
 
             Blackboard.Set("target", target);
             Blackboard.Set("self", this);
             behaviorTreeRoot.Tick(Blackboard);
-        }
-
-        private Vector3 GetAvoidanceDir(Vector3 desiredDir)
-        {
-            if (Physics.SphereCast(transform.position, avoidRadius, desiredDir,
-                out RaycastHit hit, avoidCastDistance, obstacleLayer))
-            {
-                Vector3 avoidDir = Vector3.Cross(Vector3.up, hit.normal).normalized;
-
-                if (Vector3.Dot(avoidDir, transform.right) < 0f)
-                    avoidDir = -avoidDir;
-
-                return avoidDir;
-            }
-            return Vector3.zero;
         }
 
         private Node BuildTree()
@@ -128,6 +139,10 @@ namespace GladiusAI
                     onTrue: new ActionNode("Rendirse", ActionSurrender)),
                 new QuestionNode("¿Enemigo muerto?", IsTargetDead,
                     onTrue: new ActionNode("Victoria", ActionVictory)),
+                new ActionNode("Aplicar consigna Atacar", ApplyAttackIntent),
+                new ActionNode("Aplicar consigna Defender", ApplyDefendIntent),
+                new QuestionNode("¿En guardia?", IsDefending,
+                    onTrue: new ActionNode("Retroceder", ActionRetreat)),
                 new Sequence("Secuencia Ataque",
                     new QuestionNode("¿En rango de ataque?", IsTargetInAttackRange,
                         onTrue: new ActionNode("CheckOK", (bb) => NodeState.Success)),
@@ -138,21 +153,17 @@ namespace GladiusAI
                 new ActionNode("Patrullar", ActionPatrol)
             );
         }
-        public void SetCombatEnabled(bool enabled)
-        {
-            combatEnabled = enabled;
-        }
-        public void SetIntentController(PlayerIntentController controller)
-        {
-            intentController = controller;
-        }
 
+        // ==================== Condiciones ====================
         private bool AmIDead(Blackboard bb) => IsDead;
+
+        private bool WantsToSurrender(Blackboard bb)
+            => intentHandler.HasController && intentHandler.TryConsume(PlayerIntent.Surrender);
 
         private bool IsTargetDead(Blackboard bb)
         {
-            var targetNPC = GetTargetNPC(bb);
-            return targetNPC != null && targetNPC.IsDead;
+            var t = GetTargetNPC(bb);
+            return t != null && t.IsDead;
         }
 
         private bool IsTargetInAttackRange(Blackboard bb)
@@ -169,19 +180,22 @@ namespace GladiusAI
             return Vector3.Distance(transform.position, t.position) <= detectionRange;
         }
 
+        private bool IsDefending(Blackboard bb) => defendTimer > 0f;
+
+        // ==================== Acciones ====================
         private NodeState ActionAttack(Blackboard bb)
         {
             SetColor(Color.red);
-            Stop();
+            movement.Stop();
 
-            if (attackTimer > 0f) return NodeState.Running;
+            if (combat.IsOnCooldown) return NodeState.Running;
 
             var targetNPC = GetTargetNPC(bb);
             if (targetNPC == null) return NodeState.Failure;
 
-            float damage = Mathf.Round(Random.Range(minDamage, maxDamage));
+            float damage = combat.RollDamage();
             targetNPC.TakeDamage(damage, gladiatorName, transform.position);
-            attackTimer = attackCooldown;
+            combat.RegisterAttack();
 
             LogAction("Attack", $">>> GOLPE a {targetNPC.gladiatorName}! Daño: {damage} | HP enemigo: {targetNPC.CurrentHP}/{targetNPC.maxHP}");
             return NodeState.Success;
@@ -193,10 +207,8 @@ namespace GladiusAI
             var t = bb.Get<Transform>("target");
             if (t == null) return NodeState.Failure;
 
-            float dist = Vector3.Distance(transform.position, t.position);
-            LogAction("Chase", $"Persiguiendo enemigo... distancia: {dist:F1}m");
-
-            MoveToward(t.position);
+            LogAction("Chase", $"Persiguiendo enemigo... distancia: {Vector3.Distance(transform.position, t.position):F1}m");
+            movement.MoveToward(t.position);
             return NodeState.Running;
         }
 
@@ -206,21 +218,20 @@ namespace GladiusAI
             var t = bb.Get<Transform>("target");
             if (t == null)
             {
-                Stop();
+                movement.Stop();
                 LogAction("Patrol", "Patrullando, sin objetivo asignado...");
                 return NodeState.Running;
             }
 
-            float dist = Vector3.Distance(transform.position, t.position);
-            LogAction("Patrol", $"Buscando enemigo... distancia: {dist:F1}m");
-            MoveToward(t.position);
+            LogAction("Patrol", $"Buscando enemigo... distancia: {Vector3.Distance(transform.position, t.position):F1}m");
+            movement.MoveToward(t.position);
             return NodeState.Running;
         }
 
         private NodeState ActionDie(Blackboard bb)
         {
             SetColor(Color.gray);
-            Stop();
+            movement.Stop();
             LogAction("Dead", "MUERTO.");
             return NodeState.Success;
         }
@@ -228,23 +239,57 @@ namespace GladiusAI
         private NodeState ActionVictory(Blackboard bb)
         {
             SetColor(Color.yellow);
-            Stop();
+            movement.Stop();
             LogAction("Victory", "VICTORIA! Enemigo derrotado.");
             return NodeState.Success;
         }
-        private bool WantsToSurrender(Blackboard bb)
-    => intentController != null && intentController.RollFor(PlayerIntent.Surrender);
 
         private NodeState ActionSurrender(Blackboard bb)
         {
             SetColor(Color.blue);
-            Stop();
-            intentController.ClearIntent();
-            LogAction("Surrender", $"{gladiatorName} se rinde y abandona el combate (conserva su vida).");
-            // TODO: acá disparamos el evento de "combate terminado" para volver al menú sin matar al gladiador.
+            movement.Stop();
+            HasSurrendered = true;
+
+            var targetNPC = GetTargetNPC(bb);
+            LogAction("Surrender", $"{gladiatorName} se rinde! {targetNPC?.gladiatorName ?? "El rival"} gana el combate.");
+
+            SetCombatEnabled(false);
+            targetNPC?.SetCombatEnabled(false);
+
             return NodeState.Success;
         }
 
+        private NodeState ApplyAttackIntent(Blackboard bb)
+        {
+            if (intentHandler.TryConsume(PlayerIntent.Attack))
+            {
+                combat.ResetCooldown();
+                LogAction("Intent", $"{gladiatorName} redobla el ataque por orden del jugador!");
+            }
+            return NodeState.Failure;
+        }
+
+        private NodeState ApplyDefendIntent(Blackboard bb)
+        {
+            if (intentHandler.TryConsume(PlayerIntent.Defend))
+            {
+                defendTimer = 2f;
+                LogAction("Intent", $"{gladiatorName} se pone en guardia por orden del jugador!");
+            }
+            return NodeState.Failure;
+        }
+
+        private NodeState ActionRetreat(Blackboard bb)
+        {
+            SetColor(Color.cyan);
+            var t = bb.Get<Transform>("target");
+            if (t == null) { movement.Stop(); return NodeState.Running; }
+
+            movement.MoveAway(t.position);
+            return NodeState.Running;
+        }
+
+        // ==================== Daño ====================
         public void TakeDamage(float damage, string attackerName, Vector3 attackerPosition)
         {
             if (IsDead) return;
@@ -252,15 +297,14 @@ namespace GladiusAI
             CurrentHP = Mathf.Max(0f, CurrentHP - damage);
             Debug.Log($"[{gladiatorName}] Recibió {damage} daño de {attackerName}. HP: {CurrentHP}/{maxHP}");
 
-            Vector3 knockDir = (transform.position - attackerPosition).normalized;
-            knockDir.y = 0f;
-            rb.AddForce(knockDir * knockbackForce, ForceMode.Impulse);
-            stunTimer = staggerDuration;
+            combat.ApplyKnockback(rb, transform.position, attackerPosition, out float stagger);
+            stunTimer = stagger;
 
             if (IsDead)
                 Debug.Log($"[{gladiatorName}] HA CAÍDO EN COMBATE!");
         }
 
+        // ==================== Utilidades ====================
         private GladiatorNPC GetTargetNPC(Blackboard bb)
         {
             var t = bb.Get<Transform>("target");
@@ -273,26 +317,6 @@ namespace GladiusAI
             if (lastAction == action) return;
             lastAction = action;
             Debug.Log($"[{gladiatorName}] {message}");
-        }
-
-        private void MoveToward(Vector3 targetPos)
-        {
-            Vector3 dir = targetPos - transform.position;
-            dir.y = 0f;
-            dir = dir.sqrMagnitude > 0.0001f ? dir.normalized : Vector3.zero;
-
-            Vector3 avoid = GetAvoidanceDir(dir);
-            Vector3 finalDir = (dir + avoid * 1.5f).normalized;
-
-            Vector3 vel = finalDir * moveSpeed;
-            vel.y = rb.linearVelocity.y;
-            rb.linearVelocity = vel;
-        }
-
-        private void Stop()
-        {
-            Vector3 vel = rb.linearVelocity;
-            rb.linearVelocity = new Vector3(0f, vel.y, 0f);
         }
 
         private void SetColor(Color c)

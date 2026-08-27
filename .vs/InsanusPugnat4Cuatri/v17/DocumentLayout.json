@@ -3,52 +3,20 @@
   "WorkspaceRootPath": "D:\\GladiusAI\\InsanusPugnat4Cuatri\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{57D036F6-87AD-B32E-269D-42A1E3DBBEC3}|Assembly-CSharp.csproj|d:\\gladiusai\\insanuspugnat4cuatri\\assets\\scripts\\core\\combatstarter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{57D036F6-87AD-B32E-269D-42A1E3DBBEC3}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\core\\combatstarter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{57D036F6-87AD-B32E-269D-42A1E3DBBEC3}|Assembly-CSharp.csproj|d:\\gladiusai\\insanuspugnat4cuatri\\assets\\scripts\\agents\\gladiusai.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{57D036F6-87AD-B32E-269D-42A1E3DBBEC3}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\agents\\gladiusai.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{57D036F6-87AD-B32E-269D-42A1E3DBBEC3}|Assembly-CSharp.csproj|D:\\GladiusAI\\InsanusPugnat4Cuatri\\assets\\scripts\\agents\\combatsimulator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{57D036F6-87AD-B32E-269D-42A1E3DBBEC3}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\agents\\combatsimulator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{57D036F6-87AD-B32E-269D-42A1E3DBBEC3}|Assembly-CSharp.csproj|D:\\GladiusAI\\InsanusPugnat4Cuatri\\assets\\scripts\\core\\composites.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{57D036F6-87AD-B32E-269D-42A1E3DBBEC3}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\core\\composites.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{57D036F6-87AD-B32E-269D-42A1E3DBBEC3}|Assembly-CSharp.csproj|D:\\GladiusAI\\InsanusPugnat4Cuatri\\assets\\scripts\\core\\actionnode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{57D036F6-87AD-B32E-269D-42A1E3DBBEC3}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\core\\actionnode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{57D036F6-87AD-B32E-269D-42A1E3DBBEC3}|Assembly-CSharp.csproj|D:\\GladiusAI\\InsanusPugnat4Cuatri\\assets\\scripts\\core\\blackboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{57D036F6-87AD-B32E-269D-42A1E3DBBEC3}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\core\\blackboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{57D036F6-87AD-B32E-269D-42A1E3DBBEC3}|Assembly-CSharp.csproj|D:\\GladiusAI\\InsanusPugnat4Cuatri\\assets\\scripts\\core\\node.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{57D036F6-87AD-B32E-269D-42A1E3DBBEC3}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\core\\node.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{57D036F6-87AD-B32E-269D-42A1E3DBBEC3}|Assembly-CSharp.csproj|D:\\GladiusAI\\InsanusPugnat4Cuatri\\assets\\scripts\\core\\questionnode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{57D036F6-87AD-B32E-269D-42A1E3DBBEC3}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\core\\questionnode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{57D036F6-87AD-B32E-269D-42A1E3DBBEC3}|Assembly-CSharp.csproj|D:\\GladiusAI\\InsanusPugnat4Cuatri\\assets\\scripts\\menu\\gladiatorsetupui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{57D036F6-87AD-B32E-269D-42A1E3DBBEC3}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\menu\\gladiatorsetupui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{57D036F6-87AD-B32E-269D-42A1E3DBBEC3}|Assembly-CSharp.csproj|D:\\GladiusAI\\InsanusPugnat4Cuatri\\assets\\scripts\\agents\\gladiatornpc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{57D036F6-87AD-B32E-269D-42A1E3DBBEC3}|Assembly-CSharp.csproj|d:\\gladiusai\\insanuspugnat4cuatri\\assets\\scripts\\agents\\gladiatornpc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{57D036F6-87AD-B32E-269D-42A1E3DBBEC3}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\agents\\gladiatornpc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{57D036F6-87AD-B32E-269D-42A1E3DBBEC3}|Assembly-CSharp.csproj|D:\\GladiusAI\\InsanusPugnat4Cuatri\\assets\\scripts\\agents\\gladiatorstats.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{57D036F6-87AD-B32E-269D-42A1E3DBBEC3}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\agents\\gladiatorstats.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{57D036F6-87AD-B32E-269D-42A1E3DBBEC3}|Assembly-CSharp.csproj|d:\\gladiusai\\insanuspugnat4cuatri\\assets\\scripts\\agents\\gladiatorcombat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{57D036F6-87AD-B32E-269D-42A1E3DBBEC3}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\agents\\gladiatorcombat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{57D036F6-87AD-B32E-269D-42A1E3DBBEC3}|Assembly-CSharp.csproj|D:\\GladiusAI\\InsanusPugnat4Cuatri\\assets\\scripts\\agents\\gladiatorfactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{57D036F6-87AD-B32E-269D-42A1E3DBBEC3}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\agents\\gladiatorfactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{57D036F6-87AD-B32E-269D-42A1E3DBBEC3}|Assembly-CSharp.csproj|d:\\gladiusai\\insanuspugnat4cuatri\\assets\\scripts\\agents\\gladiatormovement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{57D036F6-87AD-B32E-269D-42A1E3DBBEC3}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\agents\\gladiatormovement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{57D036F6-87AD-B32E-269D-42A1E3DBBEC3}|Assembly-CSharp.csproj|d:\\gladiusai\\insanuspugnat4cuatri\\assets\\scripts\\agents\\gladiatorintenthandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{57D036F6-87AD-B32E-269D-42A1E3DBBEC3}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\agents\\gladiatorintenthandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -58,162 +26,58 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "GladiusAI.cs",
-              "DocumentMoniker": "D:\\GladiusAI\\InsanusPugnat4Cuatri\\Assets\\Scripts\\Agents\\GladiusAI.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Agents\\GladiusAI.cs",
-              "ToolTip": "D:\\GladiusAI\\InsanusPugnat4Cuatri\\Assets\\Scripts\\Agents\\GladiusAI.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Agents\\GladiusAI.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAARAAAAAAAAAA==",
+              "Title": "GladiatorCombat.cs",
+              "DocumentMoniker": "D:\\GladiusAI\\InsanusPugnat4Cuatri\\Assets\\Scripts\\Agents\\GladiatorCombat.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Agents\\GladiatorCombat.cs",
+              "ToolTip": "D:\\GladiusAI\\InsanusPugnat4Cuatri\\Assets\\Scripts\\Agents\\GladiatorCombat.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Agents\\GladiatorCombat.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAcAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-25T22:14:30.749Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "CombatStarter.cs",
-              "DocumentMoniker": "D:\\GladiusAI\\InsanusPugnat4Cuatri\\Assets\\Scripts\\Core\\CombatStarter.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Core\\CombatStarter.cs",
-              "ToolTip": "D:\\GladiusAI\\InsanusPugnat4Cuatri\\Assets\\Scripts\\Core\\CombatStarter.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Core\\CombatStarter.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEkAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-25T21:22:42.368Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "GladiatorFactory.cs",
-              "DocumentMoniker": "D:\\GladiusAI\\InsanusPugnat4Cuatri\\Assets\\Scripts\\Agents\\GladiatorFactory.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Agents\\GladiatorFactory.cs",
-              "ToolTip": "D:\\GladiusAI\\InsanusPugnat4Cuatri\\Assets\\Scripts\\Agents\\GladiatorFactory.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Agents\\GladiatorFactory.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-25T21:11:38.4Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "GladiatorStats.cs",
-              "DocumentMoniker": "D:\\GladiusAI\\InsanusPugnat4Cuatri\\Assets\\Scripts\\Agents\\GladiatorStats.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Agents\\GladiatorStats.cs",
-              "ToolTip": "D:\\GladiusAI\\InsanusPugnat4Cuatri\\Assets\\Scripts\\Agents\\GladiatorStats.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Agents\\GladiatorStats.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-25T21:04:18.645Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "GladiatorNPC.cs",
-              "DocumentMoniker": "D:\\GladiusAI\\InsanusPugnat4Cuatri\\Assets\\Scripts\\Agents\\GladiatorNPC.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Agents\\GladiatorNPC.cs",
-              "ToolTip": "D:\\GladiusAI\\InsanusPugnat4Cuatri\\Assets\\Scripts\\Agents\\GladiatorNPC.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Agents\\GladiatorNPC.cs",
-              "ViewState": "AgIAAPQAAAAAAAAAAAAQwC4BAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-22T16:56:37.759Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "GladiatorSetupUI.cs",
-              "DocumentMoniker": "D:\\GladiusAI\\InsanusPugnat4Cuatri\\Assets\\Scripts\\Menu\\GladiatorSetupUI.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Menu\\GladiatorSetupUI.cs",
-              "ToolTip": "D:\\GladiusAI\\InsanusPugnat4Cuatri\\Assets\\Scripts\\Menu\\GladiatorSetupUI.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Menu\\GladiatorSetupUI.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-22T19:15:05.132Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "QuestionNode.cs",
-              "DocumentMoniker": "D:\\GladiusAI\\InsanusPugnat4Cuatri\\Assets\\Scripts\\Core\\QuestionNode.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Core\\QuestionNode.cs",
-              "ToolTip": "D:\\GladiusAI\\InsanusPugnat4Cuatri\\Assets\\Scripts\\Core\\QuestionNode.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Core\\QuestionNode.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAABIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-22T18:50:16.739Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Node.cs",
-              "DocumentMoniker": "D:\\GladiusAI\\InsanusPugnat4Cuatri\\Assets\\Scripts\\Core\\Node.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Core\\Node.cs",
-              "ToolTip": "D:\\GladiusAI\\InsanusPugnat4Cuatri\\Assets\\Scripts\\Core\\Node.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Core\\Node.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-22T18:50:15.081Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Blackboard.cs",
-              "DocumentMoniker": "D:\\GladiusAI\\InsanusPugnat4Cuatri\\Assets\\Scripts\\Core\\Blackboard.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Core\\Blackboard.cs",
-              "ToolTip": "D:\\GladiusAI\\InsanusPugnat4Cuatri\\Assets\\Scripts\\Core\\Blackboard.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Core\\Blackboard.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAbAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-22T18:50:11.425Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "ActionNode.cs",
-              "DocumentMoniker": "D:\\GladiusAI\\InsanusPugnat4Cuatri\\Assets\\Scripts\\Core\\ActionNode.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Core\\ActionNode.cs",
-              "ToolTip": "D:\\GladiusAI\\InsanusPugnat4Cuatri\\Assets\\Scripts\\Core\\ActionNode.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Core\\ActionNode.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-22T18:50:09.161Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Composites.cs",
-              "DocumentMoniker": "D:\\GladiusAI\\InsanusPugnat4Cuatri\\Assets\\Scripts\\Core\\Composites.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Core\\Composites.cs",
-              "ToolTip": "D:\\GladiusAI\\InsanusPugnat4Cuatri\\Assets\\Scripts\\Core\\Composites.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Core\\Composites.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-22T18:48:08.188Z",
+              "WhenOpened": "2026-08-27T00:43:20.27Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "CombatSimulator.cs",
-              "DocumentMoniker": "D:\\GladiusAI\\InsanusPugnat4Cuatri\\Assets\\Scripts\\Agents\\CombatSimulator.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Agents\\CombatSimulator.cs",
-              "ToolTip": "D:\\GladiusAI\\InsanusPugnat4Cuatri\\Assets\\Scripts\\Agents\\CombatSimulator.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Agents\\CombatSimulator.cs",
-              "ViewState": "AgIAADcAAAAAAAAAAAAgwGUAAAA0AAAAAAAAAA==",
+              "Title": "GladiatorMovement.cs",
+              "DocumentMoniker": "D:\\GladiusAI\\InsanusPugnat4Cuatri\\Assets\\Scripts\\Agents\\GladiatorMovement.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Agents\\GladiatorMovement.cs",
+              "ToolTip": "D:\\GladiusAI\\InsanusPugnat4Cuatri\\Assets\\Scripts\\Agents\\GladiatorMovement.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Agents\\GladiatorMovement.cs",
+              "ViewState": "AgIAABoAAAAAAAAAAAAAAEoAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-22T16:54:54.215Z",
+              "WhenOpened": "2026-08-27T00:43:08.442Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "GladiatorIntentHandler.cs",
+              "DocumentMoniker": "D:\\GladiusAI\\InsanusPugnat4Cuatri\\Assets\\Scripts\\Agents\\GladiatorIntentHandler.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Agents\\GladiatorIntentHandler.cs",
+              "ToolTip": "D:\\GladiusAI\\InsanusPugnat4Cuatri\\Assets\\Scripts\\Agents\\GladiatorIntentHandler.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Agents\\GladiatorIntentHandler.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-27T00:43:05.909Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "GladiatorNPC.cs",
+              "DocumentMoniker": "D:\\GladiusAI\\InsanusPugnat4Cuatri\\Assets\\Scripts\\Agents\\GladiatorNPC.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Agents\\GladiatorNPC.cs",
+              "ToolTip": "D:\\GladiusAI\\InsanusPugnat4Cuatri\\Assets\\Scripts\\Agents\\GladiatorNPC.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Agents\\GladiatorNPC.cs",
+              "ViewState": "AgIAACgBAAAAAAAAAAAwwDQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-22T16:56:37.759Z",
               "EditorCaption": ""
             }
           ]
