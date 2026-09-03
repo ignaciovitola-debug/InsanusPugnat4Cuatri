@@ -31,7 +31,7 @@ namespace GladiusAI
 
         [Header("Comida (Arrive)")]
         [SerializeField] private float foodDetectionRange = 8f;
-        [SerializeField] private float eatDistance = 0.4f;
+        [SerializeField] private float eatDistance = 1.0f;
         [SerializeField] private float arriveSlowRadius = 1.5f;
 
         [Header("Cazador (Evade)")]
@@ -40,7 +40,7 @@ namespace GladiusAI
         [Header("Vagar (sin comida, sin cazador, sin grupo cerca)")]
         [SerializeField] private float wanderRetargetInterval = 2.5f;
 
-        public int GroupId => groupId;
+        public int GroupId { get => groupId; set => groupId = value; }
         public Vector3 Position => transform.position;
         public Vector3 Velocity { get; private set; }
 
@@ -76,6 +76,7 @@ namespace GladiusAI
         private void Update()
         {
             decisionTree.Tick(blackboard);
+            ApplyGlobalSeparation();
             ApplyContainment();
             Integrate();
         }
@@ -149,7 +150,15 @@ namespace GladiusAI
             Vector3 alignment = FlockingBehavior.Alignment(flockmates) * alignmentWeight;
             Vector3 cohesion = FlockingBehavior.Cohesion(Position, flockmates).normalized * maxSpeed * cohesionWeight;
 
-            ApplySteer(separation + alignment + cohesion);
+            Vector3 flockSteer = separation + alignment + cohesion;
+
+            if (flockSteer.sqrMagnitude < 0.01f && Velocity.sqrMagnitude < 0.25f)
+            {
+                Vector3 jitter = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f)).normalized;
+                flockSteer += jitter * maxSpeed * 0.5f;
+            }
+
+            ApplySteer(flockSteer);
             return NodeState.Running;
         }
 
@@ -203,6 +212,28 @@ namespace GladiusAI
             return nearest;
         }
 
+        private void ApplyGlobalSeparation()
+        {
+            Vector3 steer = Vector3.zero;
+            int count = 0;
+
+            for (int i = 0; i < All.Count; i++)
+            {
+                Boid other = All[i];
+                if (other == this) continue;
+                Vector3 offset = Position - other.Position;
+                float distance = offset.magnitude;
+                if (distance > 0.0001f && distance < separationRadius)
+                {
+                    steer += offset.normalized / distance;
+                    count++;
+                }
+            }
+
+            if (count > 0)
+                ApplySteer(steer / count * separationWeight);
+        }
+
         private void ApplyContainment()
         {
             if (ArenaBounds.Instance == null) return;
@@ -211,12 +242,17 @@ namespace GladiusAI
                 ApplySteer(containment);
         }
 
-        private void ApplySteer(Vector3 steer) =>
+        private void ApplySteer(Vector3 steer)
+        {
+            steer.y = 0f;
             Velocity = SteeringBehaviors.Integrate(Velocity, steer, maxForce, maxSpeed, Time.deltaTime);
+            Velocity = new Vector3(Velocity.x, 0f, Velocity.z);
+        }
 
         private void Integrate()
         {
             Vector3 newPosition = transform.position + Velocity * Time.deltaTime;
+            newPosition.y = transform.position.y;
             if (ArenaBounds.Instance != null)
                 newPosition = ArenaBounds.Instance.ClampPosition(newPosition);
 

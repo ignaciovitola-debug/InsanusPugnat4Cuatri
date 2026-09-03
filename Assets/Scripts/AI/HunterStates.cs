@@ -69,7 +69,7 @@ namespace GladiusAI
             }
 
             Boid target = hunter.CurrentTarget;
-            if (target == null || !hunter.CanSee(target))
+            if (target == null)
             {
                 hunter.FSM.ChangeState(hunter, hunter.PatrolState);
                 return;
@@ -78,6 +78,12 @@ namespace GladiusAI
             if (Vector3.Distance(hunter.Position, target.Position) <= hunter.CatchDistance)
             {
                 target.GetCaught();
+                hunter.FSM.ChangeState(hunter, hunter.PatrolState);
+                return;
+            }
+
+            if (!hunter.CanSee(target))
+            {
                 hunter.FSM.ChangeState(hunter, hunter.PatrolState);
                 return;
             }

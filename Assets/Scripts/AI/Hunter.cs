@@ -30,7 +30,7 @@ namespace GladiusAI
         [SerializeField] private float visionAngle = 100f;
 
         [Header("Caza")]
-        [SerializeField] private float catchDistance = 0.6f;
+        [SerializeField] private float catchDistance = 2f;
 
         [Header("Energía")]
         [SerializeField] private float maxEnergy = 100f;

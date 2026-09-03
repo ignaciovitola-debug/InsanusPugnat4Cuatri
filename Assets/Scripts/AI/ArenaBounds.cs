@@ -23,8 +23,10 @@ namespace GladiusAI
 
         public Vector3 RandomPointInside()
         {
-            float x = Random.Range(-size.x / 2f, size.x / 2f);
-            float z = Random.Range(-size.z / 2f, size.z / 2f);
+            float halfX = size.x / 2f - margin;
+            float halfZ = size.z / 2f - margin;
+            float x = Random.Range(-halfX, halfX);
+            float z = Random.Range(-halfZ, halfZ);
             return Center + new Vector3(x, 0f, z);
         }
 
