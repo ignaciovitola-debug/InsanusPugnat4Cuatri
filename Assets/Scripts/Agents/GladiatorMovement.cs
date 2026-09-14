@@ -25,13 +25,13 @@ namespace GladiusAI
             this.knockbackForce = knockbackForce;
         }
 
-        public void MoveToward(Vector3 targetPos)
+        public void MoveToward(Vector3 targetPos, Transform ignoreObstacle = null)
         {
             Vector3 dir = targetPos - self.position;
             dir.y = 0f;
             dir = dir.sqrMagnitude > 0.0001f ? dir.normalized : Vector3.zero;
 
-            Vector3 avoid = GetAvoidanceDir(dir);
+            Vector3 avoid = GetAvoidanceDir(dir, ignoreObstacle);
             Vector3 finalDir = (dir + avoid * 1.5f).normalized;
 
             SetVelocity(finalDir);
@@ -65,16 +65,23 @@ namespace GladiusAI
             rb.linearVelocity = vel;
         }
 
-        private Vector3 GetAvoidanceDir(Vector3 desiredDir)
+        private Vector3 GetAvoidanceDir(Vector3 desiredDir, Transform ignoreObstacle)
         {
-            if (Physics.SphereCast(self.position, avoidRadius, desiredDir,
-                out RaycastHit hit, avoidCastDistance, obstacleLayer))
+            RaycastHit[] hits = Physics.SphereCastAll(self.position, avoidRadius, desiredDir, avoidCastDistance, obstacleLayer);
+
+            foreach (var hit in hits)
             {
+                // No esquivo a mi propio objetivo — a ESE justamente quiero llegar.
+                if (ignoreObstacle != null &&
+                    (hit.collider.transform == ignoreObstacle || hit.collider.transform.IsChildOf(ignoreObstacle)))
+                    continue;
+
                 Vector3 avoidDir = Vector3.Cross(Vector3.up, hit.normal).normalized;
                 if (Vector3.Dot(avoidDir, self.right) < 0f)
                     avoidDir = -avoidDir;
                 return avoidDir;
             }
+
             return Vector3.zero;
         }
     }

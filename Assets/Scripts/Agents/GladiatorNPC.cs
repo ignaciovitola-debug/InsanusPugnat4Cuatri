@@ -96,6 +96,17 @@ namespace GladiusAI
             intentController = controller;
             intentHandler = new GladiatorIntentHandler(controller);
         }
+
+        /// <summary>Sobrescribe las stats de combate después de instanciar (usado por CombatStarter para oleadas con distinta dificultad).</summary>
+        public void ConfigureStats(float newMaxHP, float newMinDamage, float newMaxDamage, float newAttackCooldown)
+        {
+            maxHP = newMaxHP;
+            CurrentHP = newMaxHP;
+            minDamage = newMinDamage;
+            maxDamage = newMaxDamage;
+            attackCooldown = newAttackCooldown;
+            BuildComponents();
+        }
         // ============================================================
 
         private GladiatorNPC cachedTargetNPC;
@@ -109,8 +120,18 @@ namespace GladiusAI
 
         private void Update()
         {
-            if (IsDead) return;
             if (!combatEnabled) return;
+
+            if (IsDead)
+            {
+                // Seguimos tickeando el árbol para que "¿Estoy muerto?" -> ActionDie
+                // corra y limpie el cuerpo (Destroy). Sin esto, Update cortaba antes
+                // de llegar a esa rama y el cadáver quedaba trabado en la arena.
+                Blackboard.Set("target", target);
+                Blackboard.Set("self", this);
+                behaviorTreeRoot.Tick(Blackboard);
+                return;
+            }
 
             combat.Tick(Time.deltaTime);
 
@@ -196,7 +217,7 @@ namespace GladiusAI
             if (target == null) return NodeState.Failure;
 
             LogAction("Chase", $"Persiguiendo enemigo... distancia: {Vector3.Distance(transform.position, target.position):F1}m");
-            movement.MoveToward(target.position);
+            movement.MoveToward(target.position, target);
             return NodeState.Running;
         }
 
@@ -211,15 +232,24 @@ namespace GladiusAI
             }
 
             LogAction("Patrol", $"Buscando enemigo... distancia: {Vector3.Distance(transform.position, target.position):F1}m");
-            movement.MoveToward(target.position);
+            movement.MoveToward(target.position, target);
             return NodeState.Running;
         }
+
+        private bool corpseCleanupDone;
 
         private NodeState ActionDie(Blackboard bb)
         {
             SetColor(Color.gray);
             movement.Stop();
             LogAction("Dead", "MUERTO.");
+
+            if (!corpseCleanupDone)
+            {
+                corpseCleanupDone = true;
+                Destroy(gameObject); // sin delay: saca TODO (collider, sprite, script) de encima ya mismo
+            }
+
             return NodeState.Success;
         }
 

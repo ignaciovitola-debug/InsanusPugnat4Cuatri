@@ -64,6 +64,7 @@
     <Compile Include="Assets\Scripts\Editor\MenuSceneBuilder.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Editor\ReadmeEditor.cs" />
     <Compile Include="Assets\Scripts\Editor\BlockingNivel1Builder.cs" />
+    <Compile Include="Assets\Scripts\Editor\EnemyWavesSetup.cs" />
     <Compile Include="Assets\Scripts\Editor\SecondEnemySetup.cs" />
     <Compile Include="Assets\Scripts\Editor\SplashSceneBuilder.cs" />
     <Compile Include="Assets\Scripts\Editor\BlockingNivel2Builder.cs" />

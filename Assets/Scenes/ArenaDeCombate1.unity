@@ -2391,6 +2391,23 @@ MonoBehaviour:
   factory: {fileID: 1576674113}
   playerSpawnPoint: {fileID: 632620326}
   enemySpawnPoint: {fileID: 2035956524}
+  enemySpawnPoint2: {fileID: 0}
+  waves:
+  - label: 'Enemigo 1: El Novato'
+    maxHP: 60
+    minDamage: 5
+    maxDamage: 10
+    attackCooldown: 2
+  - label: 'Enemigo 2: El Agresivo'
+    maxHP: 100
+    minDamage: 10
+    maxDamage: 20
+    attackCooldown: 1.2
+  - label: 'Enemigo 3: El Veterano'
+    maxHP: 160
+    minDamage: 15
+    maxDamage: 25
+    attackCooldown: 1
   countdownSeconds: 3
   countdownLabel: {fileID: 1626692696}
   intentController: {fileID: 1315930525}
