@@ -74,5 +74,61 @@ namespace GladiusAI
             Quaternion targetRot = Quaternion.LookRotation(velocity.normalized, Vector3.up);
             t.rotation = Quaternion.RotateTowards(t.rotation, targetRot, turnSpeedDegPerSec * deltaTime);
         }
+
+        /// <summary>
+        /// Si hay un obstáculo (Columnas, paredes) adelante en la dirección de movimiento,
+        /// devuelve una fuerza de steering para esquivarlo tangencialmente a su superficie.
+        /// Vector3.zero si no se está moviendo o el camino está libre.
+        /// </summary>
+        public static Vector3 ObstacleAvoidance(Vector3 position, Vector3 velocity, float maxSpeed,
+            float castDistance, float probeRadius, LayerMask obstacleLayer)
+        {
+            if (velocity.sqrMagnitude < 0.0001f) return Vector3.zero;
+
+            Vector3 dir = velocity.normalized;
+            Vector3 origin = position + Vector3.up * 0.5f;
+
+            if (!Physics.SphereCast(origin, probeRadius, dir, out RaycastHit hit, castDistance, obstacleLayer))
+                return Vector3.zero;
+
+            Vector3 avoidDir = Vector3.Cross(Vector3.up, hit.normal).normalized;
+            if (Vector3.Dot(avoidDir, dir) < 0f) avoidDir = -avoidDir;
+
+            Vector3 desired = avoidDir * maxSpeed;
+            return desired - velocity;
+        }
+
+        /// <summary>
+        /// Aplica el desplazamiento del frame recortándolo si de lo contrario atravesaría
+        /// un obstáculo sólido. El steering de <see cref="ObstacleAvoidance"/> es sólo una
+        /// sugerencia de dirección (puede llegar tarde en ángulos cerrados o a alta velocidad);
+        /// esto es la garantía dura de que nunca se atraviesa una Columna/pared.
+        /// </summary>
+        public static Vector3 MoveAndCollide(Vector3 position, Vector3 delta, float bodyRadius, LayerMask obstacleLayer)
+        {
+            float distance = delta.magnitude;
+            if (distance < 0.0001f) return position;
+
+            Vector3 dir = delta / distance;
+            Vector3 origin = position + Vector3.up * 0.5f;
+
+            if (!Physics.SphereCast(origin, bodyRadius, dir, out RaycastHit hit, distance, obstacleLayer))
+                return position + delta;
+
+            float safeDistance = Mathf.Max(0f, hit.distance - 0.05f);
+            Vector3 afterBlock = position + dir * safeDistance;
+
+            // Desliza lo que quedó del movimiento a lo largo de la superficie del obstáculo
+            // (tangencial a su normal) en vez de perderlo — si no, queda pegado contra la columna.
+            Vector3 normal = hit.normal;
+            normal.y = 0f;
+            if (normal.sqrMagnitude > 0.0001f)
+            {
+                Vector3 remaining = delta - dir * safeDistance;
+                afterBlock += Vector3.ProjectOnPlane(remaining, normal.normalized);
+            }
+
+            return afterBlock;
+        }
     }
 }

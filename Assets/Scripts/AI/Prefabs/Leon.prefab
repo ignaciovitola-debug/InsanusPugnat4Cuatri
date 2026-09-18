@@ -9,9 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8490904828742893976}
-  - component: {fileID: 4666855161163841465}
-  - component: {fileID: 6365782300286469525}
-  - component: {fileID: 3904571430154326476}
   - component: {fileID: 2316848812109125572}
   m_Layer: 0
   m_Name: Leon
@@ -32,8 +29,43 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 8490904828742893981}
   m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8490904828742893980
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8490904828742893981}
+  - component: {fileID: 4666855161163841465}
+  - component: {fileID: 6365782300286469525}
+  - component: {fileID: 3904571430154326476}
+  m_Layer: 0
+  m_Name: Body
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8490904828742893981
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8490904828742893980}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8490904828742893976}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4666855161163841465
 MeshFilter:
@@ -41,7 +73,7 @@ MeshFilter:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 168637487188385428}
+  m_GameObject: {fileID: 8490904828742893980}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &6365782300286469525
 MeshRenderer:
@@ -49,7 +81,7 @@ MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 168637487188385428}
+  m_GameObject: {fileID: 8490904828742893980}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -94,7 +126,7 @@ BoxCollider:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 168637487188385428}
+  m_GameObject: {fileID: 8490904828742893980}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -119,16 +151,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f2d86eb48d7604647aea2f8826cdb2de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   bodyRenderer: {fileID: 6365782300286469525}
-  moveSpeed: 4.5
-  maxForce: 12
+  moveSpeed: 2.5
+  maxForce: 8
   turnSpeed: 360
+  avoidCastDistance: 3
+  avoidProbeRadius: 2
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 64
   waypoints: []
-  waypointArriveDistance: 0.5
+  waypointArriveDistance: 1
   visionRange: 7
   visionAngle: 100
+  catchDistance: 1.5
   maxEnergy: 100
   energyDrainPatrol: 4
   energyDrainHunting: 12

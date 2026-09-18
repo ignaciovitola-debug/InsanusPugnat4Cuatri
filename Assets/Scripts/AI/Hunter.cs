@@ -4,11 +4,9 @@ using UnityEngine;
 namespace GladiusAI
 {
     /// <summary>
-    /// El león: NPC cazador controlado por una FSM (Idle/Rest, Patrol, Hunting).
-    /// Puede haber varias instancias en la escena (varios leones) — cada una
-    /// con su propia FSM y su propia energía. Movimiento 100% cinemático
-    /// (Transform), sin Rigidbody, tal como exige la consigna.
-    /// </summary>
+    /// El león: NPC cazador controlado por una FSM 
+    /// Puede haber varias instancias en la escena 
+   
     public class Hunter : MonoBehaviour
     {
         public static readonly List<Hunter> All = new List<Hunter>();
@@ -20,6 +18,11 @@ namespace GladiusAI
         [SerializeField] private float moveSpeed = 4.5f;
         [SerializeField] private float maxForce = 12f;
         [SerializeField] private float turnSpeed = 360f;
+
+        [Header("Evasión de obstáculos (Columnas, paredes)")]
+        [SerializeField] private float avoidCastDistance = 2.5f;
+        [SerializeField] private float avoidProbeRadius = 0.6f;
+        [SerializeField] private LayerMask obstacleLayer;
 
         [Header("Patrulla (waypoints en orden, ida y vuelta)")]
         [SerializeField] private Transform[] waypoints;
@@ -58,6 +61,7 @@ namespace GladiusAI
         private float currentEnergy;
         private int waypointIndex;
         private int waypointDirection = 1;
+        private float bodyRadius = 0.5f;
 
         private void OnEnable() => All.Add(this);
         private void OnDisable() => All.Remove(this);
@@ -76,26 +80,35 @@ namespace GladiusAI
             if (bodyRenderer == null)
                 bodyRenderer = GetComponentInChildren<Renderer>();
 
+            Collider ownCollider = GetComponentInChildren<Collider>();
+            if (ownCollider != null)
+                bodyRadius = Mathf.Max(ownCollider.bounds.extents.x, ownCollider.bounds.extents.z);
+
+            if (ArenaBounds.Instance != null)
+                transform.position = ArenaBounds.Instance.ClampPosition(transform.position, bodyRadius);
+
             DirectionIndicator.Attach(transform, Color.black, heightOffset: 1f, scale: 1.4f);
         }
 
         private void Update()
         {
             FSM.Tick(this, Time.deltaTime);
+            ApplyObstacleAvoidance(Time.deltaTime);
 
-            Vector3 newPosition = transform.position + Velocity * Time.deltaTime;
+            Vector3 delta = Velocity * Time.deltaTime;
+            Vector3 newPosition = SteeringBehaviors.MoveAndCollide(transform.position, delta, bodyRadius, obstacleLayer);
             if (ArenaBounds.Instance != null)
-                newPosition = ArenaBounds.Instance.ClampPosition(newPosition);
+                newPosition = ArenaBounds.Instance.ClampPosition(newPosition, bodyRadius);
 
             transform.position = newPosition;
             SteeringBehaviors.FaceDirection(transform, Velocity, turnSpeed, Time.deltaTime);
         }
 
-        // ==================== Usado por los estados de la FSM ====================
+        //  Usado por los estados
         public void RegenerateEnergy(float deltaTime) =>
             currentEnergy = Mathf.Min(maxEnergy, currentEnergy + energyRegenPerSecond * deltaTime);
 
-        /// <summary>Descuenta energía; devuelve true si se agotó (el estado que llama debe pasar a Idle).</summary>
+        /// <summary>Descuenta energía; devuelve true si se agotó 
         public bool TryDrainEnergy(float amount)
         {
             currentEnergy = Mathf.Max(0f, currentEnergy - amount);
@@ -103,6 +116,15 @@ namespace GladiusAI
         }
 
         public void Stop() => Velocity = Vector3.zero;
+
+        private void ApplyObstacleAvoidance(float deltaTime)
+        {
+            Vector3 avoidance = SteeringBehaviors.ObstacleAvoidance(
+                Position, Velocity, moveSpeed, avoidCastDistance, avoidProbeRadius, obstacleLayer);
+
+            if (avoidance != Vector3.zero)
+                Velocity = SteeringBehaviors.Integrate(Velocity, avoidance, maxForce, moveSpeed, deltaTime);
+        }
 
         public void MoveAlongPatrol(float deltaTime)
         {

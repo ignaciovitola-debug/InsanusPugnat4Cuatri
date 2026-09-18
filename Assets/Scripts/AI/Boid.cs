@@ -3,12 +3,10 @@ using UnityEngine;
 
 namespace GladiusAI
 {
-    /// <summary>
-    /// Gladiador-Boid: agente autónomo que aplica Flocking dentro de su propio
+    
+    /// Gladiador-Boid: agente que aplica Flocking dentro de su propio
     /// grupo (separación/alineación/cohesión) y usa un Árbol de Decisión
-    /// (reutilizando el motor de Core/) para elegir, cada frame, entre buscar
-    /// comida, huir del cazador, aplicar Flocking o vagar solo.
-    /// </summary>
+   
     public class Boid : MonoBehaviour
     {
         public static readonly List<Boid> All = new List<Boid>();
@@ -21,6 +19,11 @@ namespace GladiusAI
         [SerializeField] private float maxSpeed = 3.5f;
         [SerializeField] private float maxForce = 9f;
         [SerializeField] private float turnSpeed = 480f;
+
+        [Header("Evasión de obstáculos (Columnas, paredes)")]
+        [SerializeField] private float avoidCastDistance = 1.5f;
+        [SerializeField] private float avoidProbeRadius = 0.4f;
+        [SerializeField] private LayerMask obstacleLayer;
 
         [Header("Flocking (dentro del mismo grupo)")]
         [SerializeField] private float separationRadius = 1.2f;
@@ -44,7 +47,7 @@ namespace GladiusAI
         public Vector3 Position => transform.position;
         public Vector3 Velocity { get; private set; }
 
-        /// <summary>El cazador lo atrapó: reaparece en otro punto de la arena (evita que el león lo atraviese sin más).</summary>
+        /// El cazador lo atrapó: reaparece en otro punto de la arena
         public void GetCaught()
         {
             transform.position = ArenaBounds.Instance != null ? ArenaBounds.Instance.RandomPointInside() : Position;
@@ -57,6 +60,7 @@ namespace GladiusAI
         private Hunter visibleHunter;
         private Vector3 wanderTarget;
         private float wanderTimer;
+        private float bodyRadius = 0.4f;
 
         private void OnEnable() => All.Add(this);
         private void OnDisable() => All.Remove(this);
@@ -70,6 +74,13 @@ namespace GladiusAI
             if (bodyRenderer == null)
                 bodyRenderer = GetComponentInChildren<Renderer>();
 
+            Collider ownCollider = GetComponentInChildren<Collider>();
+            if (ownCollider != null)
+                bodyRadius = Mathf.Max(ownCollider.bounds.extents.x, ownCollider.bounds.extents.z);
+
+            if (ArenaBounds.Instance != null)
+                transform.position = ArenaBounds.Instance.ClampPosition(transform.position, bodyRadius);
+
             DirectionIndicator.Attach(transform, Color.black);
         }
 
@@ -77,16 +88,17 @@ namespace GladiusAI
         {
             decisionTree.Tick(blackboard);
             ApplyGlobalSeparation();
+            ApplyObstacleAvoidance();
             ApplyContainment();
             Integrate();
         }
 
-        /// <summary>
+        
         /// ¿Hay comida cerca? -> Arrive
         /// si no, ¿hay cazador en rango? -> Evade
         /// si no, ¿hay boids del grupo cerca? -> Flocking
         /// si está solo -> vagar
-        /// </summary>
+        
         private Node BuildDecisionTree()
         {
             return new Selector("Decisión del Boid",
@@ -100,7 +112,7 @@ namespace GladiusAI
             );
         }
 
-        // ==================== Condiciones ====================
+        //Condiciones
         private bool HasNearbyFood(Blackboard bb)
         {
             if (FoodManager.Instance == null) return false;
@@ -116,7 +128,7 @@ namespace GladiusAI
 
         private bool HasFlockmatesNearby(Blackboard bb) => GetFlockmates().Count > 0;
 
-        // ==================== Acciones ====================
+        //Acciones
         private NodeState ActionSeekFood(Blackboard bb)
         {
             SetColor(Color.green);
@@ -180,7 +192,7 @@ namespace GladiusAI
             return NodeState.Running;
         }
 
-        // ==================== Auxiliares ====================
+        //Auxiliares
         private List<Boid> GetFlockmates()
         {
             var result = new List<Boid>();
@@ -234,6 +246,15 @@ namespace GladiusAI
                 ApplySteer(steer / count * separationWeight);
         }
 
+        private void ApplyObstacleAvoidance()
+        {
+            Vector3 avoidance = SteeringBehaviors.ObstacleAvoidance(
+                Position, Velocity, maxSpeed, avoidCastDistance, avoidProbeRadius, obstacleLayer);
+
+            if (avoidance != Vector3.zero)
+                ApplySteer(avoidance);
+        }
+
         private void ApplyContainment()
         {
             if (ArenaBounds.Instance == null) return;
@@ -251,10 +272,11 @@ namespace GladiusAI
 
         private void Integrate()
         {
-            Vector3 newPosition = transform.position + Velocity * Time.deltaTime;
+            Vector3 delta = Velocity * Time.deltaTime;
+            Vector3 newPosition = SteeringBehaviors.MoveAndCollide(transform.position, delta, bodyRadius, obstacleLayer);
             newPosition.y = transform.position.y;
             if (ArenaBounds.Instance != null)
-                newPosition = ArenaBounds.Instance.ClampPosition(newPosition);
+                newPosition = ArenaBounds.Instance.ClampPosition(newPosition, bodyRadius);
 
             transform.position = newPosition;
             SteeringBehaviors.FaceDirection(transform, Velocity, turnSpeed, Time.deltaTime);
