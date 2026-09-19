@@ -17,7 +17,9 @@ namespace GladiusAI
         }
 
         [Header("Factory")]
-        [SerializeField] private GladiatorFactory factory;
+        [SerializeField] private GladiatorFactory factory; // Unity no serializa interfaces en el Inspector; el resto del código usa IGladiatorFactory.
+
+        private IGladiatorFactory Factory => factory;
 
         [Header("Puntos de spawn")]
         [SerializeField] private Transform playerSpawnPoint;
@@ -39,6 +41,7 @@ namespace GladiusAI
         private GladiatorNPC enemy;
         private GladiatorNPC enemy2;
         private bool retargetedToSecondEnemy;
+        private GladiatorPool enemyPool;
 
         private void Start()
         {
@@ -50,8 +53,8 @@ namespace GladiusAI
 
         private void StartSingleEncounter()
         {
-            player = factory.CreatePlayer(playerSpawnPoint.position, Quaternion.identity);
-            enemy = factory.CreateEnemy(enemySpawnPoint.position, Quaternion.identity);
+            player = Factory.CreatePlayer(playerSpawnPoint.position, Quaternion.identity);
+            enemy = Factory.CreateEnemy(enemySpawnPoint.position, Quaternion.identity);
 
             if (player != null && enemy != null)
             {
@@ -61,7 +64,7 @@ namespace GladiusAI
 
             if (enemySpawnPoint2 != null)
             {
-                enemy2 = factory.CreateEnemy(enemySpawnPoint2.position, Quaternion.identity);
+                enemy2 = Factory.CreateEnemy(enemySpawnPoint2.position, Quaternion.identity);
                 if (player != null && enemy2 != null)
                     enemy2.SetTarget(player.transform);
                 enemy2?.SetCombatEnabled(false);
@@ -105,6 +108,7 @@ namespace GladiusAI
             player?.SetCombatEnabled(true);
             enemy?.SetCombatEnabled(true);
             enemy2?.SetCombatEnabled(true);
+            EventManager.Raise(new CombatStartedEvent());
 
             yield return new WaitForSeconds(1f);
 
@@ -115,7 +119,9 @@ namespace GladiusAI
         // ==================== Oleadas secuenciales (Nivel 1) ====================
         private IEnumerator RunWaveSequence()
         {
-            player = factory.CreatePlayer(playerSpawnPoint.position, Quaternion.identity);
+            enemyPool = new GladiatorPool(Factory);
+
+            player = Factory.CreatePlayer(playerSpawnPoint.position, Quaternion.identity);
             player?.SetIntentController(intentController);
             player?.SetCombatEnabled(false);
 
@@ -125,7 +131,7 @@ namespace GladiusAI
             {
                 EnemyWave wave = waves[i];
 
-                enemy = factory.CreateEnemy(enemySpawnPoint.position, Quaternion.identity);
+                enemy = enemyPool.Get(enemySpawnPoint.position, Quaternion.identity);
                 enemy?.ConfigureStats(wave.maxHP, wave.minDamage, wave.maxDamage, wave.attackCooldown);
 
                 if (player != null && enemy != null)
@@ -150,25 +156,20 @@ namespace GladiusAI
 
                 if (player == null || player.IsDead)
                 {
-                    ShowResultBanner("DERROTA — Tu gladiador cayó en combate");
+                    EventManager.Raise(new CombatEndedEvent(CombatResult.Defeat));
                     yield break;
                 }
 
                 if (player.HasSurrendered)
                 {
-                    ShowResultBanner("Te rendiste");
+                    EventManager.Raise(new CombatEndedEvent(CombatResult.Surrender));
                     yield break;
                 }
+
+                enemyPool.Release(enemy);
             }
 
-            ShowResultBanner("¡VICTORIA!");
-        }
-
-        private void ShowResultBanner(string message)
-        {
-            if (countdownLabel == null) return;
-            countdownLabel.gameObject.SetActive(true);
-            countdownLabel.text = message;
+            EventManager.Raise(new CombatEndedEvent(CombatResult.Victory));
         }
 
         private IEnumerator InitialCountdown()

@@ -53,6 +53,7 @@ namespace GladiusAI
 
         private bool combatEnabled = true;
         private string lastAction;
+        private bool destroyOnDeath = true;
 
         private void Awake()
         {
@@ -90,6 +91,18 @@ namespace GladiusAI
         }
 
         public void SetCombatEnabled(bool enabled) => combatEnabled = enabled;
+
+        /// <summary>Usado por GladiatorPool: si es false, ActionDie no destruye el GameObject al morir (se reutiliza).</summary>
+        public void SetDestroyOnDeath(bool value) => destroyOnDeath = value;
+
+        /// <summary>Usado por GladiatorPool al reciclar una instancia para una nueva oleada.</summary>
+        public void ResetForReuse()
+        {
+            corpseCleanupDone = false;
+            HasSurrendered = false;
+            lastAction = null;
+            SetColor(Color.white);
+        }
 
         public void SetIntentController(PlayerIntentController controller)
         {
@@ -247,7 +260,10 @@ namespace GladiusAI
             if (!corpseCleanupDone)
             {
                 corpseCleanupDone = true;
-                Destroy(gameObject); // sin delay: saca TODO (collider, sprite, script) de encima ya mismo
+                EventManager.Raise(new GladiatorDiedEvent(gladiatorName));
+
+                if (destroyOnDeath)
+                    Destroy(gameObject); // sin delay: saca TODO (collider, sprite, script) de encima ya mismo
             }
 
             return NodeState.Success;
@@ -302,6 +318,14 @@ namespace GladiusAI
 
             movement.MoveAway(target.position);
             return NodeState.Running;
+        }
+
+        /// <summary>Empuje sin daño (usado por amenazas ambientales, ej. ArenaBeast) — no resta HP, solo interrumpe.</summary>
+        public void Startle(Vector3 sourcePosition)
+        {
+            if (IsDead) return;
+            movement.ApplyKnockback(sourcePosition);
+            combat.ApplyStagger();
         }
 
         // ==================== Daño ====================

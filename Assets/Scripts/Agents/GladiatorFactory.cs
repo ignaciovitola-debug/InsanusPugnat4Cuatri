@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace GladiusAI
 {
-    public class GladiatorFactory : MonoBehaviour
+    public class GladiatorFactory : MonoBehaviour, IGladiatorFactory
     {
         [Header("Prefabs")]
         [SerializeField] private GladiatorNPC playerPrefab;
