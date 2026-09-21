@@ -1,6 +1,6 @@
 namespace GladiusAI
 {
-    /// <summary>Máquina de Estados Finita mínima: guarda el estado actual y gestiona Enter/Exit al cambiar.</summary>
+    /// >Máquina de Estados Finita mínima: guarda el estado actual y gestiona Enter/Exit al cambiar.
     public class HunterFSM
     {
         public IHunterState CurrentState { get; private set; }

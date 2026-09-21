@@ -2,10 +2,10 @@ using UnityEngine;
 
 namespace GladiusAI
 {
-    /// <summary>
+    
     /// Descanso: el cazador no se mueve y recupera energía. Cuando termina el
     /// tiempo de descanso Y la energía volvió a estar completa, pasa a Patrol.
-    /// </summary>
+   
     public class HunterIdleState : IHunterState
     {
         private float restTimer;
@@ -29,7 +29,7 @@ namespace GladiusAI
         public void Exit(Hunter hunter) { }
     }
 
-    /// <summary>Recorre los waypoints (ida y vuelta). Si detecta un boid, pasa a Hunting.</summary>
+    /// Recorre los waypoints (ida y vuelta). Si detecta un boid, pasa a Hunting.
     public class HunterPatrolState : IHunterState
     {
         public void Enter(Hunter hunter) => hunter.SetColor(Color.green);
@@ -55,7 +55,7 @@ namespace GladiusAI
         public void Exit(Hunter hunter) { }
     }
 
-    /// <summary>Persigue (Pursuit) al boid detectado prediciendo su posición futura.</summary>
+    ///Persigue (Pursuit) al boid detectado prediciendo su posición futura.
     public class HunterHuntingState : IHunterState
     {
         public void Enter(Hunter hunter) => hunter.SetColor(Color.red);

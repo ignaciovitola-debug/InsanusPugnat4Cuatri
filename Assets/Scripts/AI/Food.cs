@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace GladiusAI
 {
-    /// <summary>Un punto de comida individual. Los boids la consumen acercándose con Arrive.</summary>
+    ///Un punto de comida individual. Los boids la consumen acercándose con Arrive.
     public class Food : MonoBehaviour
     {
         public bool IsConsumed { get; private set; }

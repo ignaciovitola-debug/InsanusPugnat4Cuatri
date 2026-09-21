@@ -2,13 +2,8 @@ using UnityEngine;
 
 namespace GladiusAI
 {
-    /// <summary>
-    /// Arma una flechita simple con primitivas de Unity (sin necesitar ningún
-    /// asset) y la deja como hija del agente. Como el agente ya rota hacia su
-    /// velocidad (ver SteeringBehaviors.FaceDirection), la flecha "viaja" con
-    /// esa rotación sin necesitar código extra por frame. Pedido del profesor
-    /// para poder ver la dirección/trayectoria de cada NPC en el build.
-    /// </summary>
+    /// Flecha simple con primitivas de Unity
+   
     public static class DirectionIndicator
     {
         public static void Attach(Transform parent, Color color, float heightOffset = 0.6f, float scale = 1f)

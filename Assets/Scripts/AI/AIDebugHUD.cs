@@ -2,12 +2,10 @@ using UnityEngine;
 
 namespace GladiusAI
 {
-    /// <summary>
-    /// Panel simple en pantalla (OnGUI, sin Canvas/UI) que muestra el estado
-    /// de cada cazador y la cantidad de comida activa. Sirve para que la
-    /// consigna se pueda ver funcionando en el build (los Gizmos no se ven
-    /// fuera del Editor). Poner este script en cualquier GameObject de la escena.
-    /// </summary>
+   
+    /// Panel en pantalla que muestra el estado
+    /// de cada cazador y la cantidad de comida activa. 
+  
     public class AIDebugHUD : MonoBehaviour
     {
         [SerializeField] private int fontSize = 16;

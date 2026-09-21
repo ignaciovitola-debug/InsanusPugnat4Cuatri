@@ -3,11 +3,7 @@ using UnityEngine;
 
 namespace GladiusAI
 {
-    /// <summary>
-    /// Registro de la comida activa en la escena. La generación es MANUAL:
-    /// no hay spawn automático por tiempo — enganchá <see cref="SpawnFood"/>
-    /// al OnClick() de un Button de UI ("Dar de comer"), tal como pidió el profesor.
-    /// </summary>
+    /// Registro de la comida activa en la escena. 
     public class FoodManager : MonoBehaviour
     {
         public static FoodManager Instance { get; private set; }
@@ -21,7 +17,7 @@ namespace GladiusAI
 
         private void Awake() => Instance = this;
 
-        /// <summary>Enganchar directo al OnClick() del botón "Dar de comer" en el Inspector.</summary>
+        /// Enganchar directo al OnClick() del botón "Dar de comer" en el Inspector.
         public void SpawnFood()
         {
             if (foodPrefab == null || ArenaBounds.Instance == null) return;
