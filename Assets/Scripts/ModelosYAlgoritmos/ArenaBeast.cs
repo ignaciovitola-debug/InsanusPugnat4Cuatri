@@ -2,14 +2,11 @@ using UnityEngine;
 
 namespace GladiusAI
 {
-    /// <summary>
+    
     /// Amenaza ambiental de la arena: patrulla, y si un gladiador se acerca
-    /// demasiado lo caza y lo aparta de un golpe (sin quitarle vida) antes de
-    /// volver a patrullar. Es el segundo elemento con comportamiento complejo
-    /// pedido por Aplicación de Motores 2 — sistema propio y separado del
-    /// Hunter/Boid de Inteligencia Artificial 1 (no lo toca ni depende de él),
-    /// aunque reutiliza la misma librería de steering (SteeringBehaviors).
-    /// </summary>
+    /// demasiado lo caza y lo aleja antes de
+    /// volver a patrullar.
+   
     [RequireComponent(typeof(Collider))]
     public class ArenaBeast : MonoBehaviour
     {

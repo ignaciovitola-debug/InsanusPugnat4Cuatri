@@ -3,17 +3,10 @@ using TMPro;
 
 namespace GladiusAI
 {
-    /// <summary>
-    /// Muestra el resultado del combate (Victoria/Derrota/Rendición) y registra
-    /// cada muerte — sin que CombatStarter tenga que conocer nada de UI. Se
-    /// entera de todo vía EventManager (Observer / Event Manager, Modelos y
-    /// Algoritmos Clase 3): quien publica el evento no sabe que esto existe.
-    /// </summary>
     public class CombatResultDisplay : MonoBehaviour
     {
         [SerializeField] private TMP_Text resultLabel;
 
-        /// <summary>Usado por la herramienta de Editor al conectar este componente — asigna la referencia una sola vez.</summary>
         public void Configure(TMP_Text label) => resultLabel = label;
 
         private void OnEnable()

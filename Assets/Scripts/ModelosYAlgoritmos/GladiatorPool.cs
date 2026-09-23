@@ -3,12 +3,6 @@ using UnityEngine;
 
 namespace GladiusAI
 {
-    /// <summary>
-    /// Object Pool de enemigos: reutiliza instancias de GladiatorNPC en vez de
-    /// instanciar y destruir en cada oleada. Usa GladiatorFactory para crear
-    /// una instancia nueva solo cuando el pool se queda sin stock — la misma
-    /// integración Pool+Factory que muestra Modelos y Algoritmos (Clase 2).
-    /// </summary>
     public class GladiatorPool
     {
         private readonly IGladiatorFactory factory;

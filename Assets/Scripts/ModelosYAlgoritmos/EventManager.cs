@@ -3,14 +3,6 @@ using System.Collections.Generic;
 
 namespace GladiusAI
 {
-    /// <summary>
-    /// Event Manager estático y desacoplado: cualquier sistema puede publicar
-    /// (Raise) o suscribirse (Subscribe) a un tipo de evento sin conocerse
-    /// entre sí — ni el que publica sabe quién escucha, ni el que escucha
-    /// sabe quién publicó. Mismo patrón visto en Modelos y Algoritmos
-    /// (Clase 3, "Struct EventManager"): eventos como struct, diccionario
-    /// de delegados por tipo.
-    /// </summary>
     public static class EventManager
     {
         private static readonly Dictionary<Type, Delegate> listeners = new Dictionary<Type, Delegate>();

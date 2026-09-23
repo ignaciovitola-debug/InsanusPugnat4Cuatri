@@ -92,10 +92,8 @@ namespace GladiusAI
 
         public void SetCombatEnabled(bool enabled) => combatEnabled = enabled;
 
-        /// <summary>Usado por GladiatorPool: si es false, ActionDie no destruye el GameObject al morir (se reutiliza).</summary>
         public void SetDestroyOnDeath(bool value) => destroyOnDeath = value;
 
-        /// <summary>Usado por GladiatorPool al reciclar una instancia para una nueva oleada.</summary>
         public void ResetForReuse()
         {
             corpseCleanupDone = false;
@@ -110,7 +108,6 @@ namespace GladiusAI
             intentHandler = new GladiatorIntentHandler(controller);
         }
 
-        /// <summary>Sobrescribe las stats de combate después de instanciar (usado por CombatStarter para oleadas con distinta dificultad).</summary>
         public void ConfigureStats(float newMaxHP, float newMinDamage, float newMaxDamage, float newAttackCooldown)
         {
             maxHP = newMaxHP;
@@ -320,7 +317,6 @@ namespace GladiusAI
             return NodeState.Running;
         }
 
-        /// <summary>Empuje sin daño (usado por amenazas ambientales, ej. ArenaBeast) — no resta HP, solo interrumpe.</summary>
         public void Startle(Vector3 sourcePosition)
         {
             if (IsDead) return;

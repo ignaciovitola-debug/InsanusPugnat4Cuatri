@@ -17,14 +17,14 @@ namespace GladiusAI
         }
 
         [Header("Factory")]
-        [SerializeField] private GladiatorFactory factory; // Unity no serializa interfaces en el Inspector; el resto del código usa IGladiatorFactory.
+        [SerializeField] private GladiatorFactory factory; 
 
         private IGladiatorFactory Factory => factory;
 
         [Header("Puntos de spawn")]
         [SerializeField] private Transform playerSpawnPoint;
         [SerializeField] private Transform enemySpawnPoint;
-        [SerializeField] private Transform enemySpawnPoint2; // opcional: si se asigna, spawnea un segundo enemigo simultáneo (Nivel 2)
+        [SerializeField] private Transform enemySpawnPoint2; 
 
         [Header("Oleadas secuenciales (opcional, Nivel 1)")]
         [Tooltip("Si tiene elementos, el nivel spawnea estos enemigos uno tras otro (con estas stats) en vez del enemigo único de arriba.")]
@@ -41,6 +41,7 @@ namespace GladiusAI
         private GladiatorNPC enemy;
         private GladiatorNPC enemy2;
         private bool retargetedToSecondEnemy;
+        private bool singleEncounterEnded;
         private GladiatorPool enemyPool;
 
         private void Start()
@@ -75,7 +76,7 @@ namespace GladiusAI
             player?.SetCombatEnabled(false);
             enemy?.SetCombatEnabled(false);
 
-            StartCoroutine(CountdownAndBegin());
+            StartCoroutine(RunCountdown(activateCombatAfter: true));
         }
 
         private void Update()
@@ -87,9 +88,39 @@ namespace GladiusAI
                 player.SetTarget(enemy2.transform);
                 retargetedToSecondEnemy = true;
             }
+
+            CheckSingleEncounterOutcome();
         }
 
-        private IEnumerator CountdownAndBegin()
+        private void CheckSingleEncounterOutcome()
+        {
+            if (singleEncounterEnded || player == null) return;
+            if (waves != null && waves.Length > 0) return; // ese camino lo maneja RunWaveSequence
+
+            if (player.IsDead)
+            {
+                singleEncounterEnded = true;
+                EventManager.Raise(new CombatEndedEvent(CombatResult.Defeat));
+                return;
+            }
+
+            if (player.HasSurrendered)
+            {
+                singleEncounterEnded = true;
+                EventManager.Raise(new CombatEndedEvent(CombatResult.Surrender));
+                return;
+            }
+
+            bool enemyDefeated = enemy == null || enemy.IsDead;
+            bool enemy2Defeated = enemy2 == null || enemy2.IsDead;
+            if (enemyDefeated && enemy2Defeated)
+            {
+                singleEncounterEnded = true;
+                EventManager.Raise(new CombatEndedEvent(CombatResult.Victory));
+            }
+        }
+
+        private IEnumerator RunCountdown(bool activateCombatAfter)
         {
             float remaining = countdownSeconds;
 
@@ -105,10 +136,13 @@ namespace GladiusAI
             if (countdownLabel != null)
                 countdownLabel.text = "¡FIGHT!";
 
-            player?.SetCombatEnabled(true);
-            enemy?.SetCombatEnabled(true);
-            enemy2?.SetCombatEnabled(true);
-            EventManager.Raise(new CombatStartedEvent());
+            if (activateCombatAfter)
+            {
+                player?.SetCombatEnabled(true);
+                enemy?.SetCombatEnabled(true);
+                enemy2?.SetCombatEnabled(true);
+                EventManager.Raise(new CombatStartedEvent());
+            }
 
             yield return new WaitForSeconds(1f);
 
@@ -116,7 +150,7 @@ namespace GladiusAI
                 countdownLabel.gameObject.SetActive(false);
         }
 
-        // ==================== Oleadas secuenciales (Nivel 1) ====================
+       
         private IEnumerator RunWaveSequence()
         {
             enemyPool = new GladiatorPool(Factory);
@@ -125,7 +159,7 @@ namespace GladiusAI
             player?.SetIntentController(intentController);
             player?.SetCombatEnabled(false);
 
-            yield return StartCoroutine(InitialCountdown());
+            yield return StartCoroutine(RunCountdown(activateCombatAfter: false));
 
             for (int i = 0; i < waves.Length; i++)
             {
@@ -170,28 +204,6 @@ namespace GladiusAI
             }
 
             EventManager.Raise(new CombatEndedEvent(CombatResult.Victory));
-        }
-
-        private IEnumerator InitialCountdown()
-        {
-            float remaining = countdownSeconds;
-
-            while (remaining > 0f)
-            {
-                if (countdownLabel != null)
-                    countdownLabel.text = Mathf.CeilToInt(remaining).ToString();
-
-                yield return null;
-                remaining -= Time.deltaTime;
-            }
-
-            if (countdownLabel != null)
-                countdownLabel.text = "¡FIGHT!";
-
-            yield return new WaitForSeconds(1f);
-
-            if (countdownLabel != null)
-                countdownLabel.gameObject.SetActive(false);
         }
     }
 }
