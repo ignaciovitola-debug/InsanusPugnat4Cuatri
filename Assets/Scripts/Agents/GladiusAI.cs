@@ -5,7 +5,7 @@ namespace GladiusAI
     public enum PlayerIntent { None, Attack, Defend, Surrender }
 
     /// <summary>
-    /// Traduce los botones de la UI en una "consigna" que el árbol del
+    /// Traduce los botones de la UI en una "consigna" que el Ã¡rbol del
     /// gladiador del jugador puede llegar a seguir, con cierta probabilidad.
     /// No es control directo, es una sugerencia.
     /// </summary>
@@ -20,7 +20,7 @@ namespace GladiusAI
         public void RequestDefend() => CurrentIntent = PlayerIntent.Defend;
         public void RequestSurrender() => CurrentIntent = PlayerIntent.Surrender;
 
-        /// <summary>Tira el dado según el peso configurado.</summary>
+        /// <summary>Tira el dado segÃºn el peso configurado.</summary>
         public bool RollFor(PlayerIntent intent)
             => CurrentIntent == intent && Random.value <= intentWeight;
 

@@ -83,7 +83,7 @@ namespace GladiusAI
             intentHandler = new GladiatorIntentHandler(intentController);
         }
 
-        // ============ Wiring externo ============
+       
         public void SetTarget(Transform newTarget)
         {
             target = newTarget;
@@ -117,7 +117,7 @@ namespace GladiusAI
             attackCooldown = newAttackCooldown;
             BuildComponents();
         }
-        // ============================================================
+        
 
         private GladiatorNPC cachedTargetNPC;
 
@@ -134,9 +134,8 @@ namespace GladiusAI
 
             if (IsDead)
             {
-                // Seguimos tickeando el árbol para que "¿Estoy muerto?" -> ActionDie
-                // corra y limpie el cuerpo (Destroy). Sin esto, Update cortaba antes
-                // de llegar a esa rama y el cadáver quedaba trabado en la arena.
+                // "¿Estoy muerto?" -> ActionDie
+                // limpie el cuerpo.
                 Blackboard.Set("target", target);
                 Blackboard.Set("self", this);
                 behaviorTreeRoot.Tick(Blackboard);
@@ -181,7 +180,7 @@ namespace GladiusAI
             );
         }
 
-        // ==================== Condiciones ====================
+        //Condiciones
         private bool AmIDead(Blackboard bb) => IsDead;
 
         private bool WantsToSurrender(Blackboard bb)
@@ -204,7 +203,7 @@ namespace GladiusAI
 
         private bool IsDefending(Blackboard bb) => combat.IsDefending;
 
-        // ==================== Acciones ====================
+        // Acciones
         private NodeState ActionAttack(Blackboard bb)
         {
             SetColor(Color.red);
@@ -260,7 +259,7 @@ namespace GladiusAI
                 EventManager.Raise(new GladiatorDiedEvent(gladiatorName));
 
                 if (destroyOnDeath)
-                    Destroy(gameObject); // sin delay: saca TODO (collider, sprite, script) de encima ya mismo
+                    Destroy(gameObject); // sin delay: saca TODO (collider, sprite, script) de encima 
             }
 
             return NodeState.Success;
@@ -324,7 +323,7 @@ namespace GladiusAI
             combat.ApplyStagger();
         }
 
-        // ==================== Daño ====================
+        //  Daño
         public void TakeDamage(float damage, string attackerName, Vector3 attackerPosition)
         {
             if (IsDead) return;
@@ -339,7 +338,7 @@ namespace GladiusAI
                 Debug.Log($"[{gladiatorName}] HA CAÍDO EN COMBATE!");
         }
 
-        // ==================== Utilidades ====================
+        //  Utilidades 
         private void LogAction(string action, string message)
         {
             if (lastAction == action) return;

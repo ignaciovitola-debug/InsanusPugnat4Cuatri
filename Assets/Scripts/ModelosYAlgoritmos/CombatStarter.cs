@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 namespace GladiusAI
 {
@@ -37,6 +38,11 @@ namespace GladiusAI
         [Header("Consignas del jugador")]
         [SerializeField] private PlayerIntentController intentController;
 
+        [Header("Despues del combate")]
+        [Tooltip("Escena a la que se pasa unos segundos despues de terminar el combate (Arena 1 -> Ludus, Arena 2 -> Menu).")]
+        [SerializeField] private string nextSceneAfterCombat = "Menu";
+        [SerializeField] private float delayBeforeNextScene = 2.5f;
+
         private GladiatorNPC player;
         private GladiatorNPC enemy;
         private GladiatorNPC enemy2;
@@ -55,6 +61,12 @@ namespace GladiusAI
         private void StartSingleEncounter()
         {
             player = Factory.CreatePlayer(playerSpawnPoint.position, Quaternion.identity);
+            if (player != null)
+            {
+                var selected = GladiatorRoster.GetSelected();
+                player.ConfigureStats(selected.maxHP, selected.minDamage, selected.maxDamage, selected.attackCooldown);
+            }
+
             enemy = Factory.CreateEnemy(enemySpawnPoint.position, Quaternion.identity);
 
             if (player != null && enemy != null)
@@ -100,14 +112,14 @@ namespace GladiusAI
             if (player.IsDead)
             {
                 singleEncounterEnded = true;
-                EventManager.Raise(new CombatEndedEvent(CombatResult.Defeat));
+                EndCombat(CombatResult.Defeat);
                 return;
             }
 
             if (player.HasSurrendered)
             {
                 singleEncounterEnded = true;
-                EventManager.Raise(new CombatEndedEvent(CombatResult.Surrender));
+                EndCombat(CombatResult.Surrender);
                 return;
             }
 
@@ -116,8 +128,22 @@ namespace GladiusAI
             if (enemyDefeated && enemy2Defeated)
             {
                 singleEncounterEnded = true;
-                EventManager.Raise(new CombatEndedEvent(CombatResult.Victory));
+                EndCombat(CombatResult.Victory);
             }
+        }
+
+        /// <summary>Publica el resultado por EventManager y agenda el paso a la siguiente escena.</summary>
+        private void EndCombat(CombatResult result)
+        {
+            EventManager.Raise(new CombatEndedEvent(result));
+            StartCoroutine(LoadNextSceneAfterDelay());
+        }
+
+        private IEnumerator LoadNextSceneAfterDelay()
+        {
+            yield return new WaitForSeconds(delayBeforeNextScene);
+            if (!string.IsNullOrEmpty(nextSceneAfterCombat))
+                SceneManager.LoadScene(nextSceneAfterCombat);
         }
 
         private IEnumerator RunCountdown(bool activateCombatAfter)
@@ -150,7 +176,6 @@ namespace GladiusAI
                 countdownLabel.gameObject.SetActive(false);
         }
 
-       
         private IEnumerator RunWaveSequence()
         {
             enemyPool = new GladiatorPool(Factory);
@@ -190,20 +215,21 @@ namespace GladiusAI
 
                 if (player == null || player.IsDead)
                 {
-                    EventManager.Raise(new CombatEndedEvent(CombatResult.Defeat));
+                    GladiatorRoster.ResetSlotToBasic(0);
+                    EndCombat(CombatResult.Defeat);
                     yield break;
                 }
 
                 if (player.HasSurrendered)
                 {
-                    EventManager.Raise(new CombatEndedEvent(CombatResult.Surrender));
+                    EndCombat(CombatResult.Surrender);
                     yield break;
                 }
 
                 enemyPool.Release(enemy);
             }
 
-            EventManager.Raise(new CombatEndedEvent(CombatResult.Victory));
+            EndCombat(CombatResult.Victory);
         }
     }
 }
