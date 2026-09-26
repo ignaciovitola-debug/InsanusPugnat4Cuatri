@@ -37,14 +37,6 @@ namespace GladiusAI
             SetVelocity(finalDir);
         }
 
-        public void MoveAway(Vector3 fromPos)
-        {
-            Vector3 away = self.position - fromPos;
-            away.y = 0f;
-            away = away.sqrMagnitude > 0.0001f ? away.normalized : Vector3.zero;
-            SetVelocity(away);
-        }
-
         public void Stop()
         {
             Vector3 vel = rb.linearVelocity;

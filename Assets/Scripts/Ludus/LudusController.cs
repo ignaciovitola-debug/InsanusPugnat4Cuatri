@@ -23,9 +23,12 @@ namespace GladiusAI
 
                 slots[i].Configure(i, this);
 
+                bool unlocked = GladiatorRoster.IsUnlocked(i);
+                slots[i].SetLocked(!unlocked);
+
                 var entry = GladiatorRoster.Slots[i];
                 if (i < slotLabels.Length && slotLabels[i] != null)
-                    slotLabels[i].text = $"{entry.label}\nHP {entry.maxHP:F0}";
+                    slotLabels[i].text = unlocked ? $"{entry.label}\nHP {entry.maxHP:F0}" : $"{entry.label}\n¿ ? ?";
             }
 
             SelectSlot(0);
@@ -33,6 +36,8 @@ namespace GladiusAI
 
         public void SelectSlot(int index)
         {
+            if (!GladiatorRoster.IsUnlocked(index)) return;
+
             selectedIndex = index;
             for (int i = 0; i < slots.Length; i++)
                 slots[i].SetHighlighted(i == selectedIndex);
@@ -44,7 +49,16 @@ namespace GladiusAI
         public void GoToCombat()
         {
             GladiatorRoster.SelectedIndex = selectedIndex;
-            SceneManager.LoadScene(nextSceneName);
+
+            if (SceneFader.Instance != null)
+            {
+                SceneFader.Instance.FadeToScene(nextSceneName);
+            }
+            else
+            {
+                Debug.LogWarning("No hay SceneFader activo (¿arrancaste el juego desde Splash?) -- cargando sin fundido.");
+                SceneManager.LoadScene(nextSceneName);
+            }
         }
     }
 }

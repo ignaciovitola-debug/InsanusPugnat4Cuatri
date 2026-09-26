@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace GladiusAI
 {
@@ -9,6 +10,15 @@ namespace GladiusAI
     public static class GladiatorRoster
     {
         public const int SlotCount = 8;
+
+        private const float MinHP = 70f;
+        private const float MaxHP = 160f;
+        private const float MinDamageLow = 8f;
+        private const float MinDamageHigh = 16f;
+        private const float MaxDamageBonus = 4f;
+        private const float MaxDamageHigh = 30f;
+        private const float MinCooldown = 0.8f;
+        private const float MaxCooldown = 1.5f;
 
         private static List<GladiatorRosterEntry> slots;
 
@@ -39,6 +49,27 @@ namespace GladiusAI
             Slots[index] = basic;
         }
 
+        public static bool IsUnlocked(int index)
+            => index >= 0 && index < Slots.Count && Slots[index].unlocked;
+
+        /// <summary>Se gano el combate que otorga reclutas: desbloquea el proximo gladiador bloqueado y le sortea stats.</summary>
+        public static void UnlockNext()
+        {
+            for (int i = 1; i < Slots.Count; i++)
+            {
+                if (Slots[i].unlocked) continue;
+
+                var entry = Slots[i];
+                entry.unlocked = true;
+                entry.maxHP = Random.Range(MinHP, MaxHP);
+                entry.minDamage = Random.Range(MinDamageLow, MinDamageHigh);
+                entry.maxDamage = Random.Range(entry.minDamage + MaxDamageBonus, MaxDamageHigh);
+                entry.attackCooldown = Random.Range(MinCooldown, MaxCooldown);
+                Slots[i] = entry;
+                return;
+            }
+        }
+
         private static GladiatorRosterEntry BasicPreset()
             => new GladiatorRosterEntry("Tu Gladiador", 100f, 10f, 20f, 1.2f);
 
@@ -47,13 +78,13 @@ namespace GladiusAI
             return new List<GladiatorRosterEntry>
             {
                 BasicPreset(),
-                new GladiatorRosterEntry("Novato", 80f, 8f, 14f, 1.4f),
-                new GladiatorRosterEntry("Veterano", 130f, 12f, 22f, 1.1f),
-                new GladiatorRosterEntry("Agresivo", 90f, 15f, 28f, 0.9f),
-                new GladiatorRosterEntry("Defensivo", 150f, 8f, 14f, 1.5f),
-                new GladiatorRosterEntry("Berserker", 70f, 18f, 30f, 0.8f),
-                new GladiatorRosterEntry("Resistente", 160f, 9f, 16f, 1.3f),
-                new GladiatorRosterEntry("Equilibrado", 110f, 11f, 19f, 1.15f),
+                new GladiatorRosterEntry("Novato", 0f, 0f, 0f, 0f, unlocked: false),
+                new GladiatorRosterEntry("Veterano", 0f, 0f, 0f, 0f, unlocked: false),
+                new GladiatorRosterEntry("Agresivo", 0f, 0f, 0f, 0f, unlocked: false),
+                new GladiatorRosterEntry("Defensivo", 0f, 0f, 0f, 0f, unlocked: false),
+                new GladiatorRosterEntry("Berserker", 0f, 0f, 0f, 0f, unlocked: false),
+                new GladiatorRosterEntry("Resistente", 0f, 0f, 0f, 0f, unlocked: false),
+                new GladiatorRosterEntry("Equilibrado", 0f, 0f, 0f, 0f, unlocked: false),
             };
         }
     }

@@ -18,7 +18,18 @@ namespace GladiusAI
             levelSceneName = levelScene;
         }
 
-        public void PlayLevel() => SceneManager.LoadScene(levelSceneName);
+        public void PlayLevel()
+        {
+            if (SceneFader.Instance != null)
+            {
+                SceneFader.Instance.FadeToScene(levelSceneName);
+            }
+            else
+            {
+                Debug.LogWarning("No hay SceneFader activo (¿arrancaste el juego desde Splash?) -- cargando sin fundido.");
+                SceneManager.LoadScene(levelSceneName);
+            }
+        }
 
         public void ShowOptions() => optionsPanel.SetActive(true);
         public void HideOptions() => optionsPanel.SetActive(false);

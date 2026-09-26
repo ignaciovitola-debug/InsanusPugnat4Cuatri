@@ -92,8 +92,14 @@ namespace GladiusAI
 
         private void Update()
         {
-            FSM.Tick(this, Time.deltaTime);
-            ApplyObstacleAvoidance(Time.deltaTime);
+            // El obstacle avoidance le gana a la FSM: si hay una columna/pared delante,
+            // ese frame el Hunter no hace nada mas que esquivarla (antes se sumaban
+            // las dos fuerzas y "temblaba" entre perseguir/patrullar y esquivar).
+            Vector3 avoidance = ComputeObstacleAvoidance();
+            if (avoidance != Vector3.zero)
+                Velocity = SteeringBehaviors.Integrate(Velocity, avoidance, maxForce, moveSpeed, Time.deltaTime);
+            else
+                FSM.Tick(this, Time.deltaTime);
 
             Vector3 delta = Velocity * Time.deltaTime;
             Vector3 newPosition = SteeringBehaviors.MoveAndCollide(transform.position, delta, bodyRadius, obstacleLayer);
@@ -117,13 +123,10 @@ namespace GladiusAI
 
         public void Stop() => Velocity = Vector3.zero;
 
-        private void ApplyObstacleAvoidance(float deltaTime)
+        private Vector3 ComputeObstacleAvoidance()
         {
-            Vector3 avoidance = SteeringBehaviors.ObstacleAvoidance(
+            return SteeringBehaviors.ObstacleAvoidance(
                 Position, Velocity, moveSpeed, avoidCastDistance, avoidProbeRadius, obstacleLayer);
-
-            if (avoidance != Vector3.zero)
-                Velocity = SteeringBehaviors.Integrate(Velocity, avoidance, maxForce, moveSpeed, deltaTime);
         }
 
         public void MoveAlongPatrol(float deltaTime)

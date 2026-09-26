@@ -10,6 +10,7 @@ namespace GladiusAI
 
         private int slotIndex;
         private LudusController controller;
+        private bool locked;
 
         public void Configure(int index, LudusController owner)
         {
@@ -23,12 +24,23 @@ namespace GladiusAI
                 bodyRenderer = GetComponentInChildren<Renderer>();
         }
 
-        public void OnPointerClick(PointerEventData eventData) => controller.SelectSlot(slotIndex);
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            if (!locked) controller.SelectSlot(slotIndex);
+        }
+
+        /// <summary>Tine de gris y deja de responder al toque mientras el gladiador no este reclutado.</summary>
+        public void SetLocked(bool value)
+        {
+            locked = value;
+            if (bodyRenderer != null)
+                bodyRenderer.material.color = locked ? new Color(0.15f, 0.15f, 0.15f) : Color.white;
+        }
 
         public void SetHighlighted(bool highlighted)
         {
-            if (bodyRenderer != null)
-                bodyRenderer.material.color = highlighted ? Color.yellow : Color.white;
+            if (locked || bodyRenderer == null) return;
+            bodyRenderer.material.color = highlighted ? Color.yellow : Color.white;
         }
     }
 }

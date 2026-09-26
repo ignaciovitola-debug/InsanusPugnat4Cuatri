@@ -15,6 +15,15 @@ namespace GladiusAI
             public float minDamage;
             public float maxDamage;
             public float attackCooldown;
+
+            [Header("Tutorial (opcional)")]
+            [Tooltip("Si es distinto de None, el combate no arranca hasta que el jugador use ese boton al menos una vez.")]
+            public PlayerIntent requiredIntentToStart;
+            public bool invulnerable;
+            [TextArea] public string tutorialHint;
+            [Tooltip("Si se completa este tiempo sin resolver el gate, el cartel cambia a tutorialHintDelayed.")]
+            public string tutorialHintDelayed;
+            public float tutorialHintDelaySeconds;
         }
 
         [Header("Factory")]
@@ -34,6 +43,8 @@ namespace GladiusAI
         [Header("Cuenta regresiva")]
         [SerializeField] private float countdownSeconds = 3f;
         [SerializeField] private TMP_Text countdownLabel;
+        [Tooltip("Cartel separado del countdownLabel para los mensajes del tutorial (no se pisan entre si).")]
+        [SerializeField] private TMP_Text tutorialHintLabel;
 
         [Header("Consignas del jugador")]
         [SerializeField] private PlayerIntentController intentController;
@@ -42,6 +53,10 @@ namespace GladiusAI
         [Tooltip("Escena a la que se pasa unos segundos despues de terminar el combate (Arena 1 -> Ludus, Arena 2 -> Menu).")]
         [SerializeField] private string nextSceneAfterCombat = "Menu";
         [SerializeField] private float delayBeforeNextScene = 2.5f;
+        [Tooltip("Respiro entre vencer a un gladiador y que arranque el siguiente (Nivel 1, oleadas).")]
+        [SerializeField] private float delayBetweenWaves = 2f;
+        [Tooltip("Activar solo en la Arena 2 -- gana una vez y desbloquea al siguiente gladiador de la Ludus.")]
+        [SerializeField] private bool grantsGladiatorUnlock;
 
         private GladiatorNPC player;
         private GladiatorNPC enemy;
@@ -135,6 +150,9 @@ namespace GladiusAI
         /// <summary>Publica el resultado por EventManager y agenda el paso a la siguiente escena.</summary>
         private void EndCombat(CombatResult result)
         {
+            if (result == CombatResult.Victory && grantsGladiatorUnlock)
+                GladiatorRoster.UnlockNext();
+
             EventManager.Raise(new CombatEndedEvent(result));
             StartCoroutine(LoadNextSceneAfterDelay());
         }
@@ -142,8 +160,17 @@ namespace GladiusAI
         private IEnumerator LoadNextSceneAfterDelay()
         {
             yield return new WaitForSeconds(delayBeforeNextScene);
-            if (!string.IsNullOrEmpty(nextSceneAfterCombat))
+            if (string.IsNullOrEmpty(nextSceneAfterCombat)) yield break;
+
+            if (SceneFader.Instance != null)
+            {
+                SceneFader.Instance.FadeToScene(nextSceneAfterCombat);
+            }
+            else
+            {
+                Debug.LogWarning("No hay SceneFader activo (¿arrancaste el juego desde Splash?) -- cargando sin fundido.");
                 SceneManager.LoadScene(nextSceneAfterCombat);
+            }
         }
 
         private IEnumerator RunCountdown(bool activateCombatAfter)
@@ -190,8 +217,15 @@ namespace GladiusAI
             {
                 EnemyWave wave = waves[i];
 
+                if (i > 0 && player != null)
+                {
+                    player.transform.position = playerSpawnPoint.position;
+                    player.FullyHeal();
+                }
+
                 enemy = enemyPool.Get(enemySpawnPoint.position, Quaternion.identity);
                 enemy?.ConfigureStats(wave.maxHP, wave.minDamage, wave.maxDamage, wave.attackCooldown);
+                enemy?.SetInvulnerable(wave.invulnerable);
 
                 if (player != null && enemy != null)
                 {
@@ -206,6 +240,9 @@ namespace GladiusAI
                     yield return new WaitForSeconds(1.5f);
                     countdownLabel.gameObject.SetActive(false);
                 }
+
+                if (wave.requiredIntentToStart != PlayerIntent.None)
+                    yield return StartCoroutine(WaitForRequiredIntent(wave));
 
                 player?.SetCombatEnabled(true);
                 enemy?.SetCombatEnabled(true);
@@ -227,9 +264,42 @@ namespace GladiusAI
                 }
 
                 enemyPool.Release(enemy);
+
+                if (i < waves.Length - 1)
+                    yield return new WaitForSeconds(delayBetweenWaves);
             }
 
             EndCombat(CombatResult.Victory);
+        }
+
+        /// <summary>Muestra el cartel del tutorial y bloquea el arranque del combate hasta que el jugador use el boton pedido.</summary>
+        private IEnumerator WaitForRequiredIntent(EnemyWave wave)
+        {
+            if (tutorialHintLabel != null)
+            {
+                tutorialHintLabel.gameObject.SetActive(true);
+                tutorialHintLabel.text = wave.tutorialHint;
+            }
+
+            float elapsed = 0f;
+            bool swapped = false;
+
+            while (intentController == null || intentController.CurrentIntent != wave.requiredIntentToStart)
+            {
+                elapsed += Time.deltaTime;
+                if (!swapped && !string.IsNullOrEmpty(wave.tutorialHintDelayed) && elapsed >= wave.tutorialHintDelaySeconds)
+                {
+                    swapped = true;
+                    if (tutorialHintLabel != null)
+                        tutorialHintLabel.text = wave.tutorialHintDelayed;
+                }
+                yield return null;
+            }
+
+            intentController?.ClearIntent();
+
+            if (tutorialHintLabel != null)
+                tutorialHintLabel.gameObject.SetActive(false);
         }
     }
 }

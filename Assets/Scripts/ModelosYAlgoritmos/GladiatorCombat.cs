@@ -9,9 +9,12 @@ namespace GladiusAI
         private readonly float attackCooldown;
         private readonly float staggerDuration;
 
+        private const float OrderCooldown = 2.5f;
+
         private float attackTimer;
         private float stunTimer;
         private float defendTimer;
+        private float orderCooldownTimer;
 
         public bool IsOnCooldown => attackTimer > 0f;
         public bool IsStunned => stunTimer > 0f;
@@ -34,14 +37,31 @@ namespace GladiusAI
                 stunTimer -= deltaTime;
             if (defendTimer > 0f)
                 defendTimer -= deltaTime;
+            if (orderCooldownTimer > 0f)
+                orderCooldownTimer -= deltaTime;
         }
 
-        public void ResetCooldown() => attackTimer = 0f;
         public void RegisterAttack() => attackTimer = attackCooldown;
         public float RollDamage() => Mathf.Round(Random.Range(minDamage, maxDamage));
 
         public void ApplyStagger() => stunTimer = staggerDuration;
 
-        public void StartDefend(float duration) => defendTimer = duration;
+        /// <summary>Consigna de "redoblar ataque": comparte cooldown con TryDefend para que no se pueda spamear ninguna orden.</summary>
+        public bool TryRedoubleAttack()
+        {
+            if (orderCooldownTimer > 0f) return false;
+            orderCooldownTimer = OrderCooldown;
+            attackTimer = 0f;
+            return true;
+        }
+
+        /// <summary>Consigna de "defenderse": mismo cooldown compartido que TryRedoubleAttack.</summary>
+        public bool TryDefend(float duration)
+        {
+            if (orderCooldownTimer > 0f) return false;
+            orderCooldownTimer = OrderCooldown;
+            defendTimer = duration;
+            return true;
+        }
     }
 }

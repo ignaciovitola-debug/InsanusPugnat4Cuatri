@@ -54,6 +54,7 @@ namespace GladiusAI
         private bool combatEnabled = true;
         private string lastAction;
         private bool destroyOnDeath = true;
+        private bool invulnerable;
 
         private void Awake()
         {
@@ -93,6 +94,12 @@ namespace GladiusAI
         public void SetCombatEnabled(bool enabled) => combatEnabled = enabled;
 
         public void SetDestroyOnDeath(bool value) => destroyOnDeath = value;
+
+        /// <summary>Usado por CombatStarter en la ola-tutorial invulnerable: TakeDamage no le hace nada mientras esto sea true.</summary>
+        public void SetInvulnerable(bool value) => invulnerable = value;
+
+        /// <summary>Restaura la vida al maximo actual (usado al reiniciar el spawn entre olas del tutorial).</summary>
+        public void FullyHeal() => CurrentHP = maxHP;
 
         public void ResetForReuse()
         {
@@ -168,7 +175,7 @@ namespace GladiusAI
                 new ActionNode("Aplicar consigna Atacar", ApplyAttackIntent),
                 new ActionNode("Aplicar consigna Defender", ApplyDefendIntent),
                 new QuestionNode("¿En guardia?", IsDefending,
-                    onTrue: new ActionNode("Retroceder", ActionRetreat)),
+                    onTrue: new ActionNode("Defender", ActionHoldGuard)),
                 new Sequence("Secuencia Ataque",
                     new QuestionNode("¿En rango de ataque?", IsTargetInAttackRange,
                         onTrue: new ActionNode("CheckOK", (bb) => NodeState.Success)),
@@ -213,7 +220,7 @@ namespace GladiusAI
             if (cachedTargetNPC == null) return NodeState.Failure;
 
             float damage = combat.RollDamage();
-            cachedTargetNPC.TakeDamage(damage, gladiatorName, transform.position);
+            cachedTargetNPC.TakeDamage(damage, gladiatorName, transform.position, this);
             combat.RegisterAttack();
 
             LogAction("Attack", $">>> GOLPE a {cachedTargetNPC.gladiatorName}! Daño: {damage} | HP enemigo: {cachedTargetNPC.CurrentHP}/{cachedTargetNPC.maxHP}");
@@ -289,30 +296,24 @@ namespace GladiusAI
 
         private NodeState ApplyAttackIntent(Blackboard bb)
         {
-            if (intentHandler.TryConsume(PlayerIntent.Attack))
-            {
-                combat.ResetCooldown();
+            if (intentHandler.TryConsume(PlayerIntent.Attack) && combat.TryRedoubleAttack())
                 LogAction("Intent", $"{gladiatorName} redobla el ataque por orden del jugador!");
-            }
+
             return NodeState.Failure;
         }
 
         private NodeState ApplyDefendIntent(Blackboard bb)
         {
-            if (intentHandler.TryConsume(PlayerIntent.Defend))
-            {
-                combat.StartDefend(2f);
+            if (intentHandler.TryConsume(PlayerIntent.Defend) && combat.TryDefend(2f))
                 LogAction("Intent", $"{gladiatorName} se pone en guardia por orden del jugador!");
-            }
+
             return NodeState.Failure;
         }
 
-        private NodeState ActionRetreat(Blackboard bb)
+        private NodeState ActionHoldGuard(Blackboard bb)
         {
             SetColor(Color.cyan);
-            if (target == null) { movement.Stop(); return NodeState.Running; }
-
-            movement.MoveAway(target.position);
+            movement.Stop();
             return NodeState.Running;
         }
 
@@ -324,9 +325,24 @@ namespace GladiusAI
         }
 
         //  Daño
-        public void TakeDamage(float damage, string attackerName, Vector3 attackerPosition)
+        public void TakeDamage(float damage, string attackerName, Vector3 attackerPosition, GladiatorNPC attacker = null)
         {
             if (IsDead) return;
+
+            if (invulnerable)
+            {
+                movement.ApplyKnockback(attackerPosition);
+                combat.ApplyStagger();
+                return;
+            }
+
+            if (combat.IsDefending)
+            {
+                // Parry: el golpe no hace daño, el ATACANTE es quien recibe el empujón.
+                Debug.Log($"[{gladiatorName}] Paró el golpe de {attackerName}!");
+                attacker?.Startle(transform.position);
+                return;
+            }
 
             CurrentHP = Mathf.Max(0f, CurrentHP - damage);
             Debug.Log($"[{gladiatorName}] Recibió {damage} daño de {attackerName}. HP: {CurrentHP}/{maxHP}");

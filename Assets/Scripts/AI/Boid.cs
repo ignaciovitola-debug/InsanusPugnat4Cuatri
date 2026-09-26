@@ -35,7 +35,7 @@ namespace GladiusAI
         [Header("Comida (Arrive)")]
         [SerializeField] private float foodDetectionRange = 8f;
         [SerializeField] private float eatDistance = 1.0f;
-        [SerializeField] private float arriveSlowRadius = 1.5f;
+        [SerializeField] private float arriveSlowRadius = 3f;
 
         [Header("Cazador (Evade)")]
         [SerializeField] private float hunterVisionRange = 6f;
@@ -98,17 +98,30 @@ namespace GladiusAI
         /// si no, ¿hay cazador en rango? -> Evade
         /// si no, ¿hay boids del grupo cerca? -> Flocking
         /// si está solo -> vagar
-        
+
+        /// <summary>Nombres de los nodos del arbol: enum en vez de string literal para que un typo sea un error de compilacion, no un cartel confuso en el Log.</summary>
+        private enum BoidNode
+        {
+            Root,
+            HasFoodNearby,
+            SeekFood,
+            HunterVisible,
+            EvadeHunter,
+            FlockmatesNearby,
+            Flock,
+            Wander
+        }
+
         private Node BuildDecisionTree()
         {
-            return new Selector("Decisión del Boid",
-                new QuestionNode("¿Hay comida cerca?", HasNearbyFood,
-                    onTrue: new ActionNode("Ir a comer (Arrive)", ActionSeekFood)),
-                new QuestionNode("¿Cazador en rango de visión?", HasVisibleHunter,
-                    onTrue: new ActionNode("Huir (Evade)", ActionEvadeHunter)),
-                new QuestionNode("¿Hay boids del grupo cerca?", HasFlockmatesNearby,
-                    onTrue: new ActionNode("Flocking", ActionFlock)),
-                new ActionNode("Vagar solo", ActionWander)
+            return new Selector(BoidNode.Root.ToString(),
+                new QuestionNode(BoidNode.HasFoodNearby.ToString(), HasNearbyFood,
+                    onTrue: new ActionNode(BoidNode.SeekFood.ToString(), ActionSeekFood)),
+                new QuestionNode(BoidNode.HunterVisible.ToString(), HasVisibleHunter,
+                    onTrue: new ActionNode(BoidNode.EvadeHunter.ToString(), ActionEvadeHunter)),
+                new QuestionNode(BoidNode.FlockmatesNearby.ToString(), HasFlockmatesNearby,
+                    onTrue: new ActionNode(BoidNode.Flock.ToString(), ActionFlock)),
+                new ActionNode(BoidNode.Wander.ToString(), ActionWander)
             );
         }
 
