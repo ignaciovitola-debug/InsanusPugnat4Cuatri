@@ -4,6 +4,10 @@ namespace GladiusAI
 {
     public class GladiatorMovement
     {
+        // Buffer compartido para el SphereCast: SphereCastAll creaba un array nuevo cada frame
+        // por gladiador, basura que despues frenaba el juego cuando pasaba el GC.
+        private static readonly RaycastHit[] HitBuffer = new RaycastHit[8];
+
         private readonly Transform self;
         private readonly Rigidbody rb;
         private readonly float moveSpeed;
@@ -59,10 +63,11 @@ namespace GladiusAI
 
         private Vector3 GetAvoidanceDir(Vector3 desiredDir, Transform ignoreObstacle)
         {
-            RaycastHit[] hits = Physics.SphereCastAll(self.position, avoidRadius, desiredDir, avoidCastDistance, obstacleLayer);
+            int hitCount = Physics.SphereCastNonAlloc(self.position, avoidRadius, desiredDir, HitBuffer, avoidCastDistance, obstacleLayer);
 
-            foreach (var hit in hits)
+            for (int i = 0; i < hitCount; i++)
             {
+                RaycastHit hit = HitBuffer[i];
                 // No esquivo a mi propio objetivo — a ESE justamente quiero llegar.
                 if (ignoreObstacle != null &&
                     (hit.collider.transform == ignoreObstacle || hit.collider.transform.IsChildOf(ignoreObstacle)))

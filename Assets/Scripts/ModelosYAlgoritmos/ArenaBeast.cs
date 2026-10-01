@@ -45,6 +45,8 @@ namespace GladiusAI
         private float cooldownTimer;
         private GladiatorNPC target;
         private bool combatStarted;
+        private Color currentColor;
+        private bool hasColor;
 
         private void Awake()
         {
@@ -170,8 +172,10 @@ namespace GladiusAI
             GladiatorNPC nearest = null;
             float nearestSqrDist = detectionRange * detectionRange;
 
-            foreach (var gladiator in FindObjectsByType<GladiatorNPC>(FindObjectsSortMode.None))
+            // Lista mantenida por GladiatorNPC: FindObjectsByType recorria toda la escena y creaba un array cada frame.
+            for (int i = 0; i < GladiatorNPC.All.Count; i++)
             {
+                GladiatorNPC gladiator = GladiatorNPC.All[i];
                 if (gladiator.IsDead) continue;
 
                 float sqrDist = (gladiator.transform.position - transform.position).sqrMagnitude;
@@ -186,8 +190,10 @@ namespace GladiusAI
 
         private void SetColor(Color c)
         {
-            if (bodyRenderer != null)
-                bodyRenderer.material.color = c;
+            if (bodyRenderer == null || (hasColor && currentColor == c)) return;
+            currentColor = c;
+            hasColor = true;
+            bodyRenderer.material.color = c;
         }
 
         private void OnDrawGizmosSelected()

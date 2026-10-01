@@ -61,6 +61,7 @@ namespace GladiusAI
         private Vector3 wanderTarget;
         private float wanderTimer;
         private float bodyRadius = 0.4f;
+        private readonly List<Boid> flockmates = new List<Boid>();
 
         private void OnEnable() => All.Add(this);
         private void OnDisable() => All.Remove(this);
@@ -139,7 +140,12 @@ namespace GladiusAI
             return visibleHunter != null;
         }
 
-        private bool HasFlockmatesNearby(Blackboard bb) => GetFlockmates().Count > 0;
+        // Llena la lista de vecinos una vez por frame; ActionFlock reusa ese mismo resultado.
+        private bool HasFlockmatesNearby(Blackboard bb)
+        {
+            FillFlockmates();
+            return flockmates.Count > 0;
+        }
 
         //Acciones
         private NodeState ActionSeekFood(Blackboard bb)
@@ -169,7 +175,6 @@ namespace GladiusAI
         private NodeState ActionFlock(Blackboard bb)
         {
             SetColor(Color.cyan);
-            var flockmates = GetFlockmates();
 
             Vector3 separation = FlockingBehavior.Separation(Position, flockmates, separationRadius) * separationWeight;
             Vector3 alignment = FlockingBehavior.Alignment(flockmates) * alignmentWeight;
@@ -206,17 +211,17 @@ namespace GladiusAI
         }
 
         //Auxiliares
-        private List<Boid> GetFlockmates()
+        /// <summary>Reusa la misma lista en vez de crear una nueva cada frame (menos basura para el GC).</summary>
+        private void FillFlockmates()
         {
-            var result = new List<Boid>();
+            flockmates.Clear();
             for (int i = 0; i < All.Count; i++)
             {
                 Boid other = All[i];
                 if (other == this || other.groupId != groupId) continue;
                 if (Vector3.Distance(Position, other.Position) <= neighborRadius)
-                    result.Add(other);
+                    flockmates.Add(other);
             }
-            return result;
         }
 
         private Hunter FindNearestHunter()

@@ -15,8 +15,9 @@ namespace GladiusAI
             GladiatorNPC instance = available.Count > 0 ? available.Dequeue() : factory.CreateEnemy(position, rotation);
             if (instance == null) return null;
 
-            instance.transform.SetPositionAndRotation(position, rotation);
             instance.gameObject.SetActive(true);
+            instance.TeleportTo(position);
+            instance.transform.rotation = rotation;
             instance.SetDestroyOnDeath(false);
             instance.ResetForReuse();
             return instance;

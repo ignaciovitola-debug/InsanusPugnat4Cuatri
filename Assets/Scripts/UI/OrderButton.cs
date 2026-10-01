@@ -15,6 +15,7 @@ namespace GladiusAI
 
         private Button button;
         private RectTransform cooldownOverlay;
+        private float shownRemaining = -1f;
 
         private void Awake()
         {
@@ -25,6 +26,10 @@ namespace GladiusAI
         private void Update()
         {
             float remaining = intentController != null ? intentController.OrderCooldownRatio : 0f;
+
+            // Tocar el RectTransform obliga a reconstruir el Canvas: solo se hace si algo cambio.
+            if (Mathf.Approximately(remaining, shownRemaining)) return;
+            shownRemaining = remaining;
 
             button.interactable = remaining <= 0f;
             cooldownOverlay.gameObject.SetActive(remaining > 0f);

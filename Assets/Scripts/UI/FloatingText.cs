@@ -18,6 +18,10 @@ namespace GladiusAI
 
         private static readonly List<FloatingText> Active = new List<FloatingText>();
 
+        // Un solo material con contorno para todos los carteles: setear outlineWidth en cada
+        // TextMeshPro creaba una copia del material por cartel que nunca se liberaba.
+        private static Material outlinedMaterial;
+
         private TextMeshPro label;
         private Color baseColor;
         private float age;
@@ -34,14 +38,24 @@ namespace GladiusAI
             label.alignment = TextAlignmentOptions.Center;
             label.textWrappingMode = TextWrappingModes.NoWrap;
             label.color = color;
-            label.outlineWidth = 0.25f;
-            label.outlineColor = Color.black;
+            label.fontSharedMaterial = GetOutlinedMaterial(label.fontSharedMaterial);
             label.GetComponent<MeshRenderer>().sortingOrder = 100;
 
             var floating = go.AddComponent<FloatingText>();
             floating.label = label;
             floating.baseColor = color;
             floating.FaceCamera();
+        }
+
+        private static Material GetOutlinedMaterial(Material fontMaterial)
+        {
+            if (outlinedMaterial != null) return outlinedMaterial;
+
+            outlinedMaterial = new Material(fontMaterial) { name = "FloatingText Outline" };
+            outlinedMaterial.EnableKeyword(ShaderUtilities.Keyword_Outline);
+            outlinedMaterial.SetFloat(ShaderUtilities.ID_OutlineWidth, 0.25f);
+            outlinedMaterial.SetColor(ShaderUtilities.ID_OutlineColor, Color.black);
+            return outlinedMaterial;
         }
 
         /// <summary>Si ya hay un cartel sobre el mismo gladiador, el nuevo aparece arriba en vez de encimarse.</summary>

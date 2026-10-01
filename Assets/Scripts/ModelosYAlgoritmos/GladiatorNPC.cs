@@ -1,10 +1,16 @@
+using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace GladiusAI
 {
     [RequireComponent(typeof(Rigidbody))]
     public class GladiatorNPC : MonoBehaviour
     {
+        /// <summary>Gladiadores activos en la escena (lo usa ArenaBeast para no hacer FindObjectsByType cada frame).</summary>
+        public static readonly List<GladiatorNPC> All = new List<GladiatorNPC>();
+
         [Header("Identidad")]
         [SerializeField] private string gladiatorName = "Gladiator";
 
@@ -60,11 +66,19 @@ namespace GladiusAI
         private string lastAction;
         private bool destroyOnDeath = true;
         private bool invulnerable;
+        private Color currentColor;
+        private bool hasColor;
+
+        private void OnEnable() => All.Add(this);
+        private void OnDisable() => All.Remove(this);
 
         private void Awake()
         {
             rb = GetComponent<Rigidbody>();
             rb.constraints = RigidbodyConstraints.FreezeRotation;
+            // La fisica corre a paso fijo (50 Hz) y la pantalla a 60+: sin interpolar,
+            // el gladiador avanza "a saltos" entre pasos de fisica y se ven tirones.
+            rb.interpolation = RigidbodyInterpolation.Interpolate;
 
             if (bodyRenderer == null)
                 bodyRenderer = GetComponent<Renderer>();
@@ -77,7 +91,7 @@ namespace GladiusAI
             Blackboard = new Blackboard();
             behaviorTreeRoot = BuildTree();
 
-            Debug.Log($"[{gladiatorName}] Listo para combate. HP: {CurrentHP}/{maxHP}");
+            Log($"Listo para combate. HP: {CurrentHP}/{maxHP}");
         }
 
         private void BuildComponents()
@@ -98,7 +112,25 @@ namespace GladiusAI
             CacheTargetNPC();
         }
 
-        public void SetCombatEnabled(bool enabled) => combatEnabled = enabled;
+        public void SetCombatEnabled(bool enabled)
+        {
+            combatEnabled = enabled;
+            // Con el combate apagado Update no corre: si no se frena aca, sigue deslizandose con la ultima velocidad.
+            if (!enabled)
+                movement?.Stop();
+        }
+
+        /// <summary>
+        /// Mueve al gladiador al instante y sin inercia. Hay que mover el Rigidbody y no solo el transform:
+        /// con interpolacion activada, la fisica pisaria el transform y lo devolveria a donde estaba.
+        /// </summary>
+        public void TeleportTo(Vector3 position)
+        {
+            rb.position = position;
+            transform.position = position;
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
 
         public void SetDestroyOnDeath(bool value) => destroyOnDeath = value;
 
@@ -232,7 +264,8 @@ namespace GladiusAI
             cachedTargetNPC.TakeDamage(damage, gladiatorName, transform.position, this);
             combat.RegisterAttack();
 
-            LogAction("Attack", $">>> GOLPE a {cachedTargetNPC.gladiatorName}! Daño: {damage} | HP enemigo: {cachedTargetNPC.CurrentHP}/{cachedTargetNPC.maxHP}");
+            if (IsNewAction("Attack"))
+                Log($">>> GOLPE a {cachedTargetNPC.gladiatorName}! Daño: {damage} | HP enemigo: {cachedTargetNPC.CurrentHP}/{cachedTargetNPC.maxHP}");
             return NodeState.Success;
         }
 
@@ -241,7 +274,10 @@ namespace GladiusAI
             SetColor(new Color(1f, 0.5f, 0f));
             if (target == null) return NodeState.Failure;
 
-            LogAction("Chase", $"Persiguiendo enemigo... distancia: {Vector3.Distance(transform.position, target.position):F1}m");
+            // El texto se arma solo si de verdad se va a loguear: antes se construia un string nuevo
+            // cada frame (aunque despues se descartara) y esa basura le hacia saltar al GC.
+            if (IsNewAction("Chase"))
+                Log($"Persiguiendo enemigo... distancia: {Vector3.Distance(transform.position, target.position):F1}m");
             movement.MoveToward(target.position, target);
             return NodeState.Running;
         }
@@ -256,7 +292,8 @@ namespace GladiusAI
                 return NodeState.Running;
             }
 
-            LogAction("Patrol", $"Buscando enemigo... distancia: {Vector3.Distance(transform.position, target.position):F1}m");
+            if (IsNewAction("Patrol"))
+                Log($"Buscando enemigo... distancia: {Vector3.Distance(transform.position, target.position):F1}m");
             movement.MoveToward(target.position, target);
             return NodeState.Running;
         }
@@ -295,7 +332,8 @@ namespace GladiusAI
             movement.Stop();
             HasSurrendered = true;
 
-            LogAction("Surrender", $"{gladiatorName} se rinde! {cachedTargetNPC?.gladiatorName ?? "El rival"} gana el combate.");
+            if (IsNewAction("Surrender"))
+                Log($"{gladiatorName} se rinde! {cachedTargetNPC?.gladiatorName ?? "El rival"} gana el combate.");
             ShowFeedback("¡Me rindo!", Color.white);
 
             SetCombatEnabled(false);
@@ -310,7 +348,8 @@ namespace GladiusAI
         {
             if (combat.CanReceiveOrder && intentHandler.TryConsume(PlayerIntent.Attack) && combat.TryRedoubleAttack())
             {
-                LogAction("Intent", $"{gladiatorName} redobla el ataque por orden del jugador!");
+                if (IsNewAction("Intent"))
+                    Log($"{gladiatorName} redobla el ataque por orden del jugador!");
                 ShowFeedback("¡A la carga!", new Color(1f, 0.45f, 0.3f));
             }
 
@@ -321,7 +360,8 @@ namespace GladiusAI
         {
             if (combat.CanReceiveOrder && intentHandler.TryConsume(PlayerIntent.Defend) && combat.TryDefend(2f))
             {
-                LogAction("Intent", $"{gladiatorName} se pone en guardia por orden del jugador!");
+                if (IsNewAction("Intent"))
+                    Log($"{gladiatorName} se pone en guardia por orden del jugador!");
                 ShowFeedback("¡En guardia!", new Color(0.4f, 0.85f, 1f));
             }
 
@@ -357,34 +397,50 @@ namespace GladiusAI
             if (combat.IsDefending)
             {
                 // Parry: el golpe no hace daño, el ATACANTE es quien recibe el empujón.
-                Debug.Log($"[{gladiatorName}] Paró el golpe de {attackerName}!");
+                Log($"Paró el golpe de {attackerName}!");
                 ShowFeedback("¡Bloqueó!", new Color(0.4f, 0.85f, 1f));
                 attacker?.Startle(transform.position);
                 return;
             }
 
             CurrentHP = Mathf.Max(0f, CurrentHP - damage);
-            Debug.Log($"[{gladiatorName}] Recibió {damage} daño de {attackerName}. HP: {CurrentHP}/{maxHP}");
+            Log($"Recibió {damage} daño de {attackerName}. HP: {CurrentHP}/{maxHP}");
 
             movement.ApplyKnockback(attackerPosition);
             combat.ApplyStagger();
 
             if (IsDead)
-                Debug.Log($"[{gladiatorName}] HA CAÍDO EN COMBATE!");
+                Log("HA CAÍDO EN COMBATE!");
         }
 
-        //  Utilidades 
+        //  Utilidades
+
+        /// <summary>true solo la primera vez que se entra a esta accion (para no repetir el mismo log cada frame).</summary>
+        private bool IsNewAction(string action)
+        {
+            if (lastAction == action) return false;
+            lastAction = action;
+            return true;
+        }
+
         private void LogAction(string action, string message)
         {
-            if (lastAction == action) return;
-            lastAction = action;
-            Debug.Log($"[{gladiatorName}] {message}");
+            if (IsNewAction(action))
+                Log(message);
         }
 
+        // Solo existe en el Editor y en Development Builds: en el build final para el celular
+        // el compilador borra estas llamadas (y el armado de sus textos), que en mobile son caras.
+        [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+        private void Log(string message) => Debug.Log($"[{gladiatorName}] {message}");
+
+        /// <summary>Solo toca el material si el color cambia: antes se seteaba en cada frame aunque fuera el mismo.</summary>
         private void SetColor(Color c)
         {
-            if (bodyRenderer != null)
-                bodyRenderer.material.color = c;
+            if (bodyRenderer == null || (hasColor && currentColor == c)) return;
+            currentColor = c;
+            hasColor = true;
+            bodyRenderer.material.color = c;
         }
 
         private void ShowFeedback(string message, Color color)

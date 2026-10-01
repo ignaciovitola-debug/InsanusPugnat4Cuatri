@@ -220,13 +220,17 @@ namespace GladiusAI
             {
                 EnemyWave wave = waves[i];
 
+                // Los dos quedan quietos en su punto de inicio hasta que arranca el combate: si no,
+                // durante el cartel del rival / del tutorial ya caminaban uno hacia el otro.
                 if (i > 0 && player != null)
                 {
-                    player.transform.position = playerSpawnPoint.position;
+                    player.SetCombatEnabled(false);
+                    player.TeleportTo(playerSpawnPoint.position);
                     player.FullyHeal();
                 }
 
                 enemy = enemyPool.Get(enemySpawnPoint.position, Quaternion.identity);
+                enemy?.SetCombatEnabled(false);
                 enemy?.ConfigureStats(wave.maxHP, wave.minDamage, wave.maxDamage, wave.attackCooldown);
                 enemy?.SetInvulnerable(wave.invulnerable);
 
