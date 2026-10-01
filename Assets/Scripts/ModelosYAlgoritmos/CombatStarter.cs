@@ -109,8 +109,10 @@ namespace GladiusAI
         private void Update()
         {
             // Nivel 2: cuando el primer enemigo cae, el jugador pasa a enfrentar al segundo.
+            // enemy puede ya ser null: al morir se hace Destroy, y segun el orden de Update
+            // este chequeo puede correr recien el frame siguiente.
             if (!retargetedToSecondEnemy && enemy2 != null && player != null &&
-                enemy != null && enemy.IsDead && !enemy2.IsDead)
+                (enemy == null || enemy.IsDead) && !enemy2.IsDead)
             {
                 player.SetTarget(enemy2.transform);
                 retargetedToSecondEnemy = true;
@@ -127,6 +129,7 @@ namespace GladiusAI
             if (player.IsDead)
             {
                 singleEncounterEnded = true;
+                GladiatorRoster.ResetSlotToBasic(GladiatorRoster.SelectedIndex);
                 EndCombat(CombatResult.Defeat);
                 return;
             }

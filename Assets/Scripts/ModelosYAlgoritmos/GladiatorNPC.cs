@@ -39,10 +39,15 @@ namespace GladiusAI
         [Header("Debug visual")]
         [SerializeField] private Renderer bodyRenderer;
 
+        [Header("Feedback de consignas")]
+        [Tooltip("Altura sobre el gladiador donde aparece el cartel (\"¡En guardia!\", etc).")]
+        [SerializeField] private float feedbackHeight = 2f;
+
         public Blackboard Blackboard { get; private set; }
         public float CurrentHP { get; private set; }
         public bool IsDead => CurrentHP <= 0f;
         public bool HasSurrendered { get; private set; }
+        public float OrderCooldownRatio => combat != null ? combat.OrderCooldownRatio : 0f;
 
         private Node behaviorTreeRoot;
         private Rigidbody rb;
@@ -67,6 +72,8 @@ namespace GladiusAI
             CurrentHP = maxHP;
 
             BuildComponents();
+            if (intentController != null)
+                intentController.SetOwner(this);
             Blackboard = new Blackboard();
             behaviorTreeRoot = BuildTree();
 
@@ -113,6 +120,8 @@ namespace GladiusAI
         {
             intentController = controller;
             intentHandler = new GladiatorIntentHandler(controller);
+            if (controller != null)
+                controller.SetOwner(this);
         }
 
         public void ConfigureStats(float newMaxHP, float newMinDamage, float newMaxDamage, float newAttackCooldown)
@@ -287,6 +296,7 @@ namespace GladiusAI
             HasSurrendered = true;
 
             LogAction("Surrender", $"{gladiatorName} se rinde! {cachedTargetNPC?.gladiatorName ?? "El rival"} gana el combate.");
+            ShowFeedback("¡Me rindo!", Color.white);
 
             SetCombatEnabled(false);
             cachedTargetNPC?.SetCombatEnabled(false);
@@ -294,18 +304,26 @@ namespace GladiusAI
             return NodeState.Success;
         }
 
+        // Mientras dura la espera entre ordenes no se consume la consigna: antes se tiraba
+        // sin hacer nada y el jugador sentia que el gladiador lo ignoraba.
         private NodeState ApplyAttackIntent(Blackboard bb)
         {
-            if (intentHandler.TryConsume(PlayerIntent.Attack) && combat.TryRedoubleAttack())
+            if (combat.CanReceiveOrder && intentHandler.TryConsume(PlayerIntent.Attack) && combat.TryRedoubleAttack())
+            {
                 LogAction("Intent", $"{gladiatorName} redobla el ataque por orden del jugador!");
+                ShowFeedback("¡A la carga!", new Color(1f, 0.45f, 0.3f));
+            }
 
             return NodeState.Failure;
         }
 
         private NodeState ApplyDefendIntent(Blackboard bb)
         {
-            if (intentHandler.TryConsume(PlayerIntent.Defend) && combat.TryDefend(2f))
+            if (combat.CanReceiveOrder && intentHandler.TryConsume(PlayerIntent.Defend) && combat.TryDefend(2f))
+            {
                 LogAction("Intent", $"{gladiatorName} se pone en guardia por orden del jugador!");
+                ShowFeedback("¡En guardia!", new Color(0.4f, 0.85f, 1f));
+            }
 
             return NodeState.Failure;
         }
@@ -340,6 +358,7 @@ namespace GladiusAI
             {
                 // Parry: el golpe no hace daño, el ATACANTE es quien recibe el empujón.
                 Debug.Log($"[{gladiatorName}] Paró el golpe de {attackerName}!");
+                ShowFeedback("¡Bloqueó!", new Color(0.4f, 0.85f, 1f));
                 attacker?.Startle(transform.position);
                 return;
             }
@@ -367,6 +386,9 @@ namespace GladiusAI
             if (bodyRenderer != null)
                 bodyRenderer.material.color = c;
         }
+
+        private void ShowFeedback(string message, Color color)
+            => FloatingText.Spawn(transform.position + Vector3.up * feedbackHeight, message, color);
 
         private void OnDrawGizmosSelected()
         {

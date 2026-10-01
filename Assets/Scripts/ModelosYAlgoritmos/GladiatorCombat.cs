@@ -19,6 +19,10 @@ namespace GladiusAI
         public bool IsOnCooldown => attackTimer > 0f;
         public bool IsStunned => stunTimer > 0f;
         public bool IsDefending => defendTimer > 0f;
+        public bool CanReceiveOrder => orderCooldownTimer <= 0f;
+
+        /// <summary>1 recien dada la orden, 0 cuando ya se puede dar otra. Lo usan los botones para mostrar la espera.</summary>
+        public float OrderCooldownRatio => orderCooldownTimer > 0f ? orderCooldownTimer / OrderCooldown : 0f;
 
         public GladiatorCombat(float minDamage, float maxDamage, float attackCooldown,
             float staggerDuration)
