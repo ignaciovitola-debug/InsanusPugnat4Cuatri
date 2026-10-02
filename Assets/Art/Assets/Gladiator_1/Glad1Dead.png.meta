@@ -100,12 +100,12 @@ TextureImporter:
       name: Glad1Dead_0
       rect:
         serializedVersion: 2
-        x: 34
+        x: 0
         y: 0
-        width: 34
-        height: 63
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -122,12 +122,12 @@ TextureImporter:
       name: Glad1Dead_1
       rect:
         serializedVersion: 2
-        x: 147
-        y: 1
-        width: 51
-        height: 48
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 128
+        y: 0
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -144,12 +144,12 @@ TextureImporter:
       name: Glad1Dead_2
       rect:
         serializedVersion: 2
-        x: 269
+        x: 256
         y: 0
-        width: 82
-        height: 10
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Gladiator_2
+  m_Controller: {fileID: 9100000, guid: 3035f7f1aa6b1f547a9204ae82ab6481, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 4d20d38543b5a3d4faa22fd1910cfbbc, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: eae69d53cf3b8954784fdccc4a29dec7, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 578e35e395627cb4d80b647e69408d25, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 39dc2c7154ceb6c4aba34fc303e0ab96, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: abd7e9e173ea20949bc155b62e5c3922, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 600eba7de179138428849a92bfc850be, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 9055c3e323051b74ea9224e169e10bdc, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 82fa12649f8da4349994c59699719937, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 931808812d8818645bd0fc86fc828184, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 8c4d7350e8446ce45a59e88072556483, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 27839bb7b0173b9419ae10d528082972, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 9103a3185a31f7c49ad4d63660324f09, type: 2}

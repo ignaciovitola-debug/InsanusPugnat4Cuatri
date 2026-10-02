@@ -100,12 +100,12 @@ TextureImporter:
       name: Glad1Walk_0
       rect:
         serializedVersion: 2
-        x: 48
+        x: 0
         y: 0
-        width: 46
-        height: 71
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -122,12 +122,12 @@ TextureImporter:
       name: Glad1Walk_1
       rect:
         serializedVersion: 2
-        x: 176
+        x: 128
         y: 0
-        width: 42
-        height: 72
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -144,12 +144,12 @@ TextureImporter:
       name: Glad1Walk_2
       rect:
         serializedVersion: 2
-        x: 301
+        x: 256
         y: 0
-        width: 39
-        height: 72
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -166,12 +166,12 @@ TextureImporter:
       name: Glad1Walk_3
       rect:
         serializedVersion: 2
-        x: 429
+        x: 384
         y: 0
-        width: 32
-        height: 71
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -188,12 +188,12 @@ TextureImporter:
       name: Glad1Walk_4
       rect:
         serializedVersion: 2
-        x: 555
+        x: 512
         y: 0
-        width: 33
-        height: 70
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -210,12 +210,12 @@ TextureImporter:
       name: Glad1Walk_5
       rect:
         serializedVersion: 2
-        x: 685
+        x: 640
         y: 0
-        width: 33
-        height: 71
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -232,12 +232,12 @@ TextureImporter:
       name: Glad1Walk_6
       rect:
         serializedVersion: 2
-        x: 815
+        x: 768
         y: 0
-        width: 34
-        height: 72
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -254,12 +254,12 @@ TextureImporter:
       name: Glad1Walk_7
       rect:
         serializedVersion: 2
-        x: 941
+        x: 896
         y: 0
-        width: 47
-        height: 72
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -276,12 +276,12 @@ TextureImporter:
       name: Glad1Walk_8
       rect:
         serializedVersion: 2
-        x: 1071
+        x: 1024
         y: 0
-        width: 50
-        height: 71
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -298,12 +298,12 @@ TextureImporter:
       name: Glad1Walk_9
       rect:
         serializedVersion: 2
-        x: 1200
+        x: 1152
         y: 0
-        width: 48
-        height: 70
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []

@@ -100,12 +100,12 @@ TextureImporter:
       name: Glad2Special_0
       rect:
         serializedVersion: 2
-        x: 39
+        x: 0
         y: 0
-        width: 43
-        height: 77
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -122,12 +122,12 @@ TextureImporter:
       name: Glad2Special_1
       rect:
         serializedVersion: 2
-        x: 175
+        x: 128
         y: 0
-        width: 40
-        height: 77
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -144,12 +144,12 @@ TextureImporter:
       name: Glad2Special_2
       rect:
         serializedVersion: 2
-        x: 303
+        x: 256
         y: 0
-        width: 45
-        height: 77
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -166,12 +166,12 @@ TextureImporter:
       name: Glad2Special_3
       rect:
         serializedVersion: 2
-        x: 431
+        x: 384
         y: 0
-        width: 30
-        height: 77
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []

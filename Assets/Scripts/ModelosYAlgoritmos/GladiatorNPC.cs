@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
+using UnityEngine.Rendering;
 using Debug = UnityEngine.Debug;
 
 namespace GladiusAI
@@ -49,23 +50,35 @@ namespace GladiusAI
         [Tooltip("Altura sobre el gladiador donde aparece el cartel (\"¡En guardia!\", etc).")]
         [SerializeField] private float feedbackHeight = 2f;
 
+        [Header("Animaciones")]
+        [Tooltip("Segundos que queda el cuerpo en la arena después de morir (para que se vea la animación Dead).")]
+        [SerializeField] private float corpseLifetime = 2f;
+        [Tooltip("Velocidad mínima para considerar que está caminando (si no, Idle).")]
+        [SerializeField] private float walkSpeedThreshold = 0.2f;
+
         public Blackboard Blackboard { get; private set; }
         public float CurrentHP { get; private set; }
         public bool IsDead => CurrentHP <= 0f;
         public bool HasSurrendered { get; private set; }
         public float OrderCooldownRatio => combat != null ? combat.OrderCooldownRatio : 0f;
 
+        /// <summary>Sprite animado del personaje (no incluye la sombra de los pies).</summary>
+        public SpriteRenderer CharacterSprite { get; private set; }
+
         private Node behaviorTreeRoot;
         private Rigidbody rb;
+        private Collider[] bodyColliders;
 
         private GladiatorMovement movement;
         private GladiatorCombat combat;
         private GladiatorIntentHandler intentHandler;
+        private GladiatorAnimator animator;
 
         private bool combatEnabled = true;
         private string lastAction;
         private bool destroyOnDeath = true;
         private bool invulnerable;
+        private bool corpseCleanupDone;
         private Color currentColor;
         private bool hasColor;
 
@@ -82,6 +95,14 @@ namespace GladiusAI
 
             if (bodyRenderer == null)
                 bodyRenderer = GetComponent<Renderer>();
+
+            bodyColliders = GetComponentsInChildren<Collider>();
+
+            // El sprite del personaje es el que lleva el Animator; el gladiador tiene otros
+            // SpriteRenderer (la sombra de los pies) que no se animan ni se espejan.
+            var unityAnimator = GetComponentInChildren<Animator>();
+            CharacterSprite = unityAnimator != null ? unityAnimator.GetComponent<SpriteRenderer>() : null;
+            animator = new GladiatorAnimator(unityAnimator, CharacterSprite, walkSpeedThreshold);
 
             CurrentHP = maxHP;
 
@@ -146,6 +167,8 @@ namespace GladiusAI
             HasSurrendered = false;
             lastAction = null;
             SetColor(Color.white);
+            SetPhysicalBodyEnabled(true);
+            animator.ResetToIdle();
         }
 
         public void SetIntentController(PlayerIntentController controller)
@@ -178,6 +201,18 @@ namespace GladiusAI
 
         private void Update()
         {
+            TickBehaviour();
+            UpdateAnimation();
+        }
+
+        private void TickBehaviour()
+        {
+            // Los tiempos de espera (entre órdenes, entre golpes, aturdimiento) corren aunque el combate
+            // esté en pausa: si no, una orden dada justo antes de ganar dejaba los botones bloqueados
+            // durante todo el cartel del tutorial siguiente, y no había forma de arrancar el combate.
+            if (!IsDead)
+                combat.Tick(Time.deltaTime);
+
             if (!combatEnabled) return;
 
             if (IsDead)
@@ -189,8 +224,6 @@ namespace GladiusAI
                 behaviorTreeRoot.Tick(Blackboard);
                 return;
             }
-
-            combat.Tick(Time.deltaTime);
 
             if (combat.IsStunned)
             {
@@ -263,6 +296,7 @@ namespace GladiusAI
             float damage = combat.RollDamage();
             cachedTargetNPC.TakeDamage(damage, gladiatorName, transform.position, this);
             combat.RegisterAttack();
+            animator.PlayAttack();
 
             if (IsNewAction("Attack"))
                 Log($">>> GOLPE a {cachedTargetNPC.gladiatorName}! Daño: {damage} | HP enemigo: {cachedTargetNPC.CurrentHP}/{cachedTargetNPC.maxHP}");
@@ -298,8 +332,6 @@ namespace GladiusAI
             return NodeState.Running;
         }
 
-        private bool corpseCleanupDone;
-
         private NodeState ActionDie(Blackboard bb)
         {
             SetColor(Color.gray);
@@ -310,9 +342,13 @@ namespace GladiusAI
             {
                 corpseCleanupDone = true;
                 EventManager.Raise(new GladiatorDiedEvent(gladiatorName));
+                animator.PlayDeath();
 
+                // El cuerpo deja de chocar al instante (no estorba al resto), pero se queda
+                // unos segundos para que se vea la animación Dead antes de sacarlo.
+                SetPhysicalBodyEnabled(false);
                 if (destroyOnDeath)
-                    Destroy(gameObject); // sin delay: saca TODO (collider, sprite, script) de encima 
+                    Destroy(gameObject, corpseLifetime);
             }
 
             return NodeState.Success;
@@ -389,8 +425,8 @@ namespace GladiusAI
 
             if (invulnerable)
             {
-                movement.ApplyKnockback(attackerPosition);
-                combat.ApplyStagger();
+                SoundManager.Play(SoundId.SwordHit);
+                Flinch(attackerPosition);
                 return;
             }
 
@@ -398,6 +434,7 @@ namespace GladiusAI
             {
                 // Parry: el golpe no hace daño, el ATACANTE es quien recibe el empujón.
                 Log($"Paró el golpe de {attackerName}!");
+                SoundManager.Play(SoundId.ShieldBlock);
                 ShowFeedback("¡Bloqueó!", new Color(0.4f, 0.85f, 1f));
                 attacker?.Startle(transform.position);
                 return;
@@ -406,11 +443,49 @@ namespace GladiusAI
             CurrentHP = Mathf.Max(0f, CurrentHP - damage);
             Log($"Recibió {damage} daño de {attackerName}. HP: {CurrentHP}/{maxHP}");
 
+            if (IsDead)
+            {
+                Log("HA CAÍDO EN COMBATE!");
+                SoundManager.Play(SoundId.KillingBlow);
+                movement.ApplyKnockback(attackerPosition);
+                return;
+            }
+
+            SoundManager.Play(SoundId.SwordHit);
+            Flinch(attackerPosition);
+        }
+
+        /// <summary>Reacción a un golpe que no lo mata: empujón, aturdimiento y animación Hurt.</summary>
+        private void Flinch(Vector3 attackerPosition)
+        {
             movement.ApplyKnockback(attackerPosition);
             combat.ApplyStagger();
+            animator.PlayHurt();
+        }
 
-            if (IsDead)
-                Log("HA CAÍDO EN COMBATE!");
+        //  Animación
+
+        /// <summary>
+        /// Estados continuos (Idle/Walk, Block mientras dure la guardia) y orientación.
+        /// Attack, Hurt y Dead son instantáneos: los disparan las acciones que los causan.
+        /// </summary>
+        private void UpdateAnimation()
+        {
+            if (IsDead) return;
+
+            animator.UpdateLocomotion(rb.linearVelocity);
+            animator.SetGuarding(combat.IsDefending);
+            if (target != null)
+                animator.FaceTowards(transform.position, target.position);
+        }
+
+        /// <summary>Al morir el cuerpo deja de chocar y queda clavado en el lugar; al reusarlo vuelve a la normalidad.</summary>
+        private void SetPhysicalBodyEnabled(bool enabled)
+        {
+            foreach (var bodyCollider in bodyColliders)
+                bodyCollider.enabled = enabled;
+
+            rb.constraints = enabled ? RigidbodyConstraints.FreezeRotation : RigidbodyConstraints.FreezeAll;
         }
 
         //  Utilidades
@@ -434,14 +509,21 @@ namespace GladiusAI
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         private void Log(string message) => Debug.Log($"[{gladiatorName}] {message}");
 
-        /// <summary>Solo toca el material si el color cambia: antes se seteaba en cada frame aunque fuera el mismo.</summary>
+        /// <summary>
+        /// Color de debug del estado (rojo atacando, verde patrullando...) sobre la forma básica del gladiador.
+        /// En los prefabs esa forma está apagada (la sombra de los pies es el hijo "Shadow");
+        /// si se reactiva su MeshRenderer, los colores de debug vuelven a verse.
+        /// </summary>
         private void SetColor(Color c)
         {
-            if (bodyRenderer == null || (hasColor && currentColor == c)) return;
+            if (!IsBodyShapeVisible || (hasColor && currentColor == c)) return;
             currentColor = c;
             hasColor = true;
             bodyRenderer.material.color = c;
         }
+
+        private bool IsBodyShapeVisible =>
+            bodyRenderer != null && bodyRenderer.enabled && bodyRenderer.shadowCastingMode != ShadowCastingMode.ShadowsOnly;
 
         private void ShowFeedback(string message, Color color)
             => FloatingText.Spawn(transform.position + Vector3.up * feedbackHeight, message, color);

@@ -100,12 +100,12 @@ TextureImporter:
       name: Glad1Hurt_0
       rect:
         serializedVersion: 2
-        x: 32
+        x: 0
         y: 0
-        width: 60
-        height: 69
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -122,12 +122,12 @@ TextureImporter:
       name: Glad1Hurt_1
       rect:
         serializedVersion: 2
-        x: 149
-        y: 1
-        width: 62
-        height: 68
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 128
+        y: 0
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -144,12 +144,12 @@ TextureImporter:
       name: Glad1Hurt_2
       rect:
         serializedVersion: 2
-        x: 277
+        x: 256
         y: 0
-        width: 61
-        height: 68
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -166,12 +166,12 @@ TextureImporter:
       name: Glad1Hurt_3
       rect:
         serializedVersion: 2
-        x: 405
+        x: 384
         y: 0
-        width: 60
-        height: 68
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []

@@ -100,12 +100,12 @@ TextureImporter:
       name: Ama2Idle_2_0
       rect:
         serializedVersion: 2
-        x: 46
+        x: 0
         y: 0
-        width: 36
-        height: 67
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -122,12 +122,12 @@ TextureImporter:
       name: Ama2Idle_2_1
       rect:
         serializedVersion: 2
-        x: 174
+        x: 128
         y: 0
-        width: 36
-        height: 67
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -144,12 +144,12 @@ TextureImporter:
       name: Ama2Idle_2_2
       rect:
         serializedVersion: 2
-        x: 302
+        x: 256
         y: 0
-        width: 36
-        height: 67
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -166,12 +166,12 @@ TextureImporter:
       name: Ama2Idle_2_3
       rect:
         serializedVersion: 2
-        x: 430
+        x: 384
         y: 0
-        width: 36
-        height: 67
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -188,12 +188,12 @@ TextureImporter:
       name: Ama2Idle_2_4
       rect:
         serializedVersion: 2
-        x: 558
+        x: 512
         y: 0
-        width: 36
-        height: 67
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -210,12 +210,12 @@ TextureImporter:
       name: Ama2Idle_2_5
       rect:
         serializedVersion: 2
-        x: 686
+        x: 640
         y: 0
-        width: 36
-        height: 68
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -232,12 +232,12 @@ TextureImporter:
       name: Ama2Idle_2_6
       rect:
         serializedVersion: 2
-        x: 814
+        x: 768
         y: 0
-        width: 36
-        height: 69
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -254,12 +254,12 @@ TextureImporter:
       name: Ama2Idle_2_7
       rect:
         serializedVersion: 2
-        x: 942
+        x: 896
         y: 0
-        width: 36
-        height: 71
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -276,12 +276,12 @@ TextureImporter:
       name: Ama2Idle_2_8
       rect:
         serializedVersion: 2
-        x: 1070
+        x: 1024
         y: 0
-        width: 36
-        height: 67
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []

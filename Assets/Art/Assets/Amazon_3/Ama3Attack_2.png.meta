@@ -100,12 +100,12 @@ TextureImporter:
       name: Ama3Attack_2_0
       rect:
         serializedVersion: 2
-        x: 33
+        x: 0
         y: 0
-        width: 30
-        height: 61
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -122,12 +122,12 @@ TextureImporter:
       name: Ama3Attack_2_1
       rect:
         serializedVersion: 2
-        x: 159
+        x: 128
         y: 0
-        width: 62
-        height: 67
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -144,12 +144,12 @@ TextureImporter:
       name: Ama3Attack_2_2
       rect:
         serializedVersion: 2
-        x: 288
+        x: 256
         y: 0
-        width: 55
-        height: 67
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []

@@ -156,6 +156,7 @@ namespace GladiusAI
             if (result == CombatResult.Victory && grantsGladiatorUnlock)
                 GladiatorRoster.UnlockNext();
 
+            SoundManager.Play(result == CombatResult.Victory ? SoundId.CrowdCheer : SoundId.CrowdBoo);
             EventManager.Raise(new CombatEndedEvent(result));
             StartCoroutine(LoadNextSceneAfterDelay());
         }
@@ -270,10 +271,13 @@ namespace GladiusAI
                     yield break;
                 }
 
-                enemyPool.Release(enemy);
-
+                // El cuerpo queda en la arena durante el respiro (se ve la animacion Dead) y recien
+                // despues vuelve al pool. Al ultimo enemigo no hace falta guardarlo: se cambia de escena.
                 if (i < waves.Length - 1)
+                {
                     yield return new WaitForSeconds(delayBetweenWaves);
+                    enemyPool.Release(enemy);
+                }
             }
 
             EndCombat(CombatResult.Victory);

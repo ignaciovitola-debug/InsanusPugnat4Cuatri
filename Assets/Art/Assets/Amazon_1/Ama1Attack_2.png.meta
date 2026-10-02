@@ -100,12 +100,12 @@ TextureImporter:
       name: Ama1Attack_2_0
       rect:
         serializedVersion: 2
-        x: 56
+        x: 0
         y: 0
-        width: 43
-        height: 72
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -122,12 +122,12 @@ TextureImporter:
       name: Ama1Attack_2_1
       rect:
         serializedVersion: 2
-        x: 184
+        x: 128
         y: 0
-        width: 45
-        height: 67
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -141,23 +141,23 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ama1Attack_2_5
+      name: Ama1Attack_2_2
       rect:
         serializedVersion: 2
-        x: 299
+        x: 256
         y: 0
-        width: 60
-        height: 65
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ad522d1555ab74747bf8e5aafc761991
-      internalID: 2054119795
+      spriteID: 104c1179a9fb0834c9f81e04ef0515a3
+      internalID: 1056636507
       vertices: []
       indices: 
       edges: []

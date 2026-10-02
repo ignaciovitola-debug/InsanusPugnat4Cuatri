@@ -100,12 +100,12 @@ TextureImporter:
       name: Ama1Dead_0
       rect:
         serializedVersion: 2
-        x: 37
-        y: 4
-        width: 22
-        height: 22
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -122,12 +122,12 @@ TextureImporter:
       name: Ama1Dead_1
       rect:
         serializedVersion: 2
-        x: 50
+        x: 128
         y: 0
-        width: 33
-        height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -144,12 +144,12 @@ TextureImporter:
       name: Ama1Dead_2
       rect:
         serializedVersion: 2
-        x: 155
+        x: 256
         y: 0
-        width: 60
-        height: 33
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -166,12 +166,12 @@ TextureImporter:
       name: Ama1Dead_3
       rect:
         serializedVersion: 2
-        x: 276
+        x: 384
         y: 0
-        width: 73
-        height: 25
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -180,28 +180,6 @@ TextureImporter:
       bones: []
       spriteID: dc0f9729e51a76e4faf71ffbd8e4faba
       internalID: 1256672665
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Ama1Dead_4
-      rect:
-        serializedVersion: 2
-        x: 400
-        y: 0
-        width: 75
-        height: 17
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6d66c7ee241029e408015e3164da31e7
-      internalID: -142884550
       vertices: []
       indices: 
       edges: []

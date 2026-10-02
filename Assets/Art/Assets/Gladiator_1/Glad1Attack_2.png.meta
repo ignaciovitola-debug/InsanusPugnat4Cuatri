@@ -100,12 +100,12 @@ TextureImporter:
       name: Glad1Attack_2_0
       rect:
         serializedVersion: 2
-        x: 42
+        x: 0
         y: 0
-        width: 42
-        height: 67
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -122,12 +122,12 @@ TextureImporter:
       name: Glad1Attack_2_1
       rect:
         serializedVersion: 2
-        x: 129
+        x: 128
         y: 0
-        width: 93
-        height: 69
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -141,37 +141,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Attack_2_2
-      rect:
-        serializedVersion: 2
-        x: 223
-        y: 32
-        width: 28
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 21dd8be34294b2648b0203aafb0e9329
-      internalID: 2106857417
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Glad1Attack_2_2
       rect:
         serializedVersion: 2
-        x: 252
+        x: 256
         y: 0
-        width: 93
-        height: 70
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -188,12 +166,12 @@ TextureImporter:
       name: Glad1Attack_2_3
       rect:
         serializedVersion: 2
-        x: 391
+        x: 384
         y: 0
-        width: 77
-        height: 70
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []

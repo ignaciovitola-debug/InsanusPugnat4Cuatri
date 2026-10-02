@@ -6,41 +6,53 @@ namespace GladiusAI
     /// <summary>Gladiador clickeable/tocable en la Ludus. Avisa a LudusController cual es su indice en el roster.</summary>
     public class LudusGladiatorSlot : MonoBehaviour, IPointerClickHandler
     {
-        [SerializeField] private Renderer bodyRenderer;
+        private static readonly Color LockedTint = new Color(0.15f, 0.15f, 0.15f);
+        private static readonly Color HighlightTint = new Color(1f, 0.85f, 0.3f);
+
+        [Tooltip("Sprite del personaje que se tiñe al estar bloqueado o elegido. Si queda vacío se usa el del GladiatorNPC.")]
+        [SerializeField] private SpriteRenderer characterSprite;
 
         private int slotIndex;
         private LudusController controller;
         private bool locked;
 
+        // LudusController lo llama en Start, cuando el GladiatorNPC ya resolvió su sprite en Awake.
         public void Configure(int index, LudusController owner)
         {
             slotIndex = index;
             controller = owner;
+
+            if (characterSprite == null)
+            {
+                var gladiator = GetComponent<GladiatorNPC>();
+                if (gladiator != null)
+                    characterSprite = gladiator.CharacterSprite;
+            }
         }
 
-        private void Awake()
-        {
-            if (bodyRenderer == null)
-                bodyRenderer = GetComponentInChildren<Renderer>();
-        }
-
+        // El toque lo detecta el collider del gladiador, que sigue activo aunque su forma no se dibuje.
         public void OnPointerClick(PointerEventData eventData)
         {
             if (!locked) controller.SelectSlot(slotIndex);
         }
 
-        /// <summary>Tine de gris y deja de responder al toque mientras el gladiador no este reclutado.</summary>
+        /// <summary>Oscurece al gladiador y deja de responder al toque mientras no este reclutado.</summary>
         public void SetLocked(bool value)
         {
             locked = value;
-            if (bodyRenderer != null)
-                bodyRenderer.material.color = locked ? new Color(0.15f, 0.15f, 0.15f) : Color.white;
+            SetTint(locked ? LockedTint : Color.white);
         }
 
         public void SetHighlighted(bool highlighted)
         {
-            if (locked || bodyRenderer == null) return;
-            bodyRenderer.material.color = highlighted ? Color.yellow : Color.white;
+            if (!locked)
+                SetTint(highlighted ? HighlightTint : Color.white);
+        }
+
+        private void SetTint(Color tint)
+        {
+            if (characterSprite != null)
+                characterSprite.color = tint;
         }
     }
 }
