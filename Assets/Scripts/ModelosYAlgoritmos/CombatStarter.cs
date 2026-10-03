@@ -5,6 +5,15 @@ using UnityEngine.SceneManagement;
 
 namespace GladiusAI
 {
+    /// Botones de orden habilitados en un combate. Nada marcado = todos.
+    [System.Flags]
+    public enum OrderSet
+    {
+        Attack = 1 << 0,
+        Defend = 1 << 1,
+        Surrender = 1 << 2,
+    }
+
     public class CombatStarter : MonoBehaviour
     {
         [System.Serializable]
@@ -17,13 +26,22 @@ namespace GladiusAI
             public float attackCooldown;
 
             [Header("Tutorial (opcional)")]
-            [Tooltip("Si es distinto de None, el combate no arranca hasta que el jugador use ese boton al menos una vez.")]
+            [Tooltip("Botones de orden que se ven en este combate (el tutorial los va habilitando de a uno). Nothing = todos.")]
+            public OrderSet availableOrders;
+            [Tooltip("Lo que dice el instructor después del título, antes de que arranque el combate.")]
+            public DialogueLine[] introDialogue;
+            [Tooltip("Si es distinto de None, el combate no arranca hasta que el jugador toque ese botón.")]
             public PlayerIntent requiredIntentToStart;
-            public bool invulnerable;
+            [Tooltip("Cartel fijo mientras se espera ese botón (ej: \"¡Tocá Atacá!\").")]
             [TextArea] public string tutorialHint;
-            [Tooltip("Si se completa este tiempo sin resolver el gate, el cartel cambia a tutorialHintDelayed.")]
-            public string tutorialHintDelayed;
-            public float tutorialHintDelaySeconds;
+            public bool invulnerable;
+            [Tooltip("Botón que queda resaltado (y se puede tocar) durante toda la pelea, hasta que termina.")]
+            public PlayerIntent highlightDuringFight;
+            [Tooltip("Lo que dice el instructor en medio del combate, a los midFightDelaySeconds de pelea (el combate se pausa).")]
+            public DialogueLine[] midFightDialogue;
+            public float midFightDelaySeconds;
+            [Tooltip("Cartel fijo que queda después de ese diálogo, hasta que termina el combate (ej: \"¡Tocá Ríndete!\").")]
+            [TextArea] public string midFightHint;
         }
 
         [Header("Factory")]
@@ -49,12 +67,23 @@ namespace GladiusAI
         [Header("Consignas del jugador")]
         [SerializeField] private PlayerIntentController intentController;
 
+        [Header("Tutorial (opcional, Nivel 1)")]
+        [SerializeField] private TutorialDialogue dialogue;
+        [Tooltip("En este orden: Atacá, Defiéndete, Ríndete. Cada oleada muestra solo los de su availableOrders.")]
+        [SerializeField] private GameObject[] orderButtons = new GameObject[0];
+        [Tooltip("Lo que dice el instructor al entrar a la arena, antes de la cuenta regresiva.")]
+        [SerializeField] private DialogueLine[] levelIntroDialogue;
+        [Tooltip("Lo que dice el instructor al terminar el nivel sin morir (ganando o rindiéndose), antes del resultado.")]
+        [SerializeField] private DialogueLine[] levelOutroDialogue;
+
         [Header("Despues del combate")]
         [Tooltip("Escena a la que se pasa unos segundos despues de terminar el combate (Arena 1 -> Ludus, Arena 2 -> Menu).")]
         [SerializeField] private string nextSceneAfterCombat = "Menu";
         [SerializeField] private float delayBeforeNextScene = 2.5f;
-        [Tooltip("Respiro entre vencer a un gladiador y que arranque el siguiente (Nivel 1, oleadas).")]
-        [SerializeField] private float delayBetweenWaves = 2f;
+        [Tooltip("Oleadas (Nivel 1): segundos entre matar a un gladiador (festeja el público) y pasar al siguiente combate.")]
+        [SerializeField] private float delayBetweenWaves = 1f;
+        [Tooltip("Oleadas (Nivel 1): segundos que se muestra el título de cada combate antes de que arranque.")]
+        [SerializeField] private float waveTitleSeconds = 3f;
         [Tooltip("Activar solo en la Arena 2 -- gana una vez y desbloquea al siguiente gladiador de la Ludus.")]
         [SerializeField] private bool grantsGladiatorUnlock;
 
@@ -150,7 +179,7 @@ namespace GladiusAI
             }
         }
 
-        /// <summary>Publica el resultado por EventManager y agenda el paso a la siguiente escena.</summary>
+        /// Publica el resultado por EventManager y agenda el paso a la siguiente escena.
         private void EndCombat(CombatResult result)
         {
             if (result == CombatResult.Victory && grantsGladiatorUnlock)
@@ -215,11 +244,13 @@ namespace GladiusAI
             player?.SetIntentController(intentController);
             player?.SetCombatEnabled(false);
 
+            yield return PlayDialogue(levelIntroDialogue);
             yield return StartCoroutine(RunCountdown(activateCombatAfter: false));
 
             for (int i = 0; i < waves.Length; i++)
             {
                 EnemyWave wave = waves[i];
+                ShowAvailableOrders(wave.availableOrders);
 
                 // Los dos quedan quietos en su punto de inicio hasta que arranca el combate: si no,
                 // durante el cartel del rival / del tutorial ya caminaban uno hacia el otro.
@@ -241,22 +272,17 @@ namespace GladiusAI
                     enemy.SetTarget(player.transform);
                 }
 
-                if (countdownLabel != null && !string.IsNullOrEmpty(wave.label))
-                {
-                    countdownLabel.gameObject.SetActive(true);
-                    countdownLabel.text = wave.label;
-                    yield return new WaitForSeconds(1.5f);
-                    countdownLabel.gameObject.SetActive(false);
-                }
+                yield return ShowWaveTitle(wave.label);
+                yield return PlayDialogue(wave.introDialogue);
 
                 if (wave.requiredIntentToStart != PlayerIntent.None)
                     yield return StartCoroutine(WaitForRequiredIntent(wave));
 
-                player?.SetCombatEnabled(true);
-                enemy?.SetCombatEnabled(true);
-
-                while (enemy != null && !enemy.IsDead && player != null && !player.IsDead && !player.HasSurrendered)
-                    yield return null;
+                SetGladiatorsFighting(true);
+                SetPromptHighlight(wave.highlightDuringFight);
+                yield return RunFight(wave);
+                SetPromptHighlight(PlayerIntent.None);
+                HideHint();
 
                 if (player == null || player.IsDead)
                 {
@@ -267,50 +293,123 @@ namespace GladiusAI
 
                 if (player.HasSurrendered)
                 {
+                    yield return PlayDialogue(levelOutroDialogue);
                     EndCombat(CombatResult.Surrender);
                     yield break;
                 }
 
-                // El cuerpo queda en la arena durante el respiro (se ve la animacion Dead) y recien
-                // despues vuelve al pool. Al ultimo enemigo no hace falta guardarlo: se cambia de escena.
+                // Entre combates: festeja el público, el cuerpo queda en la arena durante el respiro
+                // (se ve la animación Dead) y recién después vuelve al pool. Después del último no hace
+                // falta: EndCombat ya hace festejar al público y se cambia de escena.
                 if (i < waves.Length - 1)
                 {
+                    SoundManager.Play(SoundId.CrowdCheer);
                     yield return new WaitForSeconds(delayBetweenWaves);
                     enemyPool.Release(enemy);
                 }
             }
 
+            yield return PlayDialogue(levelOutroDialogue);
             EndCombat(CombatResult.Victory);
         }
 
-        /// <summary>Muestra el cartel del tutorial y bloquea el arranque del combate hasta que el jugador use el boton pedido.</summary>
-        private IEnumerator WaitForRequiredIntent(EnemyWave wave)
+        /// Espera a que termine el combate (muere alguno o el jugador se rinde). Si la oleada tiene
+        /// diálogo de mitad de pelea, a los midFightDelaySeconds pausa a los dos, habla el instructor
+        /// y queda el cartel de ayuda hasta el final.
+        private IEnumerator RunFight(EnemyWave wave)
         {
-            if (tutorialHintLabel != null)
-            {
-                tutorialHintLabel.gameObject.SetActive(true);
-                tutorialHintLabel.text = wave.tutorialHint;
-            }
+            bool hasMidFightDialogue = wave.midFightDialogue != null && wave.midFightDialogue.Length > 0;
+            float fightTime = 0f;
 
-            float elapsed = 0f;
-            bool swapped = false;
-
-            while (intentController == null || intentController.CurrentIntent != wave.requiredIntentToStart)
+            while (IsFightOngoing())
             {
-                elapsed += Time.deltaTime;
-                if (!swapped && !string.IsNullOrEmpty(wave.tutorialHintDelayed) && elapsed >= wave.tutorialHintDelaySeconds)
+                if (hasMidFightDialogue && fightTime >= wave.midFightDelaySeconds)
                 {
-                    swapped = true;
-                    if (tutorialHintLabel != null)
-                        tutorialHintLabel.text = wave.tutorialHintDelayed;
+                    hasMidFightDialogue = false;
+                    SetGladiatorsFighting(false);
+                    yield return PlayDialogue(wave.midFightDialogue);
+                    ShowHint(wave.midFightHint);
+                    SetGladiatorsFighting(true);
                 }
+
+                fightTime += Time.deltaTime;
                 yield return null;
             }
+        }
 
-            intentController?.ClearIntent();
+        private bool IsFightOngoing()
+            => enemy != null && !enemy.IsDead && player != null && !player.IsDead && !player.HasSurrendered;
 
+        private void SetGladiatorsFighting(bool fighting)
+        {
+            player?.SetCombatEnabled(fighting);
+            enemy?.SetCombatEnabled(fighting);
+        }
+
+        // Qué bit de OrderSet corresponde a cada posición de orderButtons (Atacá, Defiéndete, Ríndete).
+        private static readonly OrderSet[] OrderButtonFlags = { OrderSet.Attack, OrderSet.Defend, OrderSet.Surrender };
+
+        /// Muestra solo los botones de orden habilitados para este combate (Nothing = todos).
+        /// OrderSet es un enum de "flags": cada botón es un bit, y con el operador & preguntamos si ese
+        /// bit está prendido en la combinación elegida en el Inspector.
+        private void ShowAvailableOrders(OrderSet available)
+        {
+            for (int i = 0; i < orderButtons.Length && i < OrderButtonFlags.Length; i++)
+            {
+                if (orderButtons[i] != null)
+                    orderButtons[i].SetActive(available == 0 || (available & OrderButtonFlags[i]) != 0);
+            }
+        }
+
+        private void SetPromptHighlight(PlayerIntent intent)
+        {
+            if (dialogue != null)
+                dialogue.SetPromptHighlight(intent);
+        }
+
+        private IEnumerator PlayDialogue(DialogueLine[] lines)
+        {
+            if (dialogue != null && lines != null && lines.Length > 0)
+                yield return dialogue.Play(lines);
+        }
+
+        private void ShowHint(string text)
+        {
+            if (tutorialHintLabel == null || string.IsNullOrEmpty(text)) return;
+            tutorialHintLabel.text = text;
+            tutorialHintLabel.gameObject.SetActive(true);
+        }
+
+        private void HideHint()
+        {
             if (tutorialHintLabel != null)
                 tutorialHintLabel.gameObject.SetActive(false);
+        }
+
+        /// Muestra el nombre del combate ("Enemigo 2: El Agresivo") con los dos gladiadores quietos.
+        private IEnumerator ShowWaveTitle(string title)
+        {
+            if (countdownLabel == null || string.IsNullOrEmpty(title)) yield break;
+
+            countdownLabel.gameObject.SetActive(true);
+            countdownLabel.text = title;
+            yield return new WaitForSeconds(waveTitleSeconds);
+            countdownLabel.gameObject.SetActive(false);
+        }
+
+        /// Bloquea el arranque del combate hasta que el jugador toque el botón pedido, que queda resaltado
+        /// mientras tanto. El cartel de ayuda es opcional (tutorialHint vacío = sin cartel).
+        private IEnumerator WaitForRequiredIntent(EnemyWave wave)
+        {
+            ShowHint(wave.tutorialHint);
+            SetPromptHighlight(wave.requiredIntentToStart);
+
+            while (intentController == null || intentController.CurrentIntent != wave.requiredIntentToStart)
+                yield return null;
+
+            intentController.ClearIntent();
+            SetPromptHighlight(PlayerIntent.None);
+            HideHint();
         }
     }
 }

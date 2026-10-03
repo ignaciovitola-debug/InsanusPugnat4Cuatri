@@ -21,7 +21,7 @@ namespace GladiusAI
         public bool IsDefending => defendTimer > 0f;
         public bool CanReceiveOrder => orderCooldownTimer <= 0f;
 
-        /// <summary>1 recien dada la orden, 0 cuando ya se puede dar otra. Lo usan los botones para mostrar la espera.</summary>
+        /// 1 recien dada la orden, 0 cuando ya se puede dar otra. Lo usan los botones para mostrar la espera.
         public float OrderCooldownRatio => orderCooldownTimer > 0f ? orderCooldownTimer / OrderCooldown : 0f;
 
         public GladiatorCombat(float minDamage, float maxDamage, float attackCooldown,
@@ -50,7 +50,7 @@ namespace GladiusAI
 
         public void ApplyStagger() => stunTimer = staggerDuration;
 
-        /// <summary>Consigna de "redoblar ataque": comparte cooldown con TryDefend para que no se pueda spamear ninguna orden.</summary>
+        /// Consigna de "redoblar ataque": comparte cooldown con TryDefend para que no se pueda spamear ninguna orden.
         public bool TryRedoubleAttack()
         {
             if (orderCooldownTimer > 0f) return false;
@@ -59,7 +59,7 @@ namespace GladiusAI
             return true;
         }
 
-        /// <summary>Consigna de "defenderse": mismo cooldown compartido que TryRedoubleAttack.</summary>
+        /// Consigna de "defenderse": mismo cooldown compartido que TryRedoubleAttack.
         public bool TryDefend(float duration)
         {
             if (orderCooldownTimer > 0f) return false;

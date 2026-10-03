@@ -3,10 +3,8 @@ using UnityEngine;
 
 namespace GladiusAI
 {
-    /// <summary>
     /// Roster de hasta 8 gladiadores reclutables y cual se eligio para el proximo combate.
     /// Estatica para sobrevivir el cambio de escena Ludus -> ArenaDeCombate2, igual que EventManager.
-    /// </summary>
     public static class GladiatorRoster
     {
         public const int SlotCount = 8;
@@ -40,7 +38,7 @@ namespace GladiusAI
             return Slots[index];
         }
 
-        /// <summary>Tu gladiador cayo en combate: ese slot vuelve a stats basicas.</summary>
+        /// Tu gladiador cayo en combate: ese slot vuelve a stats basicas.
         public static void ResetSlotToBasic(int index)
         {
             if (index < 0 || index >= Slots.Count) return;
@@ -52,7 +50,7 @@ namespace GladiusAI
         public static bool IsUnlocked(int index)
             => index >= 0 && index < Slots.Count && Slots[index].unlocked;
 
-        /// <summary>Se gano el combate que otorga reclutas: desbloquea el proximo gladiador bloqueado y le sortea stats.</summary>
+        /// Se gano el combate que otorga reclutas: desbloquea el proximo gladiador bloqueado y le sortea stats.
         public static void UnlockNext()
         {
             for (int i = 1; i < Slots.Count; i++)

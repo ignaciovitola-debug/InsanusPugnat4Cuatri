@@ -1910,7 +1910,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3685,9 +3685,13 @@ MonoBehaviour:
   countdownLabel: {fileID: 878809711}
   tutorialHintLabel: {fileID: 0}
   intentController: {fileID: 1002719581}
+  dialogue: {fileID: 0}
+  levelIntroDialogue: []
+  levelOutroDialogue: []
   nextSceneAfterCombat: Menu
   delayBeforeNextScene: 2.5
   delayBetweenWaves: 2
+  waveTitleSeconds: 3
   grantsGladiatorUnlock: 0
 --- !u!4 &1724236010
 Transform:

@@ -9,7 +9,7 @@ namespace GladiusAI
     [RequireComponent(typeof(Rigidbody))]
     public class GladiatorNPC : MonoBehaviour
     {
-        /// <summary>Gladiadores activos en la escena (lo usa ArenaBeast para no hacer FindObjectsByType cada frame).</summary>
+        /// Gladiadores activos en la escena (lo usa ArenaBeast para no hacer FindObjectsByType cada frame).
         public static readonly List<GladiatorNPC> All = new List<GladiatorNPC>();
 
         [Header("Identidad")]
@@ -62,7 +62,7 @@ namespace GladiusAI
         public bool HasSurrendered { get; private set; }
         public float OrderCooldownRatio => combat != null ? combat.OrderCooldownRatio : 0f;
 
-        /// <summary>Sprite animado del personaje (no incluye la sombra de los pies).</summary>
+        /// Sprite animado del personaje (no incluye la sombra de los pies).
         public SpriteRenderer CharacterSprite { get; private set; }
 
         private Node behaviorTreeRoot;
@@ -141,10 +141,8 @@ namespace GladiusAI
                 movement?.Stop();
         }
 
-        /// <summary>
         /// Mueve al gladiador al instante y sin inercia. Hay que mover el Rigidbody y no solo el transform:
         /// con interpolacion activada, la fisica pisaria el transform y lo devolveria a donde estaba.
-        /// </summary>
         public void TeleportTo(Vector3 position)
         {
             rb.position = position;
@@ -155,10 +153,10 @@ namespace GladiusAI
 
         public void SetDestroyOnDeath(bool value) => destroyOnDeath = value;
 
-        /// <summary>Usado por CombatStarter en la ola-tutorial invulnerable: TakeDamage no le hace nada mientras esto sea true.</summary>
+        /// Usado por CombatStarter en la ola-tutorial invulnerable: TakeDamage no le hace nada mientras esto sea true.
         public void SetInvulnerable(bool value) => invulnerable = value;
 
-        /// <summary>Restaura la vida al maximo actual (usado al reiniciar el spawn entre olas del tutorial).</summary>
+        /// Restaura la vida al maximo actual (usado al reiniciar el spawn entre olas del tutorial).
         public void FullyHeal() => CurrentHP = maxHP;
 
         public void ResetForReuse()
@@ -455,7 +453,7 @@ namespace GladiusAI
             Flinch(attackerPosition);
         }
 
-        /// <summary>Reacción a un golpe que no lo mata: empujón, aturdimiento y animación Hurt.</summary>
+        /// Reacción a un golpe que no lo mata: empujón, aturdimiento y animación Hurt.
         private void Flinch(Vector3 attackerPosition)
         {
             movement.ApplyKnockback(attackerPosition);
@@ -465,10 +463,8 @@ namespace GladiusAI
 
         //  Animación
 
-        /// <summary>
         /// Estados continuos (Idle/Walk, Block mientras dure la guardia) y orientación.
         /// Attack, Hurt y Dead son instantáneos: los disparan las acciones que los causan.
-        /// </summary>
         private void UpdateAnimation()
         {
             if (IsDead) return;
@@ -479,7 +475,7 @@ namespace GladiusAI
                 animator.FaceTowards(transform.position, target.position);
         }
 
-        /// <summary>Al morir el cuerpo deja de chocar y queda clavado en el lugar; al reusarlo vuelve a la normalidad.</summary>
+        /// Al morir el cuerpo deja de chocar y queda clavado en el lugar; al reusarlo vuelve a la normalidad.
         private void SetPhysicalBodyEnabled(bool enabled)
         {
             foreach (var bodyCollider in bodyColliders)
@@ -490,7 +486,7 @@ namespace GladiusAI
 
         //  Utilidades
 
-        /// <summary>true solo la primera vez que se entra a esta accion (para no repetir el mismo log cada frame).</summary>
+        /// true solo la primera vez que se entra a esta accion (para no repetir el mismo log cada frame).
         private bool IsNewAction(string action)
         {
             if (lastAction == action) return false;
@@ -509,11 +505,9 @@ namespace GladiusAI
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         private void Log(string message) => Debug.Log($"[{gladiatorName}] {message}");
 
-        /// <summary>
         /// Color de debug del estado (rojo atacando, verde patrullando...) sobre la forma básica del gladiador.
         /// En los prefabs esa forma está apagada (la sombra de los pies es el hijo "Shadow");
         /// si se reactiva su MeshRenderer, los colores de debug vuelven a verse.
-        /// </summary>
         private void SetColor(Color c)
         {
             if (!IsBodyShapeVisible || (hasColor && currentColor == c)) return;

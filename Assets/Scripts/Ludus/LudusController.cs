@@ -4,7 +4,7 @@ using TMPro;
 
 namespace GladiusAI
 {
-    /// <summary>Controla la escena Ludus: muestra el roster de 8 gladiadores, la seleccion, y arranca la Arena 2 con el elegido.</summary>
+    /// Controla la escena Ludus: muestra el roster de 8 gladiadores, la seleccion, y arranca la Arena 2 con el elegido.
     public class LudusController : MonoBehaviour
     {
         [SerializeField] private LudusGladiatorSlot[] slots;

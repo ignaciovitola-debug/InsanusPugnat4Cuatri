@@ -5,12 +5,10 @@ using UnityEngine.UI;
 
 namespace GladiusAI
 {
-    /// <summary>
     /// Fundido a negro entre escenas. Vive en Splash (la primera escena que carga
     /// siempre) y sobrevive el resto de la partida via DontDestroyOnLoad, asi
     /// cualquier escena puede llamar SceneFader.Instance.FadeToScene(nombre) en vez
     /// de SceneManager.LoadScene directo.
-    /// </summary>
     public class SceneFader : MonoBehaviour
     {
         public static SceneFader Instance { get; private set; }
@@ -48,10 +46,12 @@ namespace GladiusAI
             fadeImage.gameObject.SetActive(true);
             SetAlpha(from);
 
+            // Tiempo real: el fundido tiene que avanzar aunque la escena nueva arranque en pausa
+            // (por ejemplo, con el diálogo del tutorial abierto).
             float t = 0f;
             while (t < fadeDuration)
             {
-                t += Time.deltaTime;
+                t += Time.unscaledDeltaTime;
                 SetAlpha(Mathf.Lerp(from, to, t / fadeDuration));
                 yield return null;
             }

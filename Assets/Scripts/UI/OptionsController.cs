@@ -4,7 +4,7 @@ using TMPro;
 
 namespace GladiusAI
 {
-    /// <summary>Volumen general y calidad gráfica del panel de Opciones. Persiste con PlayerPrefs.</summary>
+    /// Volumen general y calidad gráfica del panel de Opciones. Persiste con PlayerPrefs.
     public class OptionsController : MonoBehaviour
     {
         private const string VolumeKey = "MasterVolume";
@@ -15,7 +15,7 @@ namespace GladiusAI
 
         private int qualityIndex;
 
-        /// <summary>Usado por la herramienta de Editor al armar el panel — asigna las referencias una sola vez.</summary>
+        /// Usado por la herramienta de Editor al armar el panel — asigna las referencias una sola vez.
         public void Configure(Slider slider, TextMeshProUGUI label)
         {
             volumeSlider = slider;

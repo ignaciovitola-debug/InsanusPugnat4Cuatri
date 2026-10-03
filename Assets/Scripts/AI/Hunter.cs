@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace GladiusAI
 {
-    /// <summary>
     /// El león: NPC cazador controlado por una FSM 
     /// Puede haber varias instancias en la escena 
    
@@ -114,7 +113,7 @@ namespace GladiusAI
         public void RegenerateEnergy(float deltaTime) =>
             currentEnergy = Mathf.Min(maxEnergy, currentEnergy + energyRegenPerSecond * deltaTime);
 
-        /// <summary>Descuenta energía; devuelve true si se agotó 
+        /// Descuenta energía; devuelve true si se agotó
         public bool TryDrainEnergy(float amount)
         {
             currentEnergy = Mathf.Max(0f, currentEnergy - amount);

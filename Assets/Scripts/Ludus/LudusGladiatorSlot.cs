@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 
 namespace GladiusAI
 {
-    /// <summary>Gladiador clickeable/tocable en la Ludus. Avisa a LudusController cual es su indice en el roster.</summary>
+    /// Gladiador clickeable/tocable en la Ludus. Avisa a LudusController cual es su indice en el roster.
     public class LudusGladiatorSlot : MonoBehaviour, IPointerClickHandler
     {
         private static readonly Color LockedTint = new Color(0.15f, 0.15f, 0.15f);
@@ -36,7 +36,7 @@ namespace GladiusAI
             if (!locked) controller.SelectSlot(slotIndex);
         }
 
-        /// <summary>Oscurece al gladiador y deja de responder al toque mientras no este reclutado.</summary>
+        /// Oscurece al gladiador y deja de responder al toque mientras no este reclutado.
         public void SetLocked(bool value)
         {
             locked = value;
@@ -49,6 +49,8 @@ namespace GladiusAI
                 SetTint(highlighted ? HighlightTint : Color.white);
         }
 
+        // SpriteRenderer.color multiplica los colores del dibujo: blanco lo deja igual, un gris oscuro lo
+        // convierte en silueta y un dorado lo "ilumina". No crea materiales nuevos, así que es gratis.
         private void SetTint(Color tint)
         {
             if (characterSprite != null)

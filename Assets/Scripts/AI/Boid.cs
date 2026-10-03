@@ -100,7 +100,7 @@ namespace GladiusAI
         /// si no, ¿hay boids del grupo cerca? -> Flocking
         /// si está solo -> vagar
 
-        /// <summary>Nombres de los nodos del arbol: enum en vez de string literal para que un typo sea un error de compilacion, no un cartel confuso en el Log.</summary>
+        /// Nombres de los nodos del arbol: enum en vez de string literal para que un typo sea un error de compilacion, no un cartel confuso en el Log.
         private enum BoidNode
         {
             Root,
@@ -211,7 +211,7 @@ namespace GladiusAI
         }
 
         //Auxiliares
-        /// <summary>Reusa la misma lista en vez de crear una nueva cada frame (menos basura para el GC).</summary>
+        /// Reusa la misma lista en vez de crear una nueva cada frame (menos basura para el GC).
         private void FillFlockmates()
         {
             flockmates.Clear();

@@ -1,10 +1,11 @@
 namespace GladiusAI
 {
-    /// <summary>
-    /// Nombre de cada sonido del juego. El código pide sonidos por este nombre y la SoundLibrary
-    /// decide qué archivo(s) suenan: cambiar un sonido no requiere tocar código.
-    /// Agregar valores siempre al final, para no desordenar los ya asignados en la SoundLibrary.
-    /// </summary>
+    /// Lista de todos los sonidos del juego, identificados por nombre.
+    /// El código nunca nombra archivos de audio: pide, por ejemplo, SoundManager.Play(SoundId.SwordHit),
+    /// y la SoundLibrary decide qué clip(s) suenan. Así, cambiar un sonido no requiere tocar código.
+    ///
+    /// IMPORTANTE: los valores tienen número fijo porque Unity guarda en la SoundLibrary el número,
+    /// no el nombre. Los sonidos nuevos se agregan siempre al final, con el número siguiente.
     public enum SoundId
     {
         None = 0,
