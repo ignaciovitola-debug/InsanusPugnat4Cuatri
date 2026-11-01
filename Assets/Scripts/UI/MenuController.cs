@@ -37,6 +37,14 @@ namespace GladiusAI
         public void ShowCredits() => creditsPanel.SetActive(true);
         public void HideCredits() => creditsPanel.SetActive(false);
 
+        // Boton "Borrar datos": deja el juego como el primer dia y recarga el menu para que todo se vea al instante.
+        public void WipeSaveData()
+        {
+            SaveService.Wipe();
+            GladiatorRoster.Reset();
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+
         public void QuitGame()
         {
 #if UNITY_EDITOR

@@ -54,6 +54,9 @@ namespace GladiusAI
         [SerializeField] private Transform enemySpawnPoint;
         [SerializeField] private Transform enemySpawnPoint2; 
 
+        [Tooltip("Cuanto se corre el lugar de aparicion (X = a los costados, Z = hacia el fondo) respecto de cada punto de spawn. Cada gladiador sigue del mismo lado.")]
+        [SerializeField] private Vector2 spawnJitter = new Vector2(1.5f, 3f);
+
         [Header("Oleadas secuenciales (opcional, Nivel 1)")]
         [Tooltip("Si tiene elementos, el nivel spawnea estos enemigos uno tras otro (con estas stats) en vez del enemigo único de arriba.")]
         [SerializeField] private EnemyWave[] waves;
@@ -77,7 +80,7 @@ namespace GladiusAI
         [SerializeField] private DialogueLine[] levelOutroDialogue;
 
         [Header("Despues del combate")]
-        [Tooltip("Escena a la que se pasa unos segundos despues de terminar el combate (Arena 1 -> Ludus, Arena 2 -> Menu).")]
+        [Tooltip("Escena a la que se pasa unos segundos despues de terminar el combate (Arena 1 y Arena 2 -> Ludus).")]
         [SerializeField] private string nextSceneAfterCombat = "Menu";
         [SerializeField] private float delayBeforeNextScene = 2.5f;
         [Tooltip("Oleadas (Nivel 1): segundos entre matar a un gladiador (festeja el público) y pasar al siguiente combate.")]
@@ -86,6 +89,8 @@ namespace GladiusAI
         [SerializeField] private float waveTitleSeconds = 3f;
         [Tooltip("Activar solo en la Arena 2 -- gana una vez y desbloquea al siguiente gladiador de la Ludus.")]
         [SerializeField] private bool grantsGladiatorUnlock;
+        [Tooltip("Denarios que se ganan al vencer en este combate (0 = ninguno, por ejemplo en el tutorial).")]
+        [SerializeField] private int victoryReward;
 
         private GladiatorNPC player;
         private GladiatorNPC enemy;
@@ -120,14 +125,16 @@ namespace GladiusAI
 
         private void StartSingleEncounter()
         {
-            player = Factory.Create(GladiatorKind.Player, playerSpawnPoint.position, Quaternion.identity);
+            var selected = GladiatorRoster.GetSelected();
+            player = Factory.Create(GladiatorKind.Player, PickSpawn(playerSpawnPoint), Quaternion.identity);
             if (player != null)
             {
-                var selected = GladiatorRoster.GetSelected();
                 player.ConfigureStats(selected.maxHP, selected.minDamage, selected.maxDamage, selected.attackCooldown);
+                player.ApplySkin(selected.skin);
             }
 
-            enemy = enemyPool.Get(enemySpawnPoint.position, Quaternion.identity);
+            enemy = enemyPool.Get(PickSpawn(enemySpawnPoint), Quaternion.identity);
+            enemy?.ApplySkin(GladiatorSkins.RandomIndex(selected.skin));
 
             if (player != null && enemy != null)
             {
@@ -137,7 +144,8 @@ namespace GladiusAI
 
             if (enemySpawnPoint2 != null)
             {
-                enemy2 = enemyPool.Get(enemySpawnPoint2.position, Quaternion.identity);
+                enemy2 = enemyPool.Get(PickSpawn(enemySpawnPoint2), Quaternion.identity);
+                enemy2?.ApplySkin(GladiatorSkins.RandomIndex(selected.skin));
                 if (player != null && enemy2 != null)
                     enemy2.SetTarget(player.transform);
                 enemy2?.SetCombatEnabled(false);
@@ -149,6 +157,28 @@ namespace GladiusAI
             enemy?.SetCombatEnabled(false);
 
             StartCoroutine(RunCountdown(activateCombatAfter: true));
+        }
+
+        // Cada combate los gladiadores aparecen del mismo lado pero en un lugar distinto: se sortea un punto
+        // cerca del spawn, dentro del limite de la arena y sin caer encima de una columna.
+        private Vector3 PickSpawn(Transform point)
+        {
+            int obstacles = LayerMask.GetMask("Obstacle");
+            Vector3 origin = point.position;
+
+            for (int attempt = 0; attempt < 10; attempt++)
+            {
+                var candidate = origin + new Vector3(
+                    Random.Range(-spawnJitter.x, spawnJitter.x), 0f, Random.Range(-spawnJitter.y, spawnJitter.y));
+
+                if (ArenaBounds.Instance != null)
+                    candidate = ArenaBounds.Instance.ClampPosition(candidate, 0.6f);
+
+                if (!Physics.CheckSphere(candidate, 0.7f, obstacles))
+                    return candidate;
+            }
+
+            return origin;
         }
 
         private void OnGladiatorDied(GladiatorDiedEvent e)
@@ -214,11 +244,15 @@ namespace GladiusAI
         /// Publica el resultado por EventManager y agenda el paso a la siguiente escena.
         private void EndCombat(CombatResult result)
         {
-            if (result == CombatResult.Victory && grantsGladiatorUnlock)
+            bool won = result == CombatResult.Victory;
+            if (won && grantsGladiatorUnlock)
                 GladiatorRoster.UnlockNext();
 
-            SoundManager.Play(result == CombatResult.Victory ? SoundId.CrowdCheer : SoundId.CrowdBoo);
-            EventManager.Raise(new CombatEndedEvent(result));
+            int reward = won ? victoryReward : 0;
+            Denarii.Add(reward);
+
+            SoundManager.Play(won ? SoundId.CrowdCheer : SoundId.CrowdBoo);
+            EventManager.Raise(new CombatEndedEvent(result, reward));
             StartCoroutine(LoadNextSceneAfterDelay());
         }
 
@@ -270,7 +304,8 @@ namespace GladiusAI
 
         private IEnumerator RunWaveSequence()
         {
-            player = Factory.Create(GladiatorKind.Player, playerSpawnPoint.position, Quaternion.identity);
+            player = Factory.Create(GladiatorKind.Player, PickSpawn(playerSpawnPoint), Quaternion.identity);
+            player?.ApplySkin(GladiatorRoster.GetSelected().skin);
             player?.SetIntentController(intentController);
             player?.SetCombatEnabled(false);
 
@@ -287,11 +322,12 @@ namespace GladiusAI
                 if (i > 0 && player != null)
                 {
                     player.SetCombatEnabled(false);
-                    player.TeleportTo(playerSpawnPoint.position);
+                    player.TeleportTo(PickSpawn(playerSpawnPoint));
                     player.FullyHeal();
                 }
 
-                enemy = enemyPool.Get(enemySpawnPoint.position, Quaternion.identity);
+                enemy = enemyPool.Get(PickSpawn(enemySpawnPoint), Quaternion.identity);
+                enemy?.ApplySkin(GladiatorSkins.RandomIndex(GladiatorRoster.GetSelected().skin));
                 enemy?.SetCombatEnabled(false);
                 enemy?.ConfigureStats(wave.maxHP, wave.minDamage, wave.maxDamage, wave.attackCooldown);
                 enemy?.SetInvulnerable(wave.invulnerable);
@@ -441,7 +477,11 @@ namespace GladiusAI
             while (intentController == null || intentController.CurrentIntent != wave.requiredIntentToStart)
                 yield return null;
 
-            intentController.ClearIntent();
+            // Atacar y Defender quedan pendientes: apenas arranca el combate el gladiador los toma como
+            // una orden normal (con su espera y el botón oscureciéndose). Rendirse sí se descarta, si no
+            // terminaría el combate en el mismo instante en que empieza.
+            if (wave.requiredIntentToStart == PlayerIntent.Surrender)
+                intentController.ClearIntent();
             SetPromptHighlight(PlayerIntent.None);
             HideHint();
         }

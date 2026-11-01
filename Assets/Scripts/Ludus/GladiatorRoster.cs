@@ -20,17 +20,55 @@ namespace GladiusAI
 
         private static List<GladiatorRosterEntry> slots;
 
+        // La lista vive dentro del SaveData: lo que se cambia aca se guarda con SaveService.Save().
         public static List<GladiatorRosterEntry> Slots
         {
             get
             {
                 if (slots == null)
-                    slots = BuildDefaultRoster();
+                {
+                    slots = SaveService.Data.roster;
+                    if (slots.Count != SlotCount)
+                    {
+                        slots.Clear();
+                        slots.AddRange(BuildDefaultRoster());
+                        SaveService.Save();
+                    }
+                    AssignSkinsOnce();
+                }
                 return slots;
             }
         }
 
         public static int SelectedIndex { get; set; } = 0;
+
+        // El tutorial de la Ludus se muestra solo la primera vez (queda guardado).
+        public static bool LudusTutorialSeen
+        {
+            get => SaveService.Data.ludusTutorialSeen;
+            set
+            {
+                SaveService.Data.ludusTutorialSeen = value;
+                SaveService.Save();
+            }
+        }
+
+        public static bool HasLockedSlot
+        {
+            get
+            {
+                for (int i = 1; i < Slots.Count; i++)
+                    if (!Slots[i].unlocked) return true;
+                return false;
+            }
+        }
+
+        // Despues de borrar los datos guardados: se vuelve a leer todo desde cero.
+        public static void Reset()
+        {
+            slots = null;
+            SelectedIndex = 0;
+        }
 
         public static GladiatorRosterEntry GetSelected()
         {
@@ -44,7 +82,10 @@ namespace GladiusAI
             if (index < 0 || index >= Slots.Count) return;
             var basic = BasicPreset();
             basic.label = Slots[index].label;
+            basic.skin = Slots[index].skin;
             Slots[index] = basic;
+            SaveService.Save();
+            EventManager.Raise(new RosterChangedEvent());
         }
 
         public static bool IsUnlocked(int index)
@@ -64,8 +105,29 @@ namespace GladiusAI
                 entry.maxDamage = Random.Range(entry.minDamage + MaxDamageBonus, MaxDamageHigh);
                 entry.attackCooldown = Random.Range(MinCooldown, MaxCooldown);
                 Slots[i] = entry;
+                SaveService.Save();
+                EventManager.Raise(new RosterChangedEvent());
                 return;
             }
+        }
+
+        // Cada puesto del roster tiene su aspecto (Gladiator 1-3, Amazon 1-3) y lo conserva siempre.
+        // Se reparten en ronda una sola vez; las partidas guardadas antes de que existieran los aspectos
+        // (todos con el 0) tambien pasan por aca.
+        private static void AssignSkinsOnce()
+        {
+            var data = SaveService.Data;
+            int skinCount = GladiatorSkins.Count;
+            if (data.skinsVersion >= 1 || skinCount == 0) return;
+
+            for (int i = 0; i < slots.Count; i++)
+            {
+                var entry = slots[i];
+                entry.skin = i % skinCount;
+                slots[i] = entry;
+            }
+            data.skinsVersion = 1;
+            SaveService.Save();
         }
 
         private static GladiatorRosterEntry BasicPreset()

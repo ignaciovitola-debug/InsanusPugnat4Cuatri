@@ -74,6 +74,7 @@ namespace GladiusAI
         private GladiatorCombat combat;
         private GladiatorIntentHandler intentHandler;
         private GladiatorAnimator animator;
+        private Animator bodyAnimator;
 
         private bool combatEnabled = true;
         private string lastAction;
@@ -100,9 +101,9 @@ namespace GladiusAI
 
             // El sprite del personaje es el que lleva el Animator; el gladiador tiene otros
             // SpriteRenderer (la sombra de los pies) que no se animan ni se espejan.
-            var unityAnimator = GetComponentInChildren<Animator>();
-            CharacterSprite = unityAnimator != null ? unityAnimator.GetComponent<SpriteRenderer>() : null;
-            animator = new GladiatorAnimator(unityAnimator, CharacterSprite, walkSpeedThreshold);
+            bodyAnimator = GetComponentInChildren<Animator>();
+            CharacterSprite = bodyAnimator != null ? bodyAnimator.GetComponent<SpriteRenderer>() : null;
+            animator = new GladiatorAnimator(bodyAnimator, CharacterSprite, walkSpeedThreshold);
 
             CurrentHP = maxHP;
 
@@ -166,6 +167,16 @@ namespace GladiusAI
             FullyHeal();
             SetColor(Color.white);
             SetPhysicalBodyEnabled(true);
+            animator.ResetToIdle();
+        }
+
+        // Cambia el aspecto (Gladiator 1-3, Amazon 1-3): cada uno es un controlador de animacion con sus sprites.
+        public void ApplySkin(int skinIndex)
+        {
+            var controller = GladiatorSkins.Get(skinIndex);
+            if (controller == null || bodyAnimator == null) return;
+
+            bodyAnimator.runtimeAnimatorController = controller;
             animator.ResetToIdle();
         }
 

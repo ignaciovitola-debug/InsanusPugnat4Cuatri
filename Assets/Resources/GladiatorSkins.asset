@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4240440bd1b20b04caf328f648e9acfe, type: 3}
+  m_Name: GladiatorSkins
+  m_EditorClassIdentifier: 
+  controllers:
+  - {fileID: 22100000, guid: aadcfe2fe12d8d3458389906d4648ee0, type: 2}
+  - {fileID: 9100000, guid: 3035f7f1aa6b1f547a9204ae82ab6481, type: 2}
+  - {fileID: 22100000, guid: caea00ed4d6c58e46a74cf9e3bc18ced, type: 2}
+  - {fileID: 22100000, guid: d3df24fa94af12047a8d82855d3d6853, type: 2}
+  - {fileID: 22100000, guid: 8499a0bfe842ad54692d1b1c745ae4cc, type: 2}
+  - {fileID: 22100000, guid: bfa86db209e5e6a479aad99d8b7716ca, type: 2}

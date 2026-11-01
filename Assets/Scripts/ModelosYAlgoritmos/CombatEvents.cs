@@ -25,10 +25,12 @@ namespace GladiusAI
     public readonly struct CombatEndedEvent
     {
         public readonly CombatResult result;
+        public readonly int reward;
 
-        public CombatEndedEvent(CombatResult result)
+        public CombatEndedEvent(CombatResult result, int reward = 0)
         {
             this.result = result;
+            this.reward = reward;
         }
     }
 

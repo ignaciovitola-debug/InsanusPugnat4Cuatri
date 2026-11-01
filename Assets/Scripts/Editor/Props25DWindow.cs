@@ -48,13 +48,22 @@ namespace GladiusAI.EditorTools
                 return;
             }
 
+            // Un PNG que ya usa una escena, prefab o material no se toca: cambiarle la escala o el pivote
+            // agranda o corre lo que ya esta armado (le paso a los muros del juego).
+            var alreadyUsed = CollectUsedTextures();
+
             var pngs = new List<string>();
+            int skipped = 0;
             foreach (string guid in AssetDatabase.FindAssets("t:Texture2D", folders.ToArray()))
             {
                 string path = AssetDatabase.GUIDToAssetPath(guid);
-                if (path.EndsWith(".png"))
-                    pngs.Add(path);
+                if (!path.EndsWith(".png")) continue;
+
+                if (alreadyUsed.Contains(path)) skipped++;
+                else pngs.Add(path);
             }
+            if (skipped > 0)
+                Debug.Log($"Props 2.5D: {skipped} PNG ya estan en uso en el juego y no se tocaron.");
 
             AssetDatabase.StartAssetEditing();
             try
@@ -80,6 +89,21 @@ namespace GladiusAI.EditorTools
 
             AssetDatabase.SaveAssets();
             Debug.Log($"Props 2.5D: {pngs.Count} PNG configurados, {created} prefabs nuevos.");
+        }
+
+        private static HashSet<string> CollectUsedTextures()
+        {
+            var used = new HashSet<string>();
+            foreach (string guid in AssetDatabase.FindAssets("t:Scene t:Prefab t:Material"))
+            {
+                string owner = AssetDatabase.GUIDToAssetPath(guid);
+                if (owner.StartsWith(PrefabRoot)) continue;
+
+                foreach (string dependency in AssetDatabase.GetDependencies(owner, false))
+                    if (dependency.EndsWith(".png"))
+                        used.Add(dependency);
+            }
+            return used;
         }
 
         private void ConfigureImport(string path)
