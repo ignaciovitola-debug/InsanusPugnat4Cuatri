@@ -35,6 +35,7 @@ namespace GladiusAI
                         SaveService.Save();
                     }
                     AssignSkinsOnce();
+                    GiftStarterOnce();
                 }
                 return slots;
             }
@@ -42,13 +43,18 @@ namespace GladiusAI
 
         public static int SelectedIndex { get; set; } = 0;
 
-        // El tutorial de la Ludus se muestra solo la primera vez (queda guardado).
-        public static bool LudusTutorialSeen
+        // Version del tutorial de la Ludus que ya se vio (queda guardada). Quien lo vio antes de que existieran las
+        // versiones tiene la 1, asi cuando se amplia solo ve lo nuevo.
+        public static int LudusTutorialVersion
         {
-            get => SaveService.Data.ludusTutorialSeen;
+            get
+            {
+                var data = SaveService.Data;
+                return Mathf.Max(data.ludusTutorialVersion, data.ludusTutorialSeen ? 1 : 0);
+            }
             set
             {
-                SaveService.Data.ludusTutorialSeen = value;
+                SaveService.Data.ludusTutorialVersion = value;
                 SaveService.Save();
             }
         }
@@ -109,6 +115,27 @@ namespace GladiusAI
                 EventManager.Raise(new RosterChangedEvent());
                 return;
             }
+        }
+
+        // El Novato (puesto 1) se regala una sola vez: asi, aunque el gladiador principal este entrenando,
+        // siempre hay alguien disponible para pelear.
+        private static void GiftStarterOnce()
+        {
+            var data = SaveService.Data;
+            if (data.starterGift >= 1) return;
+
+            var novato = slots[1];
+            if (!novato.unlocked)
+            {
+                novato.unlocked = true;
+                novato.maxHP = 90f;
+                novato.minDamage = 9f;
+                novato.maxDamage = 17f;
+                novato.attackCooldown = 1.3f;
+                slots[1] = novato;
+            }
+            data.starterGift = 1;
+            SaveService.Save();
         }
 
         // Cada puesto del roster tiene su aspecto (Gladiator 1-3, Amazon 1-3) y lo conserva siempre.

@@ -8,15 +8,12 @@ namespace GladiusAI
     /// Unity la ejecuta automáticamente.
     public static class AppStartup
     {
-        // 60 FPS: suficiente para que el movimiento se vea fluido sin gastar batería de más.
-        private const int TargetFrameRate = 60;
-
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void Apply()
         {
-            // En Android/iOS Unity limita el juego a 30 FPS por defecto, y eso se siente "a tirones".
-            // Le pedimos 60 explícitamente. (En PC no tiene efecto si el VSync está activado.)
-            Application.targetFrameRate = TargetFrameRate;
+            // Volumen general, calidad y cuadros por segundo (60 por defecto, 30 si el jugador lo eligio para
+            // ahorrar bateria) salen de los ajustes guardados.
+            GameSettings.ApplyAll();
 
             // URP trae un panel de debug ("Display Stats") que se abre con un doble toque de tres dedos
             // en el celular, o con Ctrl+Backspace en el editor. Un jugador lo podía abrir sin querer,

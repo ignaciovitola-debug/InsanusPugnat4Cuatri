@@ -1,48 +1,44 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 namespace GladiusAI
 {
-    /// Volumen general y calidad gráfica del panel de Opciones. Persiste con PlayerPrefs.
+    // Panel de opciones: volumen general, musica, efectos, brillo, vibracion, 60 FPS y calidad grafica.
+    // Es el mismo panel (prefab PanelOpciones) en el Menu y en la pausa de los niveles.
     public class OptionsController : MonoBehaviour
     {
-        private const string VolumeKey = "MasterVolume";
-        private const string QualityKey = "QualityLevel";
-
-        [SerializeField] private Slider volumeSlider;
+        [SerializeField] private Slider masterSlider;
+        [SerializeField] private Slider musicSlider;
+        [SerializeField] private Slider sfxSlider;
+        [SerializeField] private Slider brightnessSlider;
+        [SerializeField] private Toggle vibrationToggle;
+        [SerializeField] private Toggle fpsToggle;
         [SerializeField] private TextMeshProUGUI qualityLabel;
-
-        private int qualityIndex;
-
-        /// Usado por la herramienta de Editor al armar el panel — asigna las referencias una sola vez.
-        public void Configure(Slider slider, TextMeshProUGUI label)
-        {
-            volumeSlider = slider;
-            qualityLabel = label;
-        }
 
         private void Awake()
         {
-            float savedVolume = PlayerPrefs.GetFloat(VolumeKey, 1f);
-            qualityIndex = Mathf.Clamp(PlayerPrefs.GetInt(QualityKey, QualitySettings.GetQualityLevel()), 0, QualitySettings.names.Length - 1);
+            masterSlider.onValueChanged.AddListener(value => GameSettings.Master = value);
+            musicSlider.onValueChanged.AddListener(value => GameSettings.Music = value);
+            sfxSlider.onValueChanged.AddListener(value => GameSettings.Sfx = value);
+            brightnessSlider.onValueChanged.AddListener(value => GameSettings.Brightness = value);
+            vibrationToggle.onValueChanged.AddListener(value => GameSettings.Vibration = value);
+            fpsToggle.onValueChanged.AddListener(value => GameSettings.Fps60 = value);
 
-            AudioListener.volume = savedVolume;
-            QualitySettings.SetQualityLevel(qualityIndex);
-
-            if (volumeSlider != null)
-            {
-                volumeSlider.SetValueWithoutNotify(savedVolume);
-                volumeSlider.onValueChanged.AddListener(SetVolume);
-            }
-
-            RefreshQualityLabel();
+            brightnessSlider.minValue = GameSettings.MinBrightness;
+            brightnessSlider.maxValue = 1f;
         }
 
-        public void SetVolume(float value)
+        // Cada vez que se abre se leen los valores guardados (otro panel pudo haberlos cambiado).
+        private void OnEnable()
         {
-            AudioListener.volume = value;
-            PlayerPrefs.SetFloat(VolumeKey, value);
+            masterSlider.SetValueWithoutNotify(GameSettings.Master);
+            musicSlider.SetValueWithoutNotify(GameSettings.Music);
+            sfxSlider.SetValueWithoutNotify(GameSettings.Sfx);
+            brightnessSlider.SetValueWithoutNotify(GameSettings.Brightness);
+            vibrationToggle.SetIsOnWithoutNotify(GameSettings.Vibration);
+            fpsToggle.SetIsOnWithoutNotify(GameSettings.Fps60);
+            RefreshQualityLabel();
         }
 
         public void NextQuality() => ChangeQuality(1);
@@ -51,17 +47,14 @@ namespace GladiusAI
         private void ChangeQuality(int direction)
         {
             int count = QualitySettings.names.Length;
-            qualityIndex = (qualityIndex + direction + count) % count;
-
-            QualitySettings.SetQualityLevel(qualityIndex);
-            PlayerPrefs.SetInt(QualityKey, qualityIndex);
+            GameSettings.QualityIndex = (GameSettings.QualityIndex + direction + count) % count;
             RefreshQualityLabel();
         }
 
         private void RefreshQualityLabel()
         {
             if (qualityLabel != null)
-                qualityLabel.text = QualitySettings.names[qualityIndex];
+                qualityLabel.text = QualitySettings.names[GameSettings.QualityIndex];
         }
     }
 }

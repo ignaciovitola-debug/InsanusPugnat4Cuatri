@@ -30,6 +30,10 @@ MonoBehaviour:
     m_path: Assets/Scenes/Ludus.unity
   - m_enabled: 1
     m_path: Assets/Scenes/ArenaDeCombate2.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/ArenaZona_Catacumbas.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/ArenaZona_Patio.unity
   m_ScriptingDefines: []
   m_PlayerSettingsYaml:
     m_Settings: []

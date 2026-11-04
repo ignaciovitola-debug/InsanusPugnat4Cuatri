@@ -26,6 +26,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Ludus.unity
     guid: 1ee9e83b426115a4ab7138d2cfe75eaa
+  - enabled: 1
+    path: Assets/Scenes/ArenaZona_Catacumbas.unity
+    guid: 2de24c3280c30ca41875d3f1ac04bc25
+  - enabled: 1
+    path: Assets/Scenes/ArenaZona_Patio.unity
+    guid: d45507fd08a926040aaaa175ac7b9f1f
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

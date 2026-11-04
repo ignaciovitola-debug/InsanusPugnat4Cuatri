@@ -99,7 +99,28 @@ namespace GladiusAI
         private bool fightResolved;
         private GladiatorPool enemyPool;
 
+        // Combate elegido en la Ludus: las oleadas salen del contrato y el jugador usa al gladiador elegido.
+        private bool contractMode;
+
         private bool IsWaveMode => waves != null && waves.Length > 0;
+
+        private void BuildWavesFromContract(CombatContract contract)
+        {
+            var config = EconomyConfig.Instance;
+            waves = new EnemyWave[contract.enemyCount];
+            for (int i = 0; i < waves.Length; i++)
+            {
+                waves[i] = new EnemyWave
+                {
+                    label = contract.enemyCount == 1 ? contract.title : $"Rival {i + 1} de {contract.enemyCount}",
+                    maxHP = config.enemyHP * contract.statScale,
+                    minDamage = config.enemyMinDamage * contract.statScale,
+                    maxDamage = config.enemyMaxDamage * contract.statScale,
+                    attackCooldown = config.enemyCooldown / contract.statScale,
+                };
+            }
+            contractMode = true;
+        }
 
         private void OnEnable()
         {
@@ -116,6 +137,9 @@ namespace GladiusAI
         private void Start()
         {
             enemyPool = new GladiatorPool(Factory, GladiatorKind.Enemy);
+
+            if (!IsWaveMode && CombatSetup.Current != null)
+                BuildWavesFromContract(CombatSetup.Current);
 
             if (IsWaveMode)
                 StartCoroutine(RunWaveSequence());
@@ -248,10 +272,12 @@ namespace GladiusAI
             if (won && grantsGladiatorUnlock)
                 GladiatorRoster.UnlockNext();
 
-            int reward = won ? victoryReward : 0;
+            int reward = won ? (contractMode ? CombatSetup.Current.reward : victoryReward) : 0;
             Denarii.Add(reward);
+            CombatSetup.Current = null;
 
             SoundManager.Play(won ? SoundId.CrowdCheer : SoundId.CrowdBoo);
+            GameSettings.Vibrate();
             EventManager.Raise(new CombatEndedEvent(result, reward));
             StartCoroutine(LoadNextSceneAfterDelay());
         }
@@ -306,6 +332,11 @@ namespace GladiusAI
         {
             player = Factory.Create(GladiatorKind.Player, PickSpawn(playerSpawnPoint), Quaternion.identity);
             player?.ApplySkin(GladiatorRoster.GetSelected().skin);
+            if (contractMode)
+            {
+                var selected = GladiatorRoster.GetSelected();
+                player?.ConfigureStats(selected.maxHP, selected.minDamage, selected.maxDamage, selected.attackCooldown);
+            }
             player?.SetIntentController(intentController);
             player?.SetCombatEnabled(false);
 
@@ -323,7 +354,9 @@ namespace GladiusAI
                 {
                     player.SetCombatEnabled(false);
                     player.TeleportTo(PickSpawn(playerSpawnPoint));
-                    player.FullyHeal();
+                    // En el tutorial se cura entre combates; en los contratos no, asi el resto de la vida importa.
+                    if (!contractMode)
+                        player.FullyHeal();
                 }
 
                 enemy = enemyPool.Get(PickSpawn(enemySpawnPoint), Quaternion.identity);
@@ -353,7 +386,7 @@ namespace GladiusAI
 
                 if (player == null || player.IsDead)
                 {
-                    GladiatorRoster.ResetSlotToBasic(0);
+                    GladiatorRoster.ResetSlotToBasic(contractMode ? GladiatorRoster.SelectedIndex : 0);
                     EndCombat(CombatResult.Defeat);
                     yield break;
                 }

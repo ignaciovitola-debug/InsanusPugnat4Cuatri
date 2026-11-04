@@ -36,6 +36,8 @@ namespace GladiusAI
         private readonly Stack<AudioSource> freeAmbienceSources = new Stack<AudioSource>();
         // Lista de fundidos reutilizada en cada cambio de fondo (no se crea una lista nueva cada vez).
         private readonly List<VolumeFade> fades = new List<VolumeFade>();
+        // Volumen de la SoundLibrary de cada capa, para poder aplicarle encima el slider de musica.
+        private readonly Dictionary<AudioSource, float> ambienceBaseVolume = new Dictionary<AudioSource, float>();
         private SoundId[] currentAmbience = System.Array.Empty<SoundId>();
         private Coroutine ambienceFade;
 
@@ -69,6 +71,16 @@ namespace GladiusAI
 
         public static void StopAmbience(float fadeSeconds = DefaultFadeSeconds)
             => PlayAmbience(fadeSeconds);
+
+        /// Se llama cuando el jugador mueve el slider de musica: las capas que suenan ajustan su volumen al instante.
+        public static void RefreshMusicVolume()
+        {
+            if (instance == null) return;
+
+            foreach (var source in instance.ambienceLayers)
+                if (instance.ambienceBaseVolume.TryGetValue(source, out float baseVolume))
+                    source.volume = baseVolume * GameSettings.Music;
+        }
 
         //  Singleton
 
@@ -133,7 +145,7 @@ namespace GladiusAI
             nextEffectSource = (nextEffectSource + 1) % effectSources.Length;
 
             source.clip = clip;
-            source.volume = entry.volume;
+            source.volume = entry.volume * GameSettings.Sfx;
             source.pitch = entry.PickPitch();
             source.Play();
         }
@@ -171,7 +183,8 @@ namespace GladiusAI
                 source.Play();
 
                 ambienceLayers.Add(source);
-                fades.Add(new VolumeFade { Source = source, From = 0f, To = entry.volume });
+                ambienceBaseVolume[source] = entry.volume;
+                fades.Add(new VolumeFade { Source = source, From = 0f, To = entry.volume * GameSettings.Music });
             }
 
             ambienceFade = StartCoroutine(RunFades(fadeSeconds));

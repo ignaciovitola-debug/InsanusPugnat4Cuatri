@@ -11,10 +11,12 @@ namespace GladiusAI
         public float attackCooldown;
         public bool unlocked;
         public int skin;
+        public int level;
 
         public GladiatorRosterEntry(string label, float maxHP, float minDamage, float maxDamage, float attackCooldown, bool unlocked = true, int skin = 0)
         {
             this.skin = skin;
+            level = 0;
             this.label = label;
             this.maxHP = maxHP;
             this.minDamage = minDamage;

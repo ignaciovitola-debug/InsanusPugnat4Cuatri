@@ -8,6 +8,7 @@ namespace GladiusAI
     {
         private static readonly Color LockedTint = new Color(0.15f, 0.15f, 0.15f);
         private static readonly Color HighlightTint = new Color(1f, 0.85f, 0.3f);
+        private static readonly Color BusyTint = new Color(0.4f, 0.55f, 0.95f);
 
         [Tooltip("Sprite del personaje que se tiñe al estar bloqueado o elegido. Si queda vacío se usa el del GladiatorNPC.")]
         [SerializeField] private SpriteRenderer characterSprite;
@@ -15,6 +16,7 @@ namespace GladiusAI
         private int slotIndex;
         private LudusController controller;
         private bool locked;
+        private bool busy;
 
         // LudusController lo llama en Start, cuando el GladiatorNPC ya resolvió su sprite en Awake.
         public void Configure(int index, LudusController owner)
@@ -33,7 +35,7 @@ namespace GladiusAI
         // El toque lo detecta el collider del gladiador, que sigue activo aunque su forma no se dibuje.
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (!locked) controller.SelectSlot(slotIndex);
+            if (!locked && !busy) controller.SelectSlot(slotIndex);
         }
 
         /// Oscurece al gladiador y deja de responder al toque mientras no este reclutado.
@@ -43,9 +45,17 @@ namespace GladiusAI
             SetTint(locked ? LockedTint : Color.white);
         }
 
+        /// Tiñe de azul y deja de responder al toque mientras el gladiador esta entrenando.
+        public void SetBusy(bool value)
+        {
+            busy = value;
+            if (!locked)
+                SetTint(busy ? BusyTint : Color.white);
+        }
+
         public void SetHighlighted(bool highlighted)
         {
-            if (!locked)
+            if (!locked && !busy)
                 SetTint(highlighted ? HighlightTint : Color.white);
         }
 
