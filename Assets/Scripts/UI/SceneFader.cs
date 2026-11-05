@@ -5,10 +5,8 @@ using UnityEngine.UI;
 
 namespace GladiusAI
 {
-    /// Fundido a negro entre escenas. Vive en Splash (la primera escena que carga
-    /// siempre) y sobrevive el resto de la partida via DontDestroyOnLoad, asi
-    /// cualquier escena puede llamar SceneFader.Instance.FadeToScene(nombre) en vez
-    /// de SceneManager.LoadScene directo.
+    // Fundido a negro entre escenas. Vive en Splash y sobrevive con DontDestroyOnLoad.
+    // Las escenas llaman a SceneFader.Instance.FadeToScene(nombre).
     public class SceneFader : MonoBehaviour
     {
         public static SceneFader Instance { get; private set; }

@@ -3,9 +3,8 @@ using UnityEngine.Rendering;
 
 namespace GladiusAI
 {
-    /// Configuración global del juego que se aplica sola al arrancar, antes de cargar la primera escena.
-    /// Al ser una clase estática con [RuntimeInitializeOnLoadMethod], no hace falta ponerla en ninguna escena:
-    /// Unity la ejecuta automáticamente.
+    // Configuración global que se aplica sola al arrancar, antes de cargar la primera escena.
+    // No hace falta ponerla en ninguna escena ([RuntimeInitializeOnLoadMethod]).
     public static class AppStartup
     {
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
@@ -15,9 +14,7 @@ namespace GladiusAI
             // ahorrar bateria) salen de los ajustes guardados.
             GameSettings.ApplyAll();
 
-            // URP trae un panel de debug ("Display Stats") que se abre con un doble toque de tres dedos
-            // en el celular, o con Ctrl+Backspace en el editor. Un jugador lo podía abrir sin querer,
-            // así que lo desactivamos.
+            // Se desactiva el panel de debug de URP (doble toque de tres dedos): se abría sin querer.
             DebugManager.instance.enableRuntimeUI = false;
         }
     }

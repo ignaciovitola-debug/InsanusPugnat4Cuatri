@@ -3,23 +3,19 @@ using UnityEngine;
 
 namespace GladiusAI
 {
-    /// Catálogo de sonidos: a cada SoundId le asigna uno o varios clips, su volumen y una variación de tono.
-    /// Es un ScriptableObject (un asset de datos), así que se edita desde el Inspector sin tocar código:
-    /// Assets/Resources/SoundLibrary.
-    ///
-    /// Si un sonido tiene varios clips, cada vez se elige uno al azar, y además se varía un poco el tono.
-    /// Así un golpe que se repite muchas veces no suena siempre idéntico (algo que el oído nota enseguida).
+    // Catálogo de sonidos: a cada SoundId le asigna clips, volumen y variación de tono.
+    // Es un ScriptableObject: se edita desde el Inspector (Resources/SoundLibrary).
     [CreateAssetMenu(fileName = "SoundLibrary", menuName = "Insanus Pugnat/Sound Library")]
     public class SoundLibrary : ScriptableObject
     {
-        /// Configuración de un sonido.
+        // Configuración de un sonido.
         [System.Serializable]
         public class Entry
         {
             public SoundId id;
             public AudioClip[] clips;
             [Range(0f, 1f)] public float volume = 1f;
-            [Tooltip("Variación aleatoria de tono (1 = original). Un rango chico evita que los sonidos repetidos se noten.")]
+            [Tooltip("Variación aleatoria de tono (1 = original).")]
             public Vector2 pitchRange = new Vector2(0.95f, 1.05f);
 
             public AudioClip PickClip()
@@ -30,9 +26,7 @@ namespace GladiusAI
 
         [SerializeField] private List<Entry> entries = new List<Entry>();
 
-        // Índice para buscar rápido: la posición del array es el número del SoundId.
-        // Optimización: buscar en un array por posición es directo, mientras que un Dictionary tiene
-        // que calcular un hash en cada búsqueda. Esto se consulta en cada golpe de espada.
+        // Índice por posición del array (el número del SoundId): más rápido que un Dictionary.
         private Entry[] byId;
 
         public bool TryGet(SoundId id, out Entry entry)
@@ -45,7 +39,7 @@ namespace GladiusAI
             return entry != null;
         }
 
-        /// Arma el índice una sola vez (la primera vez que se pide un sonido).
+        // Arma el índice una sola vez (la primera vez que se pide un sonido).
         private void BuildIndex()
         {
             int size = 0;

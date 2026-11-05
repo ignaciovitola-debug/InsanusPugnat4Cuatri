@@ -9,7 +9,7 @@ namespace GladiusAI
     [RequireComponent(typeof(Rigidbody))]
     public class GladiatorNPC : MonoBehaviour
     {
-        /// Gladiadores activos en la escena (lo usa ArenaBeast para no hacer FindObjectsByType cada frame).
+        // Gladiadores activos en la escena (lo usa ArenaBeast para no hacer FindObjectsByType cada frame).
         public static readonly List<GladiatorNPC> All = new List<GladiatorNPC>();
 
         [Header("Identidad")]
@@ -51,7 +51,7 @@ namespace GladiusAI
         [SerializeField] private float feedbackHeight = 2f;
 
         [Header("Animaciones")]
-        [Tooltip("Segundos que queda el cuerpo en la arena después de morir (para que se vea la animación Dead).")]
+        [Tooltip("Segundos que queda el cuerpo en la arena después de morir.")]
         [SerializeField] private float corpseLifetime = 2f;
         [Tooltip("Velocidad mínima para considerar que está caminando (si no, Idle).")]
         [SerializeField] private float walkSpeedThreshold = 0.2f;
@@ -62,8 +62,9 @@ namespace GladiusAI
         public bool HasSurrendered { get; private set; }
         public float OrderCooldownRatio => combat != null ? combat.OrderCooldownRatio : 0f;
         public float CorpseLifetime => corpseLifetime;
+        public EnemyArchetype Archetype => archetype;
 
-        /// Sprite animado del personaje (no incluye la sombra de los pies).
+        // Sprite animado del personaje (no incluye la sombra de los pies).
         public SpriteRenderer CharacterSprite { get; private set; }
 
         private Node behaviorTreeRoot;
@@ -75,6 +76,7 @@ namespace GladiusAI
         private GladiatorIntentHandler intentHandler;
         private GladiatorAnimator animator;
         private Animator bodyAnimator;
+        private EnemyArchetype archetype;
 
         private bool combatEnabled = true;
         private string lastAction;
@@ -142,8 +144,8 @@ namespace GladiusAI
                 movement?.Stop();
         }
 
-        /// Mueve al gladiador al instante y sin inercia. Hay que mover el Rigidbody y no solo el transform:
-        /// con interpolacion activada, la fisica pisaria el transform y lo devolveria a donde estaba.
+        // Mueve al gladiador al instante y sin inercia. Hay que mover el Rigidbody y no solo el transform:
+        // con interpolacion activada, la fisica pisaria el transform y lo devolveria a donde estaba.
         public void TeleportTo(Vector3 position)
         {
             rb.position = position;
@@ -152,10 +154,10 @@ namespace GladiusAI
             rb.angularVelocity = Vector3.zero;
         }
 
-        /// Usado por CombatStarter en la ola-tutorial invulnerable: TakeDamage no le hace nada mientras esto sea true.
+        // Usado por CombatStarter en la ola-tutorial invulnerable: TakeDamage no le hace nada mientras esto sea true.
         public void SetInvulnerable(bool value) => invulnerable = value;
 
-        /// Restaura la vida al maximo actual (usado al reiniciar el spawn entre olas del tutorial).
+        // Restaura la vida al maximo actual (usado al reiniciar el spawn entre olas del tutorial).
         public void FullyHeal() => CurrentHP = maxHP;
 
         public void ResetForReuse()
@@ -163,6 +165,7 @@ namespace GladiusAI
             corpseCleanupDone = false;
             HasSurrendered = false;
             invulnerable = false;
+            archetype = null;
             lastAction = null;
             FullyHeal();
             SetColor(Color.white);
@@ -186,6 +189,13 @@ namespace GladiusAI
             intentHandler = new GladiatorIntentHandler(controller);
             if (controller != null)
                 controller.SetOwner(this);
+        }
+
+        // Guarda el arquetipo compartido (Flyweight) y los stats propios de este rival.
+        public void ApplyArchetype(EnemyArchetype newArchetype, CombatStats stats)
+        {
+            archetype = newArchetype;
+            ConfigureStats(stats.maxHP, stats.minDamage, stats.maxDamage, stats.attackCooldown);
         }
 
         public void ConfigureStats(float newMaxHP, float newMinDamage, float newMaxDamage, float newAttackCooldown)
@@ -218,9 +228,8 @@ namespace GladiusAI
 
         private void TickBehaviour()
         {
-            // Los tiempos de espera (entre órdenes, entre golpes, aturdimiento) corren aunque el combate
-            // esté en pausa: si no, una orden dada justo antes de ganar dejaba los botones bloqueados
-            // durante todo el cartel del tutorial siguiente, y no había forma de arrancar el combate.
+            // Los tiempos de espera corren aunque el combate esté en pausa;
+            // si no, los botones quedaban bloqueados durante el cartel del tutorial.
             if (!IsDead)
                 combat.Tick(Time.deltaTime);
 
@@ -468,7 +477,7 @@ namespace GladiusAI
             Flinch(attackerPosition);
         }
 
-        /// Reacción a un golpe que no lo mata: empujón, aturdimiento y animación Hurt.
+        // Reacción a un golpe que no lo mata: empujón, aturdimiento y animación Hurt.
         private void Flinch(Vector3 attackerPosition)
         {
             movement.ApplyKnockback(attackerPosition);
@@ -478,8 +487,8 @@ namespace GladiusAI
 
         //  Animación
 
-        /// Estados continuos (Idle/Walk, Block mientras dure la guardia) y orientación.
-        /// Attack, Hurt y Dead son instantáneos: los disparan las acciones que los causan.
+        // Estados continuos (Idle/Walk, Block mientras dure la guardia) y orientación.
+        // Attack, Hurt y Dead son instantáneos: los disparan las acciones que los causan.
         private void UpdateAnimation()
         {
             if (IsDead) return;
@@ -490,7 +499,7 @@ namespace GladiusAI
                 animator.FaceTowards(transform.position, target.position);
         }
 
-        /// Al morir el cuerpo deja de chocar y queda clavado en el lugar; al reusarlo vuelve a la normalidad.
+        // Al morir el cuerpo deja de chocar y queda clavado en el lugar; al reusarlo vuelve a la normalidad.
         private void SetPhysicalBodyEnabled(bool enabled)
         {
             foreach (var bodyCollider in bodyColliders)
@@ -501,7 +510,7 @@ namespace GladiusAI
 
         //  Utilidades
 
-        /// true solo la primera vez que se entra a esta accion (para no repetir el mismo log cada frame).
+        // true solo la primera vez que se entra a esta accion (para no repetir el mismo log cada frame).
         private bool IsNewAction(string action)
         {
             if (lastAction == action) return false;
@@ -520,9 +529,8 @@ namespace GladiusAI
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         private void Log(string message) => Debug.Log($"[{gladiatorName}] {message}");
 
-        /// Color de debug del estado (rojo atacando, verde patrullando...) sobre la forma básica del gladiador.
-        /// En los prefabs esa forma está apagada (la sombra de los pies es el hijo "Shadow");
-        /// si se reactiva su MeshRenderer, los colores de debug vuelven a verse.
+        // Color de debug del estado (rojo atacando, verde patrullando...) sobre la forma básica del gladiador.
+        // En los prefabs esa forma está apagada: si se reactiva su MeshRenderer, vuelven a verse.
         private void SetColor(Color c)
         {
             if (!IsBodyShapeVisible || (hasColor && currentColor == c)) return;

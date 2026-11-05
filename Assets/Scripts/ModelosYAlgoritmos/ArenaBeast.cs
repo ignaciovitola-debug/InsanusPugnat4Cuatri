@@ -3,9 +3,8 @@ using UnityEngine;
 namespace GladiusAI
 {
     
-    /// Amenaza ambiental de la arena: patrulla, y si un gladiador se acerca
-    /// demasiado lo caza y lo aleja antes de
-    /// volver a patrullar.
+    // Amenaza de la arena: patrulla, y si un gladiador se acerca demasiado lo caza y lo aleja.
+    // Después vuelve a patrullar.
    
     [RequireComponent(typeof(Collider))]
     public class ArenaBeast : MonoBehaviour
@@ -31,7 +30,7 @@ namespace GladiusAI
         [SerializeField] private float detectionRange = 5f;
         [SerializeField] private float chargeDistance = 1.2f;
         [SerializeField] private float recoverDuration = 2f;
-        [Tooltip("Después de embestir, cuánto tiempo sigue patrullando antes de volver a buscar objetivo — evita que se quede trabada re-cazando al mismo gladiador si sigue cerca.")]
+        [Tooltip("Segundos que patrulla después de embestir, antes de buscar otro objetivo.")]
         [SerializeField] private float reEngageCooldown = 3f;
 
         [Header("Debug visual")]

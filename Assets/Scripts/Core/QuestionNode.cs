@@ -2,12 +2,8 @@ using System;
 
 namespace GladiusAI
 {
-    /// Nodo de decisión ("pregunta"). Evalúa una condición y deriva la
-    /// ejecución a la rama True o False — es el equivalente, dentro del
-    /// árbol, a un if/else.
-    ///
-    /// Ejemplo: "¿El enemigo está en rango de ataque?" → sí: atacar,
-    /// no (o sin rama False): seguir evaluando otras opciones.
+    // Nodo de decisión: evalúa una condición y sigue por la rama True o False (como un if/else).
+    // Ejemplo: ¿el enemigo está en rango? Sí: atacar. No: seguir con otras opciones.
     public class QuestionNode : Node
     {
         private readonly Func<Blackboard, bool> condition;

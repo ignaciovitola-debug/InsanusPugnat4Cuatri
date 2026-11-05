@@ -4,7 +4,7 @@ using TMPro;
 
 namespace GladiusAI
 {
-    /// Controla la escena Ludus: muestra el roster de 8 gladiadores, la seleccion, y arranca el combate elegido con el gladiador elegido.
+    // Controla la escena Ludus: muestra el roster, la selección y arranca el combate.
     public class LudusController : MonoBehaviour
     {
         [SerializeField] private LudusGladiatorSlot[] slots;
@@ -18,7 +18,7 @@ namespace GladiusAI
         [Header("Tutorial")]
         [SerializeField] private TutorialDialogue dialogue;
         [SerializeField] private DialogueLine[] introDialogue = new DialogueLine[0];
-        [Tooltip("Capitulo agregado despues (combates y entrenamiento): lo ve quien ya habia visto la introduccion.")]
+        [Tooltip("Capítulo nuevo (combates y entrenamiento): lo ve quien ya vio la introducción.")]
         [SerializeField] private DialogueLine[] updateDialogue = new DialogueLine[0];
 
         [Header("Entrenamiento")]
@@ -163,7 +163,7 @@ namespace GladiusAI
                     Destroy(child.gameObject);
             }
 
-            foreach (var contract in ContractFactory.CreateAll())
+            foreach (var contract in ContractFactory.CreateAll(GladiatorRoster.Slots[selectedIndex].level))
             {
                 var row = Instantiate(contractRowTemplate, contractContent);
                 row.gameObject.SetActive(true);
@@ -188,6 +188,9 @@ namespace GladiusAI
             CombatSetup.Current = contract;
             LoadScene(contract.zoneScene);
         }
+
+        // Boton "Menu": vuelve al menu principal (el progreso ya esta guardado).
+        public void BackToMenu() => LoadScene("Menu");
 
         private void LoadScene(string sceneName)
         {

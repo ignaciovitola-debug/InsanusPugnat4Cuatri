@@ -3,11 +3,13 @@ using UnityEngine;
 
 namespace GladiusAI
 {
-    // Energia para entrar a los combates. Vuelve de a un punto cada cierto tiempo, aunque el juego este cerrado:
-    // no se guarda "cuanto falta", se guarda cuanta energia habia y desde cuando corre la cuenta, y al
-    // preguntar se calcula cuantos puntos se ganaron con la hora actual.
+    // Energia para entrar a los combates: vuelve de a un punto con el tiempo, aunque el juego este cerrado.
+    // Originador del Memento: arma y restaura su propia foto.
     public static class Energy
     {
+        private static int current;
+        private static long stampTicks;
+
         private static EconomyConfig Config => EconomyConfig.Instance;
         private static long IntervalTicks => TimeSpan.FromMinutes(Mathf.Max(0.01f, Config.minutesPerEnergy)).Ticks;
 
@@ -18,7 +20,7 @@ namespace GladiusAI
             get
             {
                 Regenerate();
-                return SaveService.Data.energy;
+                return current;
             }
         }
 
@@ -27,10 +29,9 @@ namespace GladiusAI
             get
             {
                 Regenerate();
-                var d = SaveService.Data;
-                if (d.energy >= Max) return 0f;
+                if (current >= Max) return 0f;
 
-                long remaining = IntervalTicks - (DateTime.UtcNow.Ticks - d.energyStampTicks);
+                long remaining = IntervalTicks - (DateTime.UtcNow.Ticks - stampTicks);
                 return Mathf.Max(0f, (float)remaining / TimeSpan.TicksPerSecond);
             }
         }
@@ -44,58 +45,70 @@ namespace GladiusAI
         public static bool TrySpend(int amount)
         {
             Regenerate();
-            var d = SaveService.Data;
             if (amount <= 0) return true;
-            if (d.energy < amount) return false;
+            if (current < amount) return false;
 
-            // Al salir del tope empieza a correr la cuenta para el proximo punto.
-            if (d.energy >= Max)
-                d.energyStampTicks = DateTime.UtcNow.Ticks;
+            // Al bajar del maximo empieza a correr la cuenta del proximo punto.
+            if (current >= Max)
+                stampTicks = DateTime.UtcNow.Ticks;
 
-            d.energy -= amount;
-            SaveAndNotify();
+            current -= amount;
+            Notify();
             return true;
         }
 
         public static void Refill()
         {
-            var d = SaveService.Data;
-            d.energy = Max;
-            d.energyStampTicks = DateTime.UtcNow.Ticks;
-            SaveAndNotify();
+            current = Max;
+            stampTicks = DateTime.UtcNow.Ticks;
+            Notify();
         }
 
+        public static EnergyMemento CreateMemento() => new EnergyMemento { energy = current, stampTicks = stampTicks };
+
+        public static void RestoreMemento(EnergyMemento memento)
+        {
+            current = Mathf.Clamp(memento.energy, 0, Max);
+            stampTicks = memento.stampTicks;
+        }
+
+        public static void ResetToNewGame()
+        {
+            current = Max;
+            stampTicks = DateTime.UtcNow.Ticks;
+        }
+
+        // Suma los puntos que se ganaron con el tiempo que paso.
         private static void Regenerate()
         {
-            var d = SaveService.Data;
             long now = DateTime.UtcNow.Ticks;
 
-            if (d.energy >= Max)
+            if (current >= Max)
             {
-                d.energy = Max;
-                d.energyStampTicks = now;
+                current = Max;
+                stampTicks = now;
                 return;
             }
 
-            long elapsed = now - d.energyStampTicks;
+            long elapsed = now - stampTicks;
             if (elapsed < 0)
             {
-                // El reloj del celular se atraso: se vuelve a empezar la cuenta en vez de dar tiempo negativo.
-                d.energyStampTicks = now;
+                // El reloj se atraso: se reinicia la cuenta en vez de dar tiempo negativo.
+                stampTicks = now;
                 return;
             }
 
             long gained = elapsed / IntervalTicks;
             if (gained <= 0) return;
 
-            d.energy = (int)Math.Min(Max, d.energy + gained);
-            d.energyStampTicks = d.energy >= Max ? now : d.energyStampTicks + gained * IntervalTicks;
+            current = (int)Math.Min(Max, current + gained);
+            stampTicks = current >= Max ? now : stampTicks + gained * IntervalTicks;
         }
 
-        private static void SaveAndNotify()
+        private static void Notify()
         {
-            SaveService.Save();
-            EventManager.Raise(new EnergyChangedEvent(SaveService.Data.energy));
+            EventManager.Raise(new EnergyChangedEvent(current));
+            EventManager.Raise(new SaveRequestedEvent());
         }
     }
 }

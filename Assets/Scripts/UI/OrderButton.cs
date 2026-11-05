@@ -3,10 +3,8 @@ using UnityEngine.UI;
 
 namespace GladiusAI
 {
-    /// Botón de orden (Atacá / Defiéndete) que muestra la espera entre órdenes.
-    /// Después de dar una orden hay unos segundos en los que el gladiador no acepta otra: durante ese
-    /// tiempo el botón queda deshabilitado y una franja oscura se va achicando para mostrar cuánto falta.
-    /// Así el jugador entiende por qué el botón "no responde".
+    // Botón de orden que muestra la espera entre órdenes.
+    // Mientras espera queda deshabilitado y una franja oscura se achica para mostrar cuánto falta.
     [RequireComponent(typeof(Button))]
     public class OrderButton : MonoBehaviour
     {
@@ -29,9 +27,7 @@ namespace GladiusAI
             // remaining va de 1 (recién se dio la orden) a 0 (ya se puede dar otra).
             float remaining = intentController != null ? intentController.OrderCooldownRatio : 0f;
 
-            // Optimización: modificar un RectTransform obliga a Unity a reconstruir el Canvas, que es
-            // costoso en mobile. Por eso solo tocamos la UI cuando el valor realmente cambió; cuando no
-            // hay espera (casi todo el tiempo), este Update sale acá mismo.
+            // Solo se toca la UI cuando el valor cambió (modificar un RectTransform es costoso en mobile).
             if (Mathf.Approximately(remaining, shownRemaining)) return;
             shownRemaining = remaining;
 
@@ -41,8 +37,8 @@ namespace GladiusAI
             cooldownOverlay.anchorMax = new Vector2(remaining, 1f);
         }
 
-        /// Crea la franja oscura por código, así no hay que armarla a mano en cada escena.
-        /// Va como primer hijo del botón: queda encima del fondo pero debajo del texto.
+        // Crea la franja oscura por código, así no hay que armarla a mano en cada escena.
+        // Va como primer hijo del botón: queda encima del fondo pero debajo del texto.
         private RectTransform CreateOverlay()
         {
             var go = new GameObject("CooldownOverlay", typeof(RectTransform), typeof(Image));

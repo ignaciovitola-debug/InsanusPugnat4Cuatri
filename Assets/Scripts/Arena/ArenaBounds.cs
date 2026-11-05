@@ -3,7 +3,7 @@ using UnityEngine;
 namespace GladiusAI
 {
     
-    /// Define el área jugable de la escena "AI": contener a los boids, generar comida y elegir puntos de wander.
+    // Define el área jugable de la escena "AI": contener a los boids, generar comida y elegir puntos de wander.
     
     public class ArenaBounds : MonoBehaviour
     {

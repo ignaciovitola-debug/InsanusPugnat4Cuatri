@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 namespace GladiusAI
 {
-    /// Splash simple: muestra el título/nombres del equipo unos segundos y pasa solo a la siguiente escena.
+    // Splash simple: muestra el título/nombres del equipo unos segundos y pasa solo a la siguiente escena.
     public class SplashController : MonoBehaviour
     {
         [SerializeField] private string nextSceneName = "Menu";

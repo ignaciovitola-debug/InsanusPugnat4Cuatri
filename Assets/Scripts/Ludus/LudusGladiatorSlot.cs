@@ -3,14 +3,14 @@ using UnityEngine.EventSystems;
 
 namespace GladiusAI
 {
-    /// Gladiador clickeable/tocable en la Ludus. Avisa a LudusController cual es su indice en el roster.
+    // Gladiador clickeable/tocable en la Ludus. Avisa a LudusController cual es su indice en el roster.
     public class LudusGladiatorSlot : MonoBehaviour, IPointerClickHandler
     {
         private static readonly Color LockedTint = new Color(0.15f, 0.15f, 0.15f);
         private static readonly Color HighlightTint = new Color(1f, 0.85f, 0.3f);
         private static readonly Color BusyTint = new Color(0.4f, 0.55f, 0.95f);
 
-        [Tooltip("Sprite del personaje que se tiñe al estar bloqueado o elegido. Si queda vacío se usa el del GladiatorNPC.")]
+        [Tooltip("Sprite que se tiñe al estar bloqueado o elegido. Vacío = el del GladiatorNPC.")]
         [SerializeField] private SpriteRenderer characterSprite;
 
         private int slotIndex;
@@ -38,14 +38,14 @@ namespace GladiusAI
             if (!locked && !busy) controller.SelectSlot(slotIndex);
         }
 
-        /// Oscurece al gladiador y deja de responder al toque mientras no este reclutado.
+        // Oscurece al gladiador y deja de responder al toque mientras no este reclutado.
         public void SetLocked(bool value)
         {
             locked = value;
             SetTint(locked ? LockedTint : Color.white);
         }
 
-        /// Tiñe de azul y deja de responder al toque mientras el gladiador esta entrenando.
+        // Tiñe de azul y deja de responder al toque mientras el gladiador esta entrenando.
         public void SetBusy(bool value)
         {
             busy = value;

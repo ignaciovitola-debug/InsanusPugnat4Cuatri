@@ -11,9 +11,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Menu.unity
     guid: 2988fc8257e1d514db0d30991e91bc1a
-  - enabled: 0
-    path: Assets/Scenes/EscenaDePrueba.unity
-    guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
     path: Assets/Scenes/ArenaDeCombate1.unity
     guid: 05c689ce0ba9cfa458c765de6b589502

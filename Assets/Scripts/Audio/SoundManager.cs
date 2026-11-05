@@ -4,15 +4,8 @@ using UnityEngine;
 
 namespace GladiusAI
 {
-    /// Punto único para reproducir sonido en todo el juego. Uso:
-    ///   SoundManager.Play(SoundId.SwordHit);                              // efecto corto
-    ///   SoundManager.PlayAmbience(SoundId.Rain, SoundId.DistantStadium);  // fondo en loop, una o varias capas
-    ///   SoundManager.StopAmbience();
-    ///
-    /// Patrón Singleton "perezoso": el objeto se crea solo la primera vez que alguien lo usa (aunque se
-    /// arranque el juego directo desde una arena) y sobrevive a los cambios de escena (DontDestroyOnLoad).
-    /// Los clips se configuran en Assets/Resources/SoundLibrary.
-    /// El volumen general lo maneja el menú de Opciones (AudioListener.volume), así que acá no se toca.
+    // Punto único para reproducir sonido: SoundManager.Play(SoundId.SwordHit).
+    // Singleton perezoso: se crea al usarlo y sobrevive a los cambios de escena.
     public class SoundManager : MonoBehaviour
     {
         private const string LibraryResourcePath = "SoundLibrary";
@@ -28,9 +21,8 @@ namespace GladiusAI
         private AudioSource[] effectSources;
         private int nextEffectSource; // índice circular: 0, 1, ..., 7, 0, 1...
 
-        // Ambiente: cada capa del fondo usa su propia AudioSource. Al cambiar de fondo, las capas viejas
-        // bajan de volumen mientras las nuevas suben (crossfade). Las fuentes que terminan de apagarse
-        // quedan libres para el próximo fondo.
+        // Ambiente: cada capa usa su AudioSource y al cambiar de fondo hay un crossfade.
+        // Las fuentes apagadas quedan libres para el próximo fondo.
         private readonly List<AudioSource> ambienceLayers = new List<AudioSource>();
         private readonly List<AudioSource> fadingOutLayers = new List<AudioSource>();
         private readonly Stack<AudioSource> freeAmbienceSources = new Stack<AudioSource>();
@@ -41,7 +33,7 @@ namespace GladiusAI
         private SoundId[] currentAmbience = System.Array.Empty<SoundId>();
         private Coroutine ambienceFade;
 
-        /// Una fuente que va de un volumen a otro durante el fundido.
+        // Una fuente que va de un volumen a otro durante el fundido.
         private struct VolumeFade
         {
             public AudioSource Source;
@@ -58,7 +50,7 @@ namespace GladiusAI
                 manager.PlayEffect(id);
         }
 
-        /// Cambia el fondo por estas capas (sonando juntas, en loop). Si ya es el mismo fondo, no hace nada.
+        // Cambia el fondo por estas capas (sonando juntas, en loop). Si ya es el mismo fondo, no hace nada.
         public static void PlayAmbience(params SoundId[] layers)
             => PlayAmbience(DefaultFadeSeconds, layers);
 
@@ -72,7 +64,7 @@ namespace GladiusAI
         public static void StopAmbience(float fadeSeconds = DefaultFadeSeconds)
             => PlayAmbience(fadeSeconds);
 
-        /// Se llama cuando el jugador mueve el slider de musica: las capas que suenan ajustan su volumen al instante.
+        // Se llama cuando el jugador mueve el slider de musica: las capas que suenan ajustan su volumen al instante.
         public static void RefreshMusicVolume()
         {
             if (instance == null) return;

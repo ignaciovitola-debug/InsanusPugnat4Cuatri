@@ -19,4 +19,9 @@ namespace GladiusAI
             this.current = current;
         }
     }
+
+    // Un originador avisa que su estado cambio y hay que guardar.
+    public readonly struct SaveRequestedEvent
+    {
+    }
 }

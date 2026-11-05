@@ -2,10 +2,8 @@ using System;
 
 namespace GladiusAI
 {
-    /// Nodo hoja: ejecuta una acción concreta (moverse, atacar, patrullar...).
-    /// Recibe la lógica como un delegado (una función) en vez de obligar a
-    /// crear una clase nueva por cada acción — así el NPC define sus
-    /// acciones como simples métodos.
+    // Nodo hoja: ejecuta una acción concreta (moverse, atacar, patrullar...).
+    // Recibe la lógica como un delegado, así no hace falta una clase por cada acción.
     public class ActionNode : Node
     {
         private readonly Func<Blackboard, NodeState> action;

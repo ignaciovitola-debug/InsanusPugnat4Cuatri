@@ -3,9 +3,8 @@ using UnityEngine.UI;
 
 namespace GladiusAI
 {
-    /// Resalta un elemento de UI (un botón) con un borde dorado y un leve "latido" de tamaño.
-    /// Solo cambia cómo se ve: no afecta si el botón se puede tocar o no.
-    /// Uso: PulsingHighlight.Add(boton, color) para prender, PulsingHighlight.Remove(boton) para apagar.
+    // Resalta un botón con borde dorado y un leve latido de tamaño.
+    // Uso: PulsingHighlight.Add(boton, color) para prender y Remove(boton) para apagar.
     [DisallowMultipleComponent]
     public class PulsingHighlight : MonoBehaviour
     {
@@ -32,10 +31,8 @@ namespace GladiusAI
             var highlight = target.GetComponent<PulsingHighlight>();
             if (highlight == null) return;
 
-            // DestroyImmediate en vez de Destroy: Destroy recién borra al final del frame. Si en ese mismo
-            // frame se vuelve a resaltar el botón (termina el diálogo y empieza la espera del combate),
-            // Add encontraría este componente "a punto de morir" y lo reutilizaría, y el resaltado
-            // desaparecería un instante después.
+            // DestroyImmediate porque Destroy borra recién al final del frame.
+            // Si no, Add reutilizaría este componente y el resaltado desaparecería.
             if (highlight.outline != null)
                 DestroyImmediate(highlight.outline);
             target.localScale = Vector3.one;

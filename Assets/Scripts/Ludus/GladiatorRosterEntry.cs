@@ -1,6 +1,6 @@
 namespace GladiusAI
 {
-    /// Un gladiador reclutable en la Ludus: nombre + stats de combate (mismo formato que CombatStarter.EnemyWave).
+    // Un gladiador reclutable en la Ludus: nombre + stats de combate (mismo formato que CombatStarter.EnemyWave).
     [System.Serializable]
     public struct GladiatorRosterEntry
     {

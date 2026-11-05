@@ -2,14 +2,8 @@ using UnityEngine;
 
 namespace GladiusAI
 {
-    /// Hace que la cámara ortográfica muestre siempre el mismo ANCHO de arena, sin importar la pantalla
-    /// (celular 16:9, 20:9, tablet 4:3...).
-    ///
-    /// Problema que resuelve: una cámara ortográfica mantiene fija la ALTURA visible (orthographicSize),
-    /// así que en una pantalla más angosta que la de referencia se recortan los costados, justo donde
-    /// aparecen los gladiadores. Si la pantalla es más angosta, agrandamos el orthographicSize lo
-    /// necesario para que vuelva a entrar todo el ancho. Si es más ancha, no hace falta tocar nada:
-    /// simplemente se ve un poco más de los costados.
+    // Hace que la cámara ortográfica muestre siempre el mismo ancho de arena en cualquier pantalla.
+    // Si la pantalla es más angosta, agranda el orthographicSize para que entre todo el ancho.
     [RequireComponent(typeof(Camera))]
     public class CameraAspectFitter : MonoBehaviour
     {
@@ -28,9 +22,8 @@ namespace GladiusAI
             referenceAspect = referenceResolution.x / referenceResolution.y;
         }
 
-        // Se revisa en cada frame (y no solo al empezar) porque en el celular la pantalla puede cambiar
-        // de tamaño: rotación, pantalla dividida, etc. Si la proporción no cambió, salimos enseguida,
-        // así que el costo es una sola comparación por frame.
+        // Se revisa cada frame porque la pantalla puede cambiar (rotación, pantalla dividida).
+        // Si la proporción no cambió, sale enseguida.
         private void Update()
         {
             float aspect = cam.aspect;

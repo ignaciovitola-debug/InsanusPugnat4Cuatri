@@ -2,11 +2,8 @@ using UnityEngine;
 
 namespace GladiusAI
 {
-    /// Traduce lo que hace el gladiador a su Animator (Idle, Walk, Attack, Hurt, Block, Dead) y orienta el sprite.
-    ///
-    /// Sigue el mismo diseño que GladiatorMovement y GladiatorCombat: es una clase común (no un MonoBehaviour)
-    /// que arma GladiatorNPC. El NPC decide qué hacer y esta clase solo lo muestra. Si el prefab no tiene
-    /// Animator, todos los métodos simplemente no hacen nada (así el NPC nunca tiene que preguntar).
+    // Traduce lo que hace el gladiador a su Animator y orienta el sprite. Lo arma GladiatorNPC.
+    // Si el prefab no tiene Animator, los métodos no hacen nada.
     public class GladiatorAnimator
     {
         // Optimización: Animator.StringToHash convierte el nombre del parámetro a un número una sola vez.
@@ -36,7 +33,7 @@ namespace GladiusAI
             walkSpeedSqr = walkSpeedThreshold * walkSpeedThreshold;
         }
 
-        /// Idle o Walk según la velocidad horizontal real del cuerpo.
+        // Idle o Walk según la velocidad horizontal real del cuerpo.
         public void UpdateLocomotion(Vector3 velocity)
         {
             if (animator == null) return;
@@ -50,7 +47,7 @@ namespace GladiusAI
             animator.SetBool(MovingParam, moving);
         }
 
-        /// Levanta el escudo (Block) mientras está en guardia y lo baja al terminar.
+        // Levanta el escudo (Block) mientras está en guardia y lo baja al terminar.
         public void SetGuarding(bool guarding)
         {
             if (animator == null || guarding == isGuarding) return;
@@ -59,7 +56,7 @@ namespace GladiusAI
             animator.SetBool(GuardingParam, guarding);
         }
 
-        /// Los sprites están dibujados mirando a la derecha: se espejan cuando el rival queda a la izquierda.
+        // Los sprites están dibujados mirando a la derecha: se espejan cuando el rival queda a la izquierda.
         public void FaceTowards(Vector3 selfPosition, Vector3 targetPosition)
         {
             if (sprite == null) return;
@@ -84,7 +81,7 @@ namespace GladiusAI
             animator.SetBool(DeadParam, true);
         }
 
-        /// Vuelve a Idle desde cualquier estado (por ejemplo, al reusar un enemigo del pool).
+        // Vuelve a Idle desde cualquier estado (por ejemplo, al reusar un enemigo del pool).
         public void ResetToIdle()
         {
             if (animator == null) return;

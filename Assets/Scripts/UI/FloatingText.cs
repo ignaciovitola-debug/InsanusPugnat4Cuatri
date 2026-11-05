@@ -4,13 +4,8 @@ using TMPro;
 
 namespace GladiusAI
 {
-    /// Cartel flotante sobre un gladiador ("¡En guardia!", "¡A la carga!"...) que sube y se desvanece.
-    /// Uso: FloatingText.Spawn(posicion, "texto", color). No hace falta armar nada en la escena.
-    ///
-    /// Optimización para mobile (object pooling): en vez de crear y destruir un objeto por cada cartel,
-    /// cuando un cartel termina se desactiva y se guarda en un "pool". El próximo Spawn lo reutiliza.
-    /// Crear/destruir objetos en cada orden genera basura en memoria, y cuando el recolector de basura
-    /// (GC) la limpia el juego se traba unos milisegundos: en un celular eso se nota como un tirón.
+    // Cartel flotante sobre un gladiador que sube y se desvanece. Uso: FloatingText.Spawn(posicion, texto, color).
+    // Usa un pool: al terminar se desactiva y se reutiliza, para no generar basura en el celular.
     public class FloatingText : MonoBehaviour
     {
         private const float Lifetime = 1.2f;       // segundos que dura en pantalla
@@ -31,7 +26,7 @@ namespace GladiusAI
         private Color baseColor;
         private float age;
 
-        /// Muestra un cartel en esa posición (reutilizando uno del pool si hay).
+        // Muestra un cartel en esa posición (reutilizando uno del pool si hay).
         public static void Spawn(Vector3 position, string message, Color color)
         {
             FloatingText floating = TakeFromPool();
@@ -51,8 +46,8 @@ namespace GladiusAI
             outlinedMaterial = null;
         }
 
-        /// Saca un cartel del pool. Al cambiar de escena los carteles guardados se destruyen junto con
-        /// ella, así que los que ya no existen (Unity los compara como null) se descartan.
+        // Saca un cartel del pool. Al cambiar de escena los carteles guardados se destruyen junto con
+        // ella, así que los que ya no existen (Unity los compara como null) se descartan.
         private static FloatingText TakeFromPool()
         {
             while (Pool.Count > 0)
@@ -64,7 +59,7 @@ namespace GladiusAI
             return null;
         }
 
-        /// Crea un cartel nuevo con todo lo que no cambia entre usos (fuente, tamaño, material).
+        // Crea un cartel nuevo con todo lo que no cambia entre usos (fuente, tamaño, material).
         private static FloatingText Create()
         {
             var go = new GameObject("FloatingText");
@@ -93,9 +88,8 @@ namespace GladiusAI
             return outlinedMaterial;
         }
 
-        /// Si ya hay un cartel sobre el mismo gladiador, el nuevo se ubica más arriba en vez de encimarse.
-        /// Comparamos solo la distancia horizontal (X/Z): la altura es justamente lo que vamos a cambiar.
-        /// "self" se ignora: un cartel recién creado ya está en Active (Unity llama a OnEnable al crearlo).
+        // Si ya hay un cartel sobre el mismo gladiador, el nuevo se ubica más arriba.
+        // Solo se compara la distancia horizontal; 'self' se ignora.
         private static Vector3 StackAbove(Vector3 position, FloatingText self)
         {
             foreach (var other in Active)
@@ -146,7 +140,7 @@ namespace GladiusAI
             label.color = new Color(baseColor.r, baseColor.g, baseColor.b, alpha);
         }
 
-        /// Lo gira igual que la cámara para que el texto siempre se lea de frente (billboard).
+        // Lo gira igual que la cámara para que el texto siempre se lea de frente (billboard).
         private void FaceCamera()
         {
             Camera mainCamera = Camera.main;

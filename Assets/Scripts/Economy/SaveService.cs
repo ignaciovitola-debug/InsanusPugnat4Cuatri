@@ -4,29 +4,36 @@ using UnityEngine;
 
 namespace GladiusAI
 {
-    // Guarda y carga el progreso como JSON en la carpeta de datos del celular.
-    // Si el archivo no existe o esta danado, se arranca una partida nueva.
+    // Caretaker del Memento: guarda y carga las fotos en un archivo JSON.
+    // Nunca toca el estado de los originadores, solo les pide su foto y se la devuelve.
     public static class SaveService
     {
-        private static SaveData data;
-
         private static string FilePath => Path.Combine(Application.persistentDataPath, "save.json");
 
-        public static SaveData Data
+        // Se carga todo una vez al arrancar y se guarda cada vez que un originador avisa que cambio.
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        private static void Start()
         {
-            get
-            {
-                if (data == null)
-                    data = LoadOrCreate();
-                return data;
-            }
+            EventManager.Unsubscribe<SaveRequestedEvent>(OnSaveRequested);
+            EventManager.Subscribe<SaveRequestedEvent>(OnSaveRequested);
+            Load();
         }
+
+        private static void OnSaveRequested(SaveRequestedEvent e) => Save();
 
         public static void Save()
         {
+            var memento = new GameMemento
+            {
+                wallet = Denarii.CreateMemento(),
+                energy = Energy.CreateMemento(),
+                training = Training.CreateMemento(),
+                roster = GladiatorRoster.CreateMemento(),
+            };
+
             try
             {
-                File.WriteAllText(FilePath, JsonUtility.ToJson(Data));
+                File.WriteAllText(FilePath, JsonUtility.ToJson(memento));
             }
             catch (Exception e)
             {
@@ -34,10 +41,35 @@ namespace GladiusAI
             }
         }
 
-        // Borra el archivo y descarta lo cargado: el proximo acceso arranca una partida nueva.
+        // Si no hay archivo o esta danado, arranca una partida nueva.
+        public static void Load()
+        {
+            try
+            {
+                if (File.Exists(FilePath))
+                {
+                    var memento = JsonUtility.FromJson<GameMemento>(File.ReadAllText(FilePath));
+                    if (memento != null)
+                    {
+                        Denarii.RestoreMemento(memento.wallet);
+                        Energy.RestoreMemento(memento.energy);
+                        Training.RestoreMemento(memento.training);
+                        GladiatorRoster.RestoreMemento(memento.roster);
+                        return;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning($"[SaveService] Archivo ilegible, se empieza de cero: {e.Message}");
+            }
+
+            StartNewGame();
+        }
+
+        // Borra el archivo y deja todos los originadores como el primer dia.
         public static void Wipe()
         {
-            data = null;
             try
             {
                 if (File.Exists(FilePath))
@@ -47,33 +79,16 @@ namespace GladiusAI
             {
                 Debug.LogWarning($"[SaveService] No se pudo borrar el archivo: {e.Message}");
             }
+
+            StartNewGame();
         }
 
-        private static SaveData LoadOrCreate()
+        private static void StartNewGame()
         {
-            try
-            {
-                if (File.Exists(FilePath))
-                {
-                    var loaded = JsonUtility.FromJson<SaveData>(File.ReadAllText(FilePath));
-                    if (loaded != null)
-                        return loaded;
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.LogWarning($"[SaveService] Archivo ilegible, se empieza de cero: {e.Message}");
-            }
-
-            return new SaveData
-            {
-                energy = EconomyConfig.Instance.maxEnergy,
-                energyStampTicks = DateTime.UtcNow.Ticks,
-            };
+            Denarii.ResetToNewGame();
+            Energy.ResetToNewGame();
+            Training.ResetToNewGame();
+            GladiatorRoster.ResetToNewGame();
         }
-
-        // Con "Enter Play Mode" sin recargar dominio, los static sobreviven entre sesiones de Play.
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        private static void ResetStatics() => data = null;
     }
 }

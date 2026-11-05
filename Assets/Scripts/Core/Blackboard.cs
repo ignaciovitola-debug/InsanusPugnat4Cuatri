@@ -2,9 +2,8 @@ using System.Collections.Generic;
 
 namespace GladiusAI
 {
-    /// El Blackboard es la "memoria" del NPC: ahí se guarda todo lo que
-    /// el árbol necesita leer o escribir (a quién está persiguiendo,
-    /// cuánta vida le queda, etc). Cada gladiador tiene el suyo propio.
+    // Memoria del NPC: guarda lo que el árbol necesita leer o escribir (objetivo, vida...).
+    // Cada gladiador tiene el suyo.
     public class Blackboard
     {
         private readonly Dictionary<string, object> data = new Dictionary<string, object>(16);

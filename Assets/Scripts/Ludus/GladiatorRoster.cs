@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace GladiusAI
 {
-    /// Roster de hasta 8 gladiadores reclutables y cual se eligio para el proximo combate.
-    /// Estatica para sobrevivir el cambio de escena Ludus -> ArenaDeCombate2, igual que EventManager.
+    // Los 8 gladiadores reclutables y cual se eligio para el proximo combate.
+    // Es estatica para sobrevivir al cambio de escena. Originador del Memento: arma y restaura su propia foto.
     public static class GladiatorRoster
     {
         public const int SlotCount = 8;
@@ -18,44 +18,34 @@ namespace GladiusAI
         private const float MinCooldown = 0.8f;
         private const float MaxCooldown = 1.5f;
 
-        private static List<GladiatorRosterEntry> slots;
+        private static List<GladiatorRosterEntry> slots = BuildDefaultRoster();
+        private static int tutorialVersion;
+        private static bool arenaTutorialDone;
 
-        // La lista vive dentro del SaveData: lo que se cambia aca se guarda con SaveService.Save().
-        public static List<GladiatorRosterEntry> Slots
-        {
-            get
-            {
-                if (slots == null)
-                {
-                    slots = SaveService.Data.roster;
-                    if (slots.Count != SlotCount)
-                    {
-                        slots.Clear();
-                        slots.AddRange(BuildDefaultRoster());
-                        SaveService.Save();
-                    }
-                    AssignSkinsOnce();
-                    GiftStarterOnce();
-                }
-                return slots;
-            }
-        }
+        // Solo lectura: los cambios pasan por los metodos de abajo, que guardan solos.
+        public static IReadOnlyList<GladiatorRosterEntry> Slots => slots;
 
         public static int SelectedIndex { get; set; } = 0;
 
-        // Version del tutorial de la Ludus que ya se vio (queda guardada). Quien lo vio antes de que existieran las
-        // versiones tiene la 1, asi cuando se amplia solo ve lo nuevo.
+        // Version del tutorial de la Ludus que ya se vio. Si se amplia, solo se muestra lo nuevo.
         public static int LudusTutorialVersion
         {
-            get
-            {
-                var data = SaveService.Data;
-                return Mathf.Max(data.ludusTutorialVersion, data.ludusTutorialSeen ? 1 : 0);
-            }
+            get => tutorialVersion;
             set
             {
-                SaveService.Data.ludusTutorialVersion = value;
-                SaveService.Save();
+                tutorialVersion = value;
+                EventManager.Raise(new SaveRequestedEvent());
+            }
+        }
+
+        // True cuando ya se completo el tutorial de la Arena 1: "Jugar" pasa a ir directo a la Ludus.
+        public static bool ArenaTutorialDone
+        {
+            get => arenaTutorialDone;
+            set
+            {
+                arenaTutorialDone = value;
+                EventManager.Raise(new SaveRequestedEvent());
             }
         }
 
@@ -63,109 +53,110 @@ namespace GladiusAI
         {
             get
             {
-                for (int i = 1; i < Slots.Count; i++)
-                    if (!Slots[i].unlocked) return true;
+                for (int i = 1; i < slots.Count; i++)
+                    if (!slots[i].unlocked) return true;
                 return false;
             }
         }
 
-        // Despues de borrar los datos guardados: se vuelve a leer todo desde cero.
-        public static void Reset()
-        {
-            slots = null;
-            SelectedIndex = 0;
-        }
-
         public static GladiatorRosterEntry GetSelected()
         {
-            int index = SelectedIndex >= 0 && SelectedIndex < Slots.Count ? SelectedIndex : 0;
-            return Slots[index];
-        }
-
-        /// Tu gladiador cayo en combate: ese slot vuelve a stats basicas.
-        public static void ResetSlotToBasic(int index)
-        {
-            if (index < 0 || index >= Slots.Count) return;
-            var basic = BasicPreset();
-            basic.label = Slots[index].label;
-            basic.skin = Slots[index].skin;
-            Slots[index] = basic;
-            SaveService.Save();
-            EventManager.Raise(new RosterChangedEvent());
+            int index = SelectedIndex >= 0 && SelectedIndex < slots.Count ? SelectedIndex : 0;
+            return slots[index];
         }
 
         public static bool IsUnlocked(int index)
-            => index >= 0 && index < Slots.Count && Slots[index].unlocked;
+            => index >= 0 && index < slots.Count && slots[index].unlocked;
 
-        /// Se gano el combate que otorga reclutas: desbloquea el proximo gladiador bloqueado y le sortea stats.
+        // Tu gladiador cayo en combate: ese puesto vuelve a stats basicas.
+        public static void ResetSlotToBasic(int index)
+        {
+            if (index < 0 || index >= slots.Count) return;
+
+            var basic = BasicPreset();
+            basic.label = slots[index].label;
+            basic.skin = slots[index].skin;
+            slots[index] = basic;
+            Notify();
+        }
+
+        // Se gano el combate que da reclutas: desbloquea el proximo gladiador y le sortea stats.
         public static void UnlockNext()
         {
-            for (int i = 1; i < Slots.Count; i++)
+            for (int i = 1; i < slots.Count; i++)
             {
-                if (Slots[i].unlocked) continue;
+                if (slots[i].unlocked) continue;
 
-                var entry = Slots[i];
+                var entry = slots[i];
                 entry.unlocked = true;
                 entry.maxHP = Random.Range(MinHP, MaxHP);
                 entry.minDamage = Random.Range(MinDamageLow, MinDamageHigh);
                 entry.maxDamage = Random.Range(entry.minDamage + MaxDamageBonus, MaxDamageHigh);
                 entry.attackCooldown = Random.Range(MinCooldown, MaxCooldown);
-                Slots[i] = entry;
-                SaveService.Save();
-                EventManager.Raise(new RosterChangedEvent());
+                slots[i] = entry;
+                Notify();
                 return;
             }
         }
 
-        // El Novato (puesto 1) se regala una sola vez: asi, aunque el gladiador principal este entrenando,
-        // siempre hay alguien disponible para pelear.
-        private static void GiftStarterOnce()
+        // Termino un entrenamiento: el gladiador sube de nivel. Cuanto mas nivel, menos mejora (tabla).
+        public static void AddTrainingBonus(int index, float bonusHP, float bonusDamage)
         {
-            var data = SaveService.Data;
-            if (data.starterGift >= 1) return;
+            if (index < 0 || index >= slots.Count) return;
 
-            var novato = slots[1];
-            if (!novato.unlocked)
-            {
-                novato.unlocked = true;
-                novato.maxHP = 90f;
-                novato.minDamage = 9f;
-                novato.maxDamage = 17f;
-                novato.attackCooldown = 1.3f;
-                slots[1] = novato;
-            }
-            data.starterGift = 1;
-            SaveService.Save();
+            var entry = slots[index];
+            float scale = ProgressionTables.TrainingBonusForLevel(entry.level);
+            entry.maxHP += bonusHP * scale;
+            entry.minDamage += bonusDamage * scale;
+            entry.maxDamage += bonusDamage * scale;
+            entry.level++;
+            slots[index] = entry;
+            Notify();
         }
 
-        // Cada puesto del roster tiene su aspecto (Gladiator 1-3, Amazon 1-3) y lo conserva siempre.
-        // Se reparten en ronda una sola vez; las partidas guardadas antes de que existieran los aspectos
-        // (todos con el 0) tambien pasan por aca.
-        private static void AssignSkinsOnce()
+        public static RosterMemento CreateMemento()
         {
-            var data = SaveService.Data;
-            int skinCount = GladiatorSkins.Count;
-            if (data.skinsVersion >= 1 || skinCount == 0) return;
-
-            for (int i = 0; i < slots.Count; i++)
+            return new RosterMemento
             {
-                var entry = slots[i];
-                entry.skin = i % skinCount;
-                slots[i] = entry;
-            }
-            data.skinsVersion = 1;
-            SaveService.Save();
+                slots = new List<GladiatorRosterEntry>(slots),
+                tutorialVersion = tutorialVersion,
+                arenaTutorialDone = arenaTutorialDone,
+            };
+        }
+
+        public static void RestoreMemento(RosterMemento memento)
+        {
+            bool valid = memento.slots != null && memento.slots.Count == SlotCount;
+            slots = valid ? new List<GladiatorRosterEntry>(memento.slots) : BuildDefaultRoster();
+            tutorialVersion = memento.tutorialVersion;
+            arenaTutorialDone = memento.arenaTutorialDone;
+            SelectedIndex = 0;
+        }
+
+        public static void ResetToNewGame()
+        {
+            slots = BuildDefaultRoster();
+            tutorialVersion = 0;
+            arenaTutorialDone = false;
+            SelectedIndex = 0;
+        }
+
+        private static void Notify()
+        {
+            EventManager.Raise(new RosterChangedEvent());
+            EventManager.Raise(new SaveRequestedEvent());
         }
 
         private static GladiatorRosterEntry BasicPreset()
             => new GladiatorRosterEntry("Tu Gladiador", 100f, 10f, 20f, 1.2f);
 
+        // Partida nueva: cada puesto con su aspecto, y el Novato ya regalado para tener con quien pelear.
         private static List<GladiatorRosterEntry> BuildDefaultRoster()
         {
-            return new List<GladiatorRosterEntry>
+            var list = new List<GladiatorRosterEntry>
             {
                 BasicPreset(),
-                new GladiatorRosterEntry("Novato", 0f, 0f, 0f, 0f, unlocked: false),
+                new GladiatorRosterEntry("Novato", 90f, 9f, 17f, 1.3f),
                 new GladiatorRosterEntry("Veterano", 0f, 0f, 0f, 0f, unlocked: false),
                 new GladiatorRosterEntry("Agresivo", 0f, 0f, 0f, 0f, unlocked: false),
                 new GladiatorRosterEntry("Defensivo", 0f, 0f, 0f, 0f, unlocked: false),
@@ -173,6 +164,18 @@ namespace GladiusAI
                 new GladiatorRosterEntry("Resistente", 0f, 0f, 0f, 0f, unlocked: false),
                 new GladiatorRosterEntry("Equilibrado", 0f, 0f, 0f, 0f, unlocked: false),
             };
+
+            int skinCount = GladiatorSkins.Count;
+            if (skinCount > 0)
+            {
+                for (int i = 0; i < list.Count; i++)
+                {
+                    var entry = list[i];
+                    entry.skin = i % skinCount;
+                    list[i] = entry;
+                }
+            }
+            return list;
         }
     }
 }

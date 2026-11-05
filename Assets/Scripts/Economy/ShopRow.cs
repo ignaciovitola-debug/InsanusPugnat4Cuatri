@@ -13,14 +13,14 @@ namespace GladiusAI
         [SerializeField] private TMP_Text priceLabel;
         [SerializeField] private Button buyButton;
 
-        public void Setup(ShopItem item, Action<ShopItem> onBuy)
+        public void Setup(ShopOffer offer, Action onBuy)
         {
-            nameLabel.text = item.DisplayName;
-            descriptionLabel.text = item.Description;
-            priceLabel.text = $"{item.Price} denarios";
+            nameLabel.text = offer.name;
+            descriptionLabel.text = offer.description;
+            priceLabel.text = $"{offer.price} denarios";
 
             buyButton.onClick.RemoveAllListeners();
-            buyButton.onClick.AddListener(() => onBuy(item));
+            buyButton.onClick.AddListener(() => onBuy());
         }
     }
 }

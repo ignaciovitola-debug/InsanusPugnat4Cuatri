@@ -3,15 +3,18 @@ using UnityEngine;
 
 namespace GladiusAI
 {
-    // Entrenamiento de gladiadores. Mismo patron que Energy: se guarda la hora de fin y el reloj hace el resto,
-    // asi sigue corriendo aunque el juego este cerrado. Un solo gladiador entrena a la vez y mientras tanto no puede pelear.
+    // Entrenamiento de gladiadores. Guarda la hora de fin y el reloj hace el resto, aunque el juego este cerrado.
+    // Entrena uno solo a la vez. Originador del Memento: arma y restaura su propia foto.
     public static class Training
     {
-        private static SaveData Data => SaveService.Data;
+        private static int slot = -1;
+        private static long endTicks;
+        private static int tier;
+
         private static EconomyConfig Config => EconomyConfig.Instance;
 
-        public static bool IsActive => Data.trainingSlot >= 0;
-        public static int Slot => Data.trainingSlot;
+        public static bool IsActive => slot >= 0;
+        public static int Slot => slot;
 
         public static float SecondsRemaining
         {
@@ -19,9 +22,9 @@ namespace GladiusAI
             {
                 if (!IsActive) return 0f;
 
-                float remaining = (float)(Data.trainingEndTicks - DateTime.UtcNow.Ticks) / TimeSpan.TicksPerSecond;
+                float remaining = (float)(endTicks - DateTime.UtcNow.Ticks) / TimeSpan.TicksPerSecond;
                 // Si el reloj se atraso, nunca puede faltar mas que la duracion elegida.
-                float max = Config.trainingTiers[Mathf.Clamp(Data.trainingTier, 0, Config.trainingTiers.Length - 1)].minutes * 60f;
+                float max = CurrentTier.minutes * 60f;
                 return Mathf.Clamp(remaining, 0f, max);
             }
         }
@@ -34,19 +37,21 @@ namespace GladiusAI
 
         public static int RushCost => Mathf.CeilToInt(SecondsRemaining / 60f) * Config.rushCostPerMinute;
 
-        public static bool TryStart(int slot, int tierIndex, out string reason)
+        private static EconomyConfig.TrainingTier CurrentTier
+            => Config.trainingTiers[Mathf.Clamp(tier, 0, Config.trainingTiers.Length - 1)];
+
+        public static bool TryStart(int slotIndex, int tierIndex, out string reason)
         {
             reason = null;
             if (IsActive) reason = "Ya hay un gladiador entrenando";
-            else if (!GladiatorRoster.IsUnlocked(slot)) reason = "Ese gladiador todavía no es tuyo";
+            else if (!GladiatorRoster.IsUnlocked(slotIndex)) reason = "Ese gladiador todavía no es tuyo";
             else if (tierIndex < 0 || tierIndex >= Config.trainingTiers.Length) reason = "Duración inválida";
             if (reason != null) return false;
 
-            Data.trainingSlot = slot;
-            Data.trainingTier = tierIndex;
-            Data.trainingEndTicks = DateTime.UtcNow.AddMinutes(Config.trainingTiers[tierIndex].minutes).Ticks;
-            SaveService.Save();
-            EventManager.Raise(new RosterChangedEvent());
+            slot = slotIndex;
+            tier = tierIndex;
+            endTicks = DateTime.UtcNow.AddMinutes(Config.trainingTiers[tierIndex].minutes).Ticks;
+            Notify();
             return true;
         }
 
@@ -55,19 +60,12 @@ namespace GladiusAI
         {
             if (!IsActive || SecondsRemaining > 0f) return false;
 
-            var tier = Config.trainingTiers[Mathf.Clamp(Data.trainingTier, 0, Config.trainingTiers.Length - 1)];
-            int slot = Data.trainingSlot;
-            Data.trainingSlot = -1;
+            var finishedTier = CurrentTier;
+            int finishedSlot = slot;
+            slot = -1;
 
-            var entry = GladiatorRoster.Slots[slot];
-            entry.maxHP += tier.bonusHP;
-            entry.minDamage += tier.bonusDamage;
-            entry.maxDamage += tier.bonusDamage;
-            entry.level++;
-            GladiatorRoster.Slots[slot] = entry;
-
-            SaveService.Save();
-            EventManager.Raise(new RosterChangedEvent());
+            GladiatorRoster.AddTrainingBonus(finishedSlot, finishedTier.bonusHP, finishedTier.bonusDamage);
+            Notify();
             return true;
         }
 
@@ -77,8 +75,31 @@ namespace GladiusAI
             if (!IsActive) { reason = "No hay ningún entrenamiento en curso"; return false; }
             if (!Denarii.TrySpend(RushCost)) { reason = $"Te faltan {RushCost - Denarii.Balance} denarios"; return false; }
 
-            Data.trainingEndTicks = DateTime.UtcNow.Ticks;
+            endTicks = DateTime.UtcNow.Ticks;
             return TryComplete();
+        }
+
+        public static TrainingMemento CreateMemento()
+            => new TrainingMemento { slot = slot, endTicks = endTicks, tier = tier };
+
+        public static void RestoreMemento(TrainingMemento memento)
+        {
+            slot = memento.slot;
+            endTicks = memento.endTicks;
+            tier = memento.tier;
+        }
+
+        public static void ResetToNewGame()
+        {
+            slot = -1;
+            endTicks = 0;
+            tier = 0;
+        }
+
+        private static void Notify()
+        {
+            EventManager.Raise(new RosterChangedEvent());
+            EventManager.Raise(new SaveRequestedEvent());
         }
     }
 }

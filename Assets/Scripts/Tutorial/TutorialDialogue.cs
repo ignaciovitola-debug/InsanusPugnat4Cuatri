@@ -7,47 +7,37 @@ using UnityEngine.UI;
 
 namespace GladiusAI
 {
-    /// Cuadro de diálogo del instructor (Máximo): retrato grande + texto que aparece palabra por palabra.
-    ///
-    /// Cómo funciona cada mensaje:
-    ///   1. Las palabras aparecen una tras otra con un fundido (un toque las muestra todas de una).
-    ///   2. Hay unos segundos de lectura en los que los toques no cuentan.
-    ///   3. Aparece "Tocá para seguir" y el siguiente toque pasa al próximo mensaje.
-    ///
-    /// Mientras el cuadro está abierto el juego queda en pausa (Time.timeScale = 0), y la pantalla entera
-    /// recibe los toques (el objeto tiene una Image a pantalla completa e implementa IPointerClickHandler).
-    /// Todo el diálogo usa tiempo "unscaled" (real), así que funciona aunque el juego esté pausado.
-    ///
-    /// Se usa desde CombatStarter con: yield return dialogue.Play(lineas);
+    // Cuadro de diálogo del instructor: retrato + texto que aparece palabra por palabra.
+    // Pausa el juego mientras está abierto. Se usa con: yield return dialogue.Play(lineas);
     public class TutorialDialogue : MonoBehaviour, IPointerClickHandler
     {
         [Header("Partes del cuadro")]
         [SerializeField] private RectTransform panel;
         [SerializeField] private Image portrait;
         [SerializeField] private TMP_Text lineText;
-        [Tooltip("Indicador de \"tocá para seguir\": aparece cuando ya se puede pasar al siguiente mensaje.")]
+        [Tooltip("Aparece cuando ya se puede pasar al siguiente mensaje.")]
         [SerializeField] private GameObject continueHint;
-        [Tooltip("Un retrato por cara, en el mismo orden que PortraitExpression (Calm, Talk, Smile, Aggression, Sadness, Special).")]
+        [Tooltip("Un retrato por cara, en el orden de PortraitExpression.")]
         [SerializeField] private Sprite[] portraits = new Sprite[0];
-        [Tooltip("Caras que en el dibujo original miran a la izquierda: se espejan para que el personaje mire siempre hacia el cuadro de texto.")]
+        [Tooltip("Caras que miran a la izquierda: se espejan.")]
         [SerializeField] private PortraitExpression[] mirroredExpressions = { PortraitExpression.Smile, PortraitExpression.Special };
 
         [Header("Tiempos")]
-        [Tooltip("Al abrirse el cuadro, segundos que se ve la cara antes de empezar a hablar.")]
+        [Tooltip("Segundos que se ve la cara antes de hablar.")]
         [SerializeField] private float openingPause = 0.8f;
-        [Tooltip("Segundos entre que empieza a aparecer una palabra y la siguiente.")]
+        [Tooltip("Segundos entre una palabra y la siguiente.")]
         [SerializeField] private float secondsPerWord = 0.12f;
-        [Tooltip("Segundos que tarda cada palabra en pasar de invisible a visible.")]
+        [Tooltip("Segundos que tarda cada palabra en aparecer.")]
         [SerializeField] private float wordFadeSeconds = 0.35f;
-        [Tooltip("Segundos de lectura con el mensaje completo antes de permitir seguir.")]
+        [Tooltip("Segundos de lectura antes de permitir seguir.")]
         [SerializeField] private float readingPause = 2f;
-        [Tooltip("Mensajes con \"Appear Again\": segundos que el cuadro queda cerrado antes de volver a abrirse.")]
+        [Tooltip("Segundos con el cuadro cerrado antes de volver a abrirse (Appear Again).")]
         [SerializeField] private float reappearGap = 0.5f;
 
         [Header("Resaltado de botones de orden")]
         [Tooltip("En este orden: Atacá, Defiéndete, Ríndete.")]
         [SerializeField] private RectTransform[] orderButtons = new RectTransform[0];
-        [Tooltip("Mientras resalta botones, el texto termina a esta altura dentro del cuadro (encima de los botones) y achica su letra si hace falta.")]
+        [Tooltip("Altura del texto mientras se resaltan botones.")]
         [SerializeField] private float textBottomWhileHighlighting = 140f;
         [SerializeField] private Color highlightColor = new Color(1f, 0.82f, 0.3f);
 
@@ -76,7 +66,7 @@ namespace GladiusAI
             lineTextRestOffsetMin = lineText.rectTransform.offsetMin;
         }
 
-        /// Muestra los mensajes en orden y termina cuando el jugador cierra el último.
+        // Muestra los mensajes en orden y termina cuando el jugador cierra el último.
         public IEnumerator Play(IReadOnlyList<DialogueLine> lines)
         {
             if (lines == null || lines.Count == 0) yield break;
@@ -100,7 +90,7 @@ namespace GladiusAI
             Time.timeScale = previousTimeScale;
         }
 
-        /// Entrada del personaje: (si hace falta) cierra el cuadro un momento, muestra su cara y hace una pausa.
+        // Entrada del personaje: (si hace falta) cierra el cuadro un momento, muestra su cara y hace una pausa.
         private IEnumerator OpenBox(DialogueLine line, bool closeFirst)
         {
             if (closeFirst)
@@ -136,11 +126,8 @@ namespace GladiusAI
                 yield return null;
         }
 
-        //  Texto con fundido palabra por palabra
-        //
-        // TextMeshPro arma una malla (vértices) con 4 vértices por letra. En vez de crear textos
-        // nuevos, escribimos el mensaje completo una sola vez y cada frame solo cambiamos la
-        // transparencia (alpha) de los vértices de cada letra. Es mucho más barato que regenerar el texto.
+        // Texto con fundido palabra por palabra.
+        // Se escribe el mensaje una vez y cada frame solo se cambia el alfa de cada letra.
 
         private IEnumerator RevealWords(string text)
         {
@@ -162,8 +149,8 @@ namespace GladiusAI
             ApplyWordFade(float.MaxValue); // todo visible
         }
 
-        /// Calcula a qué palabra pertenece cada letra. TMP nos da dónde empieza cada palabra; los signos
-        /// sueltos (como "¡") quedan asociados a la palabra que tienen al lado.
+        // Calcula a qué palabra pertenece cada letra. TMP nos da dónde empieza cada palabra; los signos
+        // sueltos (como "¡") quedan asociados a la palabra que tienen al lado.
         private void MapCharactersToWords()
         {
             var info = lineText.textInfo;
@@ -179,7 +166,7 @@ namespace GladiusAI
             }
         }
 
-        /// Pone la transparencia de cada letra según cuánto tiempo pasó desde que empezó su palabra.
+        // Pone la transparencia de cada letra según cuánto tiempo pasó desde que empezó su palabra.
         private void ApplyWordFade(float elapsed)
         {
             var info = lineText.textInfo;
@@ -205,8 +192,8 @@ namespace GladiusAI
 
         //  Resaltado de botones
 
-        /// Resalta el botón que el jugador tiene que tocar para seguir (o ninguno con None).
-        /// Lo usa CombatStarter fuera del diálogo: acá el botón se puede tocar normalmente.
+        // Resalta el botón que el jugador tiene que tocar para seguir (o ninguno con None).
+        // Lo usa CombatStarter fuera del diálogo: acá el botón se puede tocar normalmente.
         public void SetPromptHighlight(PlayerIntent intent)
         {
             if (promptedButton != null)
@@ -217,11 +204,8 @@ namespace GladiusAI
                 PulsingHighlight.Add(promptedButton, highlightColor);
         }
 
-        /// Resaltado DURANTE el diálogo. El problema: la pantalla está oscurecida por el diálogo, que tapa
-        /// los botones. La solución: a cada botón resaltado le agregamos un Canvas propio con
-        /// "overrideSorting" y un orden mayor, así se dibuja por encima de todo.
-        /// Ese Canvas no tiene GraphicRaycaster, así que el toque lo sigue recibiendo el diálogo:
-        /// el jugador no puede tocar un botón por accidente mientras lee.
+        // Resalta durante el diálogo: a cada botón se le agrega un Canvas propio con mayor orden de dibujo.
+        // Ese Canvas no tiene GraphicRaycaster, así que el toque lo sigue recibiendo el diálogo.
         private void SetHighlight(DialogueHighlight highlight)
         {
             if (highlight == currentHighlight) return;
@@ -238,9 +222,8 @@ namespace GladiusAI
                 PulsingHighlight.Add(button, highlightColor);
             }
 
-            // El cuadro no se mueve: los botones resaltados se dibujan sobre su parte de abajo.
-            // Para que no tapen nada, el texto se acomoda encima de ellos y el "Tocá para seguir"
-            // pasa a la esquina de arriba, apenas por fuera del cuadro.
+            // Los botones resaltados se dibujan sobre la parte de abajo del cuadro.
+            // El texto se acomoda encima y 'Tocá para seguir' pasa arriba.
             bool on = highlightedButtons.Count > 0;
             lineText.rectTransform.offsetMin = on
                 ? new Vector2(lineTextRestOffsetMin.x, Mathf.Max(lineTextRestOffsetMin.y, textBottomWhileHighlighting))
@@ -263,7 +246,7 @@ namespace GladiusAI
             highlightedButtons.Clear();
         }
 
-        /// Llena "result" con los botones que corresponden a ese resaltado (orden: Atacá, Defiéndete, Ríndete).
+        // Llena "result" con los botones que corresponden a ese resaltado (orden: Atacá, Defiéndete, Ríndete).
         private void CollectButtons(DialogueHighlight highlight, List<RectTransform> result)
         {
             switch (highlight)
@@ -325,7 +308,7 @@ namespace GladiusAI
             portrait.rectTransform.localScale = new Vector3(mirrored ? -1f : 1f, 1f, 1f);
         }
 
-        /// Como WaitForSeconds, pero en tiempo real (WaitForSeconds se congela con el juego en pausa).
+        // Como WaitForSeconds, pero en tiempo real (WaitForSeconds se congela con el juego en pausa).
         private static IEnumerator WaitRealtime(float seconds)
         {
             for (float t = 0f; t < seconds; t += Time.unscaledDeltaTime)

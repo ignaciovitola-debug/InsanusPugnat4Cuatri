@@ -3,7 +3,8 @@ using UnityEngine;
 
 namespace GladiusAI
 {
-    public class GladiatorFactory : MonoBehaviour, IGladiatorFactory
+    // Fabrica de gladiadores: crea el prefab que corresponde a cada tipo.
+    public class GladiatorFactory : MonoBehaviour
     {
         [System.Serializable]
         public struct KindPrefab

@@ -3,14 +3,16 @@ using UnityEngine.SceneManagement;
 
 namespace GladiusAI
 {
-    /// Controlador del menú principal: Jugar / Opciones / Créditos / Salir.
+    // Controlador del menú principal: Jugar / Opciones / Créditos / Salir.
     public class MenuController : MonoBehaviour
     {
+        private const string HomeScene = "Ludus";
+
         [SerializeField] private string levelSceneName = "ArenaDeCombate1";
         [SerializeField] private GameObject optionsPanel;
         [SerializeField] private GameObject creditsPanel;
 
-        /// Usado por la herramienta de Editor al armar la escena — asigna las referencias una sola vez.
+        // Usado por la herramienta de Editor al armar la escena — asigna las referencias una sola vez.
         public void Configure(GameObject options, GameObject credits, string levelScene)
         {
             optionsPanel = options;
@@ -18,16 +20,19 @@ namespace GladiusAI
             levelSceneName = levelScene;
         }
 
+        // La primera vez va al tutorial; despues del tutorial va directo a la Ludus.
         public void PlayLevel()
         {
+            string target = GladiatorRoster.ArenaTutorialDone ? HomeScene : levelSceneName;
+
             if (SceneFader.Instance != null)
             {
-                SceneFader.Instance.FadeToScene(levelSceneName);
+                SceneFader.Instance.FadeToScene(target);
             }
             else
             {
                 Debug.LogWarning("No hay SceneFader activo (¿arrancaste el juego desde Splash?) -- cargando sin fundido.");
-                SceneManager.LoadScene(levelSceneName);
+                SceneManager.LoadScene(target);
             }
         }
 
@@ -37,11 +42,10 @@ namespace GladiusAI
         public void ShowCredits() => creditsPanel.SetActive(true);
         public void HideCredits() => creditsPanel.SetActive(false);
 
-        // Boton "Borrar datos": deja el juego como el primer dia y recarga el menu para que todo se vea al instante.
+        // Boton "Borrar datos": deja el juego como el primer dia y recarga el menu.
         public void WipeSaveData()
         {
             SaveService.Wipe();
-            GladiatorRoster.Reset();
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 

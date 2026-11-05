@@ -5,15 +5,8 @@ using UnityEngine.SceneManagement;
 
 namespace GladiusAI
 {
-    /// Botones de orden habilitados en un combate. Nada marcado = todos.
-    [System.Flags]
-    public enum OrderSet
-    {
-        Attack = 1 << 0,
-        Defend = 1 << 1,
-        Surrender = 1 << 2,
-    }
-
+    // Maneja el flujo de un combate: crea a los gladiadores, las oleadas y el resultado.
+    // El tutorial y los puntos de aparicion los resuelven TutorialFlow y SpawnPicker.
     public class CombatStarter : MonoBehaviour
     {
         [System.Serializable]
@@ -24,47 +17,47 @@ namespace GladiusAI
             public float minDamage;
             public float maxDamage;
             public float attackCooldown;
+            [Tooltip("Tipo de rival (Flyweight). Vacio en el tutorial.")]
+            public EnemyArchetype archetype;
 
             [Header("Tutorial (opcional)")]
-            [Tooltip("Botones de orden que se ven en este combate (el tutorial los va habilitando de a uno). Nothing = todos.")]
+            [Tooltip("Botones de orden visibles en este combate. Nothing = todos.")]
             public OrderSet availableOrders;
-            [Tooltip("Lo que dice el instructor después del título, antes de que arranque el combate.")]
+            [Tooltip("Lo que dice el instructor antes de que arranque el combate.")]
             public DialogueLine[] introDialogue;
-            [Tooltip("Si es distinto de None, el combate no arranca hasta que el jugador toque ese botón.")]
+            [Tooltip("Si no es None, el combate espera a que toquen ese boton.")]
             public PlayerIntent requiredIntentToStart;
-            [Tooltip("Cartel fijo mientras se espera ese botón (ej: \"¡Tocá Atacá!\").")]
+            [Tooltip("Cartel que se ve mientras se espera ese boton.")]
             [TextArea] public string tutorialHint;
             public bool invulnerable;
-            [Tooltip("Botón que queda resaltado (y se puede tocar) durante toda la pelea, hasta que termina.")]
+            [Tooltip("Boton resaltado durante toda la pelea.")]
             public PlayerIntent highlightDuringFight;
-            [Tooltip("Lo que dice el instructor en medio del combate, a los midFightDelaySeconds de pelea (el combate se pausa).")]
+            [Tooltip("Lo que dice el instructor en medio del combate (pausa la pelea).")]
             public DialogueLine[] midFightDialogue;
             public float midFightDelaySeconds;
-            [Tooltip("Cartel fijo que queda después de ese diálogo, hasta que termina el combate (ej: \"¡Tocá Ríndete!\").")]
+            [Tooltip("Cartel que queda despues del dialogo de mitad de pelea.")]
             [TextArea] public string midFightHint;
         }
 
         [Header("Factory")]
-        [SerializeField] private GladiatorFactory factory; 
-
-        private IGladiatorFactory Factory => factory;
+        [SerializeField] private GladiatorFactory factory;
 
         [Header("Puntos de spawn")]
         [SerializeField] private Transform playerSpawnPoint;
         [SerializeField] private Transform enemySpawnPoint;
-        [SerializeField] private Transform enemySpawnPoint2; 
+        [SerializeField] private Transform enemySpawnPoint2;
 
-        [Tooltip("Cuanto se corre el lugar de aparicion (X = a los costados, Z = hacia el fondo) respecto de cada punto de spawn. Cada gladiador sigue del mismo lado.")]
+        [Tooltip("Cuanto se corre el lugar de aparicion de cada punto (X costados, Z fondo).")]
         [SerializeField] private Vector2 spawnJitter = new Vector2(1.5f, 3f);
 
         [Header("Oleadas secuenciales (opcional, Nivel 1)")]
-        [Tooltip("Si tiene elementos, el nivel spawnea estos enemigos uno tras otro (con estas stats) en vez del enemigo único de arriba.")]
+        [Tooltip("Si tiene elementos, los enemigos salen uno tras otro con estas stats.")]
         [SerializeField] private EnemyWave[] waves;
 
         [Header("Cuenta regresiva")]
         [SerializeField] private float countdownSeconds = 3f;
         [SerializeField] private TMP_Text countdownLabel;
-        [Tooltip("Cartel separado del countdownLabel para los mensajes del tutorial (no se pisan entre si).")]
+        [Tooltip("Cartel aparte para los mensajes del tutorial.")]
         [SerializeField] private TMP_Text tutorialHintLabel;
 
         [Header("Consignas del jugador")]
@@ -72,24 +65,24 @@ namespace GladiusAI
 
         [Header("Tutorial (opcional, Nivel 1)")]
         [SerializeField] private TutorialDialogue dialogue;
-        [Tooltip("En este orden: Atacá, Defiéndete, Ríndete. Cada oleada muestra solo los de su availableOrders.")]
+        [Tooltip("En este orden: Ataca, Defiende, Rindete.")]
         [SerializeField] private GameObject[] orderButtons = new GameObject[0];
-        [Tooltip("Lo que dice el instructor al entrar a la arena, antes de la cuenta regresiva.")]
+        [Tooltip("Lo que dice el instructor al entrar a la arena.")]
         [SerializeField] private DialogueLine[] levelIntroDialogue;
-        [Tooltip("Lo que dice el instructor al terminar el nivel sin morir (ganando o rindiéndose), antes del resultado.")]
+        [Tooltip("Lo que dice el instructor al terminar el nivel sin morir.")]
         [SerializeField] private DialogueLine[] levelOutroDialogue;
 
         [Header("Despues del combate")]
-        [Tooltip("Escena a la que se pasa unos segundos despues de terminar el combate (Arena 1 y Arena 2 -> Ludus).")]
+        [Tooltip("Escena que se carga unos segundos despues de terminar el combate.")]
         [SerializeField] private string nextSceneAfterCombat = "Menu";
         [SerializeField] private float delayBeforeNextScene = 2.5f;
-        [Tooltip("Oleadas (Nivel 1): segundos entre matar a un gladiador (festeja el público) y pasar al siguiente combate.")]
+        [Tooltip("Segundos entre un combate y el siguiente.")]
         [SerializeField] private float delayBetweenWaves = 1f;
-        [Tooltip("Oleadas (Nivel 1): segundos que se muestra el título de cada combate antes de que arranque.")]
+        [Tooltip("Segundos que se muestra el titulo de cada combate.")]
         [SerializeField] private float waveTitleSeconds = 3f;
-        [Tooltip("Activar solo en la Arena 2 -- gana una vez y desbloquea al siguiente gladiador de la Ludus.")]
+        [Tooltip("Solo en la Arena 2: ganar desbloquea al siguiente gladiador.")]
         [SerializeField] private bool grantsGladiatorUnlock;
-        [Tooltip("Denarios que se ganan al vencer en este combate (0 = ninguno, por ejemplo en el tutorial).")]
+        [Tooltip("Denarios que se ganan al vencer (0 = ninguno).")]
         [SerializeField] private int victoryReward;
 
         private GladiatorNPC player;
@@ -98,29 +91,13 @@ namespace GladiusAI
         private bool singleEncounterEnded;
         private bool fightResolved;
         private GladiatorPool enemyPool;
+        private SpawnPicker spawnPicker;
+        private TutorialFlow tutorial;
 
-        // Combate elegido en la Ludus: las oleadas salen del contrato y el jugador usa al gladiador elegido.
+        // True si el combate viene de un contrato elegido en la Ludus.
         private bool contractMode;
 
         private bool IsWaveMode => waves != null && waves.Length > 0;
-
-        private void BuildWavesFromContract(CombatContract contract)
-        {
-            var config = EconomyConfig.Instance;
-            waves = new EnemyWave[contract.enemyCount];
-            for (int i = 0; i < waves.Length; i++)
-            {
-                waves[i] = new EnemyWave
-                {
-                    label = contract.enemyCount == 1 ? contract.title : $"Rival {i + 1} de {contract.enemyCount}",
-                    maxHP = config.enemyHP * contract.statScale,
-                    minDamage = config.enemyMinDamage * contract.statScale,
-                    maxDamage = config.enemyMaxDamage * contract.statScale,
-                    attackCooldown = config.enemyCooldown / contract.statScale,
-                };
-            }
-            contractMode = true;
-        }
 
         private void OnEnable()
         {
@@ -136,7 +113,9 @@ namespace GladiusAI
 
         private void Start()
         {
-            enemyPool = new GladiatorPool(Factory, GladiatorKind.Enemy);
+            enemyPool = new GladiatorPool(factory, GladiatorKind.Enemy);
+            spawnPicker = new SpawnPicker(spawnJitter);
+            tutorial = new TutorialFlow(dialogue, tutorialHintLabel, orderButtons, intentController);
 
             if (!IsWaveMode && CombatSetup.Current != null)
                 BuildWavesFromContract(CombatSetup.Current);
@@ -147,17 +126,68 @@ namespace GladiusAI
                 StartSingleEncounter();
         }
 
+        // Arma una oleada por rival: arquetipo al azar y stats que decide la dificultad (Strategy).
+        private void BuildWavesFromContract(CombatContract contract)
+        {
+            waves = new EnemyWave[contract.enemyCount];
+            EnemyArchetype previous = null;
+
+            for (int i = 0; i < waves.Length; i++)
+            {
+                var archetype = PickArchetype(previous);
+                previous = archetype;
+
+                var stats = contract.difficulty.Scale(archetype.BaseStats, contract.levelMultiplier);
+                string title = contract.enemyCount == 1 ? contract.difficulty.DisplayName : $"Rival {i + 1} de {contract.enemyCount}";
+
+                waves[i] = new EnemyWave
+                {
+                    label = $"{title}: {archetype.DisplayName}",
+                    archetype = archetype,
+                    maxHP = stats.maxHP,
+                    minDamage = stats.minDamage,
+                    maxDamage = stats.maxDamage,
+                    attackCooldown = stats.attackCooldown,
+                };
+            }
+            contractMode = true;
+        }
+
+        // Elige un arquetipo al azar, sin repetir el del rival anterior.
+        private static EnemyArchetype PickArchetype(EnemyArchetype previous)
+        {
+            var all = EconomyConfig.Instance.archetypes;
+            if (all.Length == 0)
+            {
+                Debug.LogWarning("EconomyConfig no tiene arquetipos: se usa uno por defecto.");
+                return ScriptableObject.CreateInstance<EnemyArchetype>();
+            }
+
+            var pick = all[Random.Range(0, all.Length)];
+            if (pick == previous && all.Length > 1)
+                pick = all[(System.Array.IndexOf(all, pick) + 1) % all.Length];
+            return pick;
+        }
+
+        // El aspecto sale del arquetipo; si es igual al del jugador o no tiene, se sortea otro.
+        private static int ChooseEnemySkin(EnemyWave wave)
+        {
+            int playerSkin = GladiatorRoster.GetSelected().skin;
+            bool usable = wave.archetype != null && wave.archetype.SkinIndex >= 0 && wave.archetype.SkinIndex != playerSkin;
+            return usable ? wave.archetype.SkinIndex : GladiatorSkins.RandomIndex(playerSkin);
+        }
+
         private void StartSingleEncounter()
         {
             var selected = GladiatorRoster.GetSelected();
-            player = Factory.Create(GladiatorKind.Player, PickSpawn(playerSpawnPoint), Quaternion.identity);
+            player = factory.Create(GladiatorKind.Player, spawnPicker.Pick(playerSpawnPoint), Quaternion.identity);
             if (player != null)
             {
                 player.ConfigureStats(selected.maxHP, selected.minDamage, selected.maxDamage, selected.attackCooldown);
                 player.ApplySkin(selected.skin);
             }
 
-            enemy = enemyPool.Get(PickSpawn(enemySpawnPoint), Quaternion.identity);
+            enemy = enemyPool.Get(spawnPicker.Pick(enemySpawnPoint), Quaternion.identity);
             enemy?.ApplySkin(GladiatorSkins.RandomIndex(selected.skin));
 
             if (player != null && enemy != null)
@@ -168,7 +198,7 @@ namespace GladiusAI
 
             if (enemySpawnPoint2 != null)
             {
-                enemy2 = enemyPool.Get(PickSpawn(enemySpawnPoint2), Quaternion.identity);
+                enemy2 = enemyPool.Get(spawnPicker.Pick(enemySpawnPoint2), Quaternion.identity);
                 enemy2?.ApplySkin(GladiatorSkins.RandomIndex(selected.skin));
                 if (player != null && enemy2 != null)
                     enemy2.SetTarget(player.transform);
@@ -183,28 +213,6 @@ namespace GladiusAI
             StartCoroutine(RunCountdown(activateCombatAfter: true));
         }
 
-        // Cada combate los gladiadores aparecen del mismo lado pero en un lugar distinto: se sortea un punto
-        // cerca del spawn, dentro del limite de la arena y sin caer encima de una columna.
-        private Vector3 PickSpawn(Transform point)
-        {
-            int obstacles = LayerMask.GetMask("Obstacle");
-            Vector3 origin = point.position;
-
-            for (int attempt = 0; attempt < 10; attempt++)
-            {
-                var candidate = origin + new Vector3(
-                    Random.Range(-spawnJitter.x, spawnJitter.x), 0f, Random.Range(-spawnJitter.y, spawnJitter.y));
-
-                if (ArenaBounds.Instance != null)
-                    candidate = ArenaBounds.Instance.ClampPosition(candidate, 0.6f);
-
-                if (!Physics.CheckSphere(candidate, 0.7f, obstacles))
-                    return candidate;
-            }
-
-            return origin;
-        }
-
         private void OnGladiatorDied(GladiatorDiedEvent e)
         {
             GladiatorNPC fallen = e.gladiator;
@@ -216,7 +224,7 @@ namespace GladiusAI
                 return;
             }
 
-            // Nivel 2: cuando el primer enemigo cae, el jugador pasa a enfrentar al segundo.
+            // Cuando el primer enemigo cae, el jugador pasa a enfrentar al segundo.
             if (fallen == enemy && enemy2 != null && !enemy2.IsDead && player != null)
                 player.SetTarget(enemy2.transform);
 
@@ -236,7 +244,7 @@ namespace GladiusAI
                 EvaluateSingleEncounter();
         }
 
-        // Encuentro unico: se evalua cuando llega un evento de muerte o de rendicion, no cada frame.
+        // Se revisa cuando llega un evento de muerte o rendicion, no cada frame.
         private void EvaluateSingleEncounter()
         {
             if (singleEncounterEnded || player == null) return;
@@ -265,10 +273,15 @@ namespace GladiusAI
             }
         }
 
-        /// Publica el resultado por EventManager y agenda el paso a la siguiente escena.
+        // Publica el resultado por EventManager y agenda el cambio de escena.
         private void EndCombat(CombatResult result)
         {
             bool won = result == CombatResult.Victory;
+
+            // Las oleadas sin contrato son el tutorial: al terminarlo no se vuelve a mostrar.
+            if (IsWaveMode && !contractMode)
+                GladiatorRoster.ArenaTutorialDone = true;
+
             if (won && grantsGladiatorUnlock)
                 GladiatorRoster.UnlockNext();
 
@@ -330,7 +343,7 @@ namespace GladiusAI
 
         private IEnumerator RunWaveSequence()
         {
-            player = Factory.Create(GladiatorKind.Player, PickSpawn(playerSpawnPoint), Quaternion.identity);
+            player = factory.Create(GladiatorKind.Player, spawnPicker.Pick(playerSpawnPoint), Quaternion.identity);
             player?.ApplySkin(GladiatorRoster.GetSelected().skin);
             if (contractMode)
             {
@@ -340,29 +353,28 @@ namespace GladiusAI
             player?.SetIntentController(intentController);
             player?.SetCombatEnabled(false);
 
-            yield return PlayDialogue(levelIntroDialogue);
+            yield return tutorial.PlayDialogue(levelIntroDialogue);
             yield return StartCoroutine(RunCountdown(activateCombatAfter: false));
 
             for (int i = 0; i < waves.Length; i++)
             {
                 EnemyWave wave = waves[i];
-                ShowAvailableOrders(wave.availableOrders);
+                tutorial.ShowAvailableOrders(wave.availableOrders);
 
-                // Los dos quedan quietos en su punto de inicio hasta que arranca el combate: si no,
-                // durante el cartel del rival / del tutorial ya caminaban uno hacia el otro.
+                // Los dos esperan quietos en su punto hasta que arranca el combate.
                 if (i > 0 && player != null)
                 {
                     player.SetCombatEnabled(false);
-                    player.TeleportTo(PickSpawn(playerSpawnPoint));
-                    // En el tutorial se cura entre combates; en los contratos no, asi el resto de la vida importa.
+                    player.TeleportTo(spawnPicker.Pick(playerSpawnPoint));
+                    // En el tutorial se cura entre combates; en los contratos no.
                     if (!contractMode)
                         player.FullyHeal();
                 }
 
-                enemy = enemyPool.Get(PickSpawn(enemySpawnPoint), Quaternion.identity);
-                enemy?.ApplySkin(GladiatorSkins.RandomIndex(GladiatorRoster.GetSelected().skin));
+                enemy = enemyPool.Get(spawnPicker.Pick(enemySpawnPoint), Quaternion.identity);
+                enemy?.ApplySkin(ChooseEnemySkin(wave));
                 enemy?.SetCombatEnabled(false);
-                enemy?.ConfigureStats(wave.maxHP, wave.minDamage, wave.maxDamage, wave.attackCooldown);
+                enemy?.ApplyArchetype(wave.archetype, new CombatStats(wave.maxHP, wave.minDamage, wave.maxDamage, wave.attackCooldown));
                 enemy?.SetInvulnerable(wave.invulnerable);
 
                 if (player != null && enemy != null)
@@ -372,17 +384,17 @@ namespace GladiusAI
                 }
 
                 yield return ShowWaveTitle(wave.label);
-                yield return PlayDialogue(wave.introDialogue);
+                yield return tutorial.PlayDialogue(wave.introDialogue);
 
                 if (wave.requiredIntentToStart != PlayerIntent.None)
-                    yield return StartCoroutine(WaitForRequiredIntent(wave));
+                    yield return StartCoroutine(tutorial.WaitForRequiredIntent(wave.requiredIntentToStart, wave.tutorialHint));
 
                 fightResolved = false;
                 SetGladiatorsFighting(true);
-                SetPromptHighlight(wave.highlightDuringFight);
+                tutorial.SetPromptHighlight(wave.highlightDuringFight);
                 yield return RunFight(wave);
-                SetPromptHighlight(PlayerIntent.None);
-                HideHint();
+                tutorial.SetPromptHighlight(PlayerIntent.None);
+                tutorial.HideHint();
 
                 if (player == null || player.IsDead)
                 {
@@ -393,14 +405,12 @@ namespace GladiusAI
 
                 if (player.HasSurrendered)
                 {
-                    yield return PlayDialogue(levelOutroDialogue);
+                    yield return tutorial.PlayDialogue(levelOutroDialogue);
                     EndCombat(CombatResult.Surrender);
                     yield break;
                 }
 
-                // Entre combates: festeja el público, el cuerpo queda en la arena durante el respiro
-                // (se ve la animación Dead) y recién después vuelve al pool. Después del último no hace
-                // falta: EndCombat ya hace festejar al público y se cambia de escena.
+                // Entre combates el publico festeja y el cuerpo queda un rato antes de volver al pool.
                 if (i < waves.Length - 1)
                 {
                     SoundManager.Play(SoundId.CrowdCheer);
@@ -408,13 +418,11 @@ namespace GladiusAI
                 }
             }
 
-            yield return PlayDialogue(levelOutroDialogue);
+            yield return tutorial.PlayDialogue(levelOutroDialogue);
             EndCombat(CombatResult.Victory);
         }
 
-        /// Espera a que termine el combate (muere alguno o el jugador se rinde). Si la oleada tiene
-        /// diálogo de mitad de pelea, a los midFightDelaySeconds pausa a los dos, habla el instructor
-        /// y queda el cartel de ayuda hasta el final.
+        // Espera a que muera alguno o el jugador se rinda. Si hay dialogo de mitad de pelea, pausa y lo muestra.
         private IEnumerator RunFight(EnemyWave wave)
         {
             bool hasMidFightDialogue = wave.midFightDialogue != null && wave.midFightDialogue.Length > 0;
@@ -426,8 +434,8 @@ namespace GladiusAI
                 {
                     hasMidFightDialogue = false;
                     SetGladiatorsFighting(false);
-                    yield return PlayDialogue(wave.midFightDialogue);
-                    ShowHint(wave.midFightHint);
+                    yield return tutorial.PlayDialogue(wave.midFightDialogue);
+                    tutorial.ShowHint(wave.midFightHint);
                     SetGladiatorsFighting(true);
                 }
 
@@ -436,7 +444,7 @@ namespace GladiusAI
             }
         }
 
-        // Deja el cuerpo un rato en la arena (se ve la animación Dead) y despues lo devuelve al pool.
+        // Deja el cuerpo un rato en la arena y despues lo devuelve al pool.
         private IEnumerator RetireEnemy(GladiatorNPC fallen, float delay)
         {
             yield return new WaitForSeconds(delay);
@@ -449,47 +457,7 @@ namespace GladiusAI
             enemy?.SetCombatEnabled(fighting);
         }
 
-        // Qué bit de OrderSet corresponde a cada posición de orderButtons (Atacá, Defiéndete, Ríndete).
-        private static readonly OrderSet[] OrderButtonFlags = { OrderSet.Attack, OrderSet.Defend, OrderSet.Surrender };
-
-        /// Muestra solo los botones de orden habilitados para este combate (Nothing = todos).
-        /// OrderSet es un enum de "flags": cada botón es un bit, y con el operador & preguntamos si ese
-        /// bit está prendido en la combinación elegida en el Inspector.
-        private void ShowAvailableOrders(OrderSet available)
-        {
-            for (int i = 0; i < orderButtons.Length && i < OrderButtonFlags.Length; i++)
-            {
-                if (orderButtons[i] != null)
-                    orderButtons[i].SetActive(available == 0 || (available & OrderButtonFlags[i]) != 0);
-            }
-        }
-
-        private void SetPromptHighlight(PlayerIntent intent)
-        {
-            if (dialogue != null)
-                dialogue.SetPromptHighlight(intent);
-        }
-
-        private IEnumerator PlayDialogue(DialogueLine[] lines)
-        {
-            if (dialogue != null && lines != null && lines.Length > 0)
-                yield return dialogue.Play(lines);
-        }
-
-        private void ShowHint(string text)
-        {
-            if (tutorialHintLabel == null || string.IsNullOrEmpty(text)) return;
-            tutorialHintLabel.text = text;
-            tutorialHintLabel.gameObject.SetActive(true);
-        }
-
-        private void HideHint()
-        {
-            if (tutorialHintLabel != null)
-                tutorialHintLabel.gameObject.SetActive(false);
-        }
-
-        /// Muestra el nombre del combate ("Enemigo 2: El Agresivo") con los dos gladiadores quietos.
+        // Muestra el nombre del combate con los dos gladiadores quietos.
         private IEnumerator ShowWaveTitle(string title)
         {
             if (countdownLabel == null || string.IsNullOrEmpty(title)) yield break;
@@ -498,25 +466,6 @@ namespace GladiusAI
             countdownLabel.text = title;
             yield return new WaitForSeconds(waveTitleSeconds);
             countdownLabel.gameObject.SetActive(false);
-        }
-
-        /// Bloquea el arranque del combate hasta que el jugador toque el botón pedido, que queda resaltado
-        /// mientras tanto. El cartel de ayuda es opcional (tutorialHint vacío = sin cartel).
-        private IEnumerator WaitForRequiredIntent(EnemyWave wave)
-        {
-            ShowHint(wave.tutorialHint);
-            SetPromptHighlight(wave.requiredIntentToStart);
-
-            while (intentController == null || intentController.CurrentIntent != wave.requiredIntentToStart)
-                yield return null;
-
-            // Atacar y Defender quedan pendientes: apenas arranca el combate el gladiador los toma como
-            // una orden normal (con su espera y el botón oscureciéndose). Rendirse sí se descarta, si no
-            // terminaría el combate en el mismo instante en que empieza.
-            if (wave.requiredIntentToStart == PlayerIntent.Surrender)
-                intentController.ClearIntent();
-            SetPromptHighlight(PlayerIntent.None);
-            HideHint();
         }
     }
 }

@@ -3,8 +3,8 @@ using UnityEngine;
 namespace GladiusAI
 {
    
-    /// Comportamientos de Steering (Reynolds) usados por los Boids y por el Cazador.
-    /// Todas las funciones devuelven una fuerza de dirección 
+    // Comportamientos de Steering (Reynolds) usados por los Boids y por el Cazador.
+    // Todas las funciones devuelven una fuerza de dirección 
    
     public static class SteeringBehaviors
     {
@@ -26,7 +26,7 @@ namespace GladiusAI
             return desired - velocity;
         }
 
-        /// Como Seek, pero frena al entrar en slowRadius.
+        // Como Seek, pero frena al entrar en slowRadius.
         public static Vector3 Arrive(Vector3 position, Vector3 velocity, Vector3 targetPos, float maxSpeed, float slowRadius)
         {
             Vector3 toTarget = targetPos - position;
@@ -39,7 +39,7 @@ namespace GladiusAI
             return desired - velocity;
         }
 
-        /// Persigue prediciendo dónde va a estar el objetivo, no dónde está ahora.
+        // Persigue prediciendo dónde va a estar el objetivo, no dónde está ahora.
         public static Vector3 Pursuit(Vector3 position, Vector3 velocity, Vector3 targetPos, Vector3 targetVelocity, float maxSpeed, float maxPredictionTime = 1.5f)
         {
             float distance = Vector3.Distance(position, targetPos);
@@ -48,7 +48,7 @@ namespace GladiusAI
             return Seek(position, velocity, predictedPos, maxSpeed);
         }
 
-        /// Huye anticipando hacia dónde viene el perseguidor.
+        // Huye anticipando hacia dónde viene el perseguidor.
         public static Vector3 Evade(Vector3 position, Vector3 velocity, Vector3 threatPos, Vector3 threatVelocity, float maxSpeed, float maxPredictionTime = 1f)
         {
             float distance = Vector3.Distance(position, threatPos);
@@ -57,7 +57,7 @@ namespace GladiusAI
             return Flee(position, velocity, predictedThreatPos, maxSpeed);
         }
 
-        /// Acumula una fuerza de steering sobre la velocidad actual, clampeada por maxForce y maxSpeed.
+        // Acumula una fuerza de steering sobre la velocidad actual, clampeada por maxForce y maxSpeed.
         public static Vector3 Integrate(Vector3 velocity, Vector3 steerForce, float maxForce, float maxSpeed, float deltaTime)
         {
             Vector3 clampedForce = Vector3.ClampMagnitude(steerForce, maxForce);
@@ -65,7 +65,7 @@ namespace GladiusAI
             return Vector3.ClampMagnitude(newVelocity, maxSpeed);
         }
 
-        ///Rota el transform para mirar hacia la dirección de movimiento (plano XZ).
+        // Rota el transform para mirar hacia la dirección de movimiento (plano XZ).
         public static void FaceDirection(Transform t, Vector3 velocity, float turnSpeedDegPerSec, float deltaTime)
         {
             if (velocity.sqrMagnitude < 0.01f) return;
@@ -74,9 +74,8 @@ namespace GladiusAI
         }
 
        
-        /// Si hay un obstáculo (Columnas, paredes) adelante en la dirección de movimiento,
-        /// devuelve una fuerza de steering para esquivarlo tangencialmente a su superficie.
-        /// Vector3.zero si no se está moviendo o el camino está libre.
+        // Si hay un obstáculo adelante, devuelve una fuerza para esquivarlo.
+        // Vector3.zero si el camino está libre.
         
         public static Vector3 ObstacleAvoidance(Vector3 position, Vector3 velocity, float maxSpeed,
             float castDistance, float probeRadius, LayerMask obstacleLayer)
@@ -97,8 +96,8 @@ namespace GladiusAI
         }
 
         
-        /// Aplica el desplazamiento del frame recortándolo si de lo contrario atravesaría
-        /// un obstáculo sólido.
+        // Aplica el desplazamiento del frame recortándolo si de lo contrario atravesaría
+        // un obstáculo sólido.
         public static Vector3 MoveAndCollide(Vector3 position, Vector3 delta, float bodyRadius, LayerMask obstacleLayer)
         {
             float distance = delta.magnitude;

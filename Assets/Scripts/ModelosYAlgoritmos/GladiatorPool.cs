@@ -3,13 +3,14 @@ using UnityEngine;
 
 namespace GladiusAI
 {
+    // Pool de gladiadores: reutiliza los que ya se crearon en vez de crear uno nuevo cada vez.
     public class GladiatorPool
     {
-        private readonly IGladiatorFactory factory;
+        private readonly GladiatorFactory factory;
         private readonly GladiatorKind kind;
         private readonly Queue<GladiatorNPC> available = new Queue<GladiatorNPC>();
 
-        public GladiatorPool(IGladiatorFactory factory, GladiatorKind kind)
+        public GladiatorPool(GladiatorFactory factory, GladiatorKind kind)
         {
             this.factory = factory;
             this.kind = kind;

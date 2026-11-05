@@ -15,3 +15,78 @@ MonoBehaviour:
   maxEnergy: 5
   minutesPerEnergy: 15
   energyPerCombat: 1
+  difficulties:
+  - {fileID: 11400000, guid: 96f20a8c92fcff24abc19c7836fb3878, type: 2}
+  - {fileID: 11400000, guid: c7f1db1689560ef4ba4542c84fd0721c, type: 2}
+  - {fileID: 11400000, guid: d72d1694e7cbc364dbbf1461f5431405, type: 2}
+  archetypes:
+  - {fileID: 11400000, guid: a1a0cc9df69359a46aab19852ceb60ce, type: 2}
+  - {fileID: 11400000, guid: eec0d6395e591114b9c81a5174375fd3, type: 2}
+  - {fileID: 11400000, guid: b3e2798a6f210134da4c2f6fa755d425, type: 2}
+  - {fileID: 11400000, guid: be3a561fc0900a04dadf1f6269456271, type: 2}
+  zones:
+  - scene: ArenaDeCombate2
+    displayName: Coliseo
+  - scene: ArenaZona_Catacumbas
+    displayName: Catacumbas
+  - scene: ArenaZona_Patio
+    displayName: Patio
+  trainingTiers:
+  - minutes: 5
+    bonusHP: 6
+    bonusDamage: 1
+  - minutes: 15
+    bonusHP: 20
+    bonusDamage: 2.5
+  - minutes: 30
+    bonusHP: 50
+    bonusDamage: 5
+  rushCostPerMinute: 4
+  enemyScaleByLevel:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 20
+      value: 2
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  trainingBonusByLevel:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 20
+      value: 0.4
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

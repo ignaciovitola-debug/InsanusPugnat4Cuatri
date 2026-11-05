@@ -1,10 +1,7 @@
 namespace GladiusAI
 {
-    /// Selector (OR lógico / "prioridad"): evalúa a sus hijos EN ORDEN y
-    /// devuelve apenas uno tenga éxito. Es el nodo típico para elegir
-    /// "qué hacer ahora" entre varias opciones ordenadas por prioridad.
-    ///
-    /// Ejemplo: Atacar (si puedo) > Perseguir (si lo veo) > Patrullar.
+    // Selector (OR): evalúa a sus hijos en orden y devuelve apenas uno tenga éxito.
+    // Ejemplo: Atacar (si puedo) > Perseguir (si lo veo) > Patrullar.
     public class Selector : Node
     {
         private readonly Node[] children;
@@ -26,10 +23,8 @@ namespace GladiusAI
         }
     }
 
-    /// Sequence (AND lógico): evalúa a sus hijos en orden y devuelve
-    /// apenas uno falle. Útil para una cadena de pasos que TODOS tienen
-    /// que cumplirse (ej: estar en rango -> tener stamina -> atacar).
-    /// No lo usamos todavía en la versión básica, pero lo dejamos listo.
+    // Sequence (AND): evalúa a sus hijos en orden y devuelve apenas uno falle.
+    // Sirve para una cadena de pasos que se tienen que cumplir todos.
     public class Sequence : Node
     {
         private readonly Node[] children;

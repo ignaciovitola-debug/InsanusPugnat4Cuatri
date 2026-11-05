@@ -16,7 +16,7 @@ namespace GladiusAI
         public void Setup(CombatContract contract, Action<CombatContract> onChoose)
         {
             string rivals = contract.enemyCount == 1 ? "1 rival" : $"{contract.enemyCount} rivales";
-            titleLabel.text = contract.title;
+            titleLabel.text = contract.difficulty.DisplayName;
             detailLabel.text = $"{rivals}  ·  {contract.zoneName}";
             rewardLabel.text = $"{contract.reward} denarios";
 
