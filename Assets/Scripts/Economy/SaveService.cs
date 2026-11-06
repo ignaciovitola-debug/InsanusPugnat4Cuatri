@@ -8,7 +8,10 @@ namespace GladiusAI
     // Nunca toca el estado de los originadores, solo les pide su foto y se la devuelve.
     public static class SaveService
     {
-        private static string FilePath => Path.Combine(Application.persistentDataPath, "save.json");
+        // El editor de Unity y el juego compilado usan la misma carpeta (persistentDataPath), así que
+        // cada uno tiene su propio archivo: si no, probar en el editor "gastaba" el tutorial de la build.
+        private static string FilePath => Path.Combine(Application.persistentDataPath,
+            Application.isEditor ? "save_editor.json" : "save.json");
 
         // Se carga todo una vez al arrancar y se guarda cada vez que un originador avisa que cambio.
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
