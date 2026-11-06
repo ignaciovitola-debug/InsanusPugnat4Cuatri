@@ -18,7 +18,7 @@ namespace GladiusAI
 
             resultLabel.text = e.result switch
             {
-                CombatResult.Victory => e.reward > 0 ? $"¡VICTORIA!\n+{e.reward} denarios" : "¡VICTORIA!",
+                CombatResult.Victory => e.reward > 0 ? $"¡VICTORIA!\n{DenariiText.Amount(e.reward, showPlus: true)}" : "¡VICTORIA!",
                 CombatResult.Defeat => "DERROTA — Tu gladiador cayó en combate",
                 CombatResult.Surrender => "Te rendiste",
                 _ => resultLabel.text

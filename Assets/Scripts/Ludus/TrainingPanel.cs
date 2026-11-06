@@ -88,7 +88,7 @@ namespace GladiusAI
 
             rushButton.gameObject.SetActive(training);
             if (training)
-                rushLabel.text = $"Apurar ({Training.RushCost} denarios)";
+                rushLabel.text = $"Apurar ({DenariiText.Amount(Training.RushCost)})";
         }
     }
 }

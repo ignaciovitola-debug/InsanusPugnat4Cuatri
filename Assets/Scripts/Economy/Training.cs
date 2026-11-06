@@ -73,7 +73,7 @@ namespace GladiusAI
         {
             reason = null;
             if (!IsActive) { reason = "No hay ningún entrenamiento en curso"; return false; }
-            if (!Denarii.TrySpend(RushCost)) { reason = $"Te faltan {RushCost - Denarii.Balance} denarios"; return false; }
+            if (!Denarii.TrySpend(RushCost)) { reason = $"Te faltan {DenariiText.Amount(RushCost - Denarii.Balance)}"; return false; }
 
             endTicks = DateTime.UtcNow.Ticks;
             return TryComplete();

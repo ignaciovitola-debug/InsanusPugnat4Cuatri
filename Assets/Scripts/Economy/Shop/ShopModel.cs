@@ -44,7 +44,7 @@ namespace GladiusAI
                 return new PurchaseResult(false, reason);
 
             if (!Denarii.TrySpend(item.Price))
-                return new PurchaseResult(false, $"Te faltan {item.Price - Denarii.Balance} denarios");
+                return new PurchaseResult(false, $"Te faltan {DenariiText.Amount(item.Price - Denarii.Balance)}");
 
             item.Apply();
             return new PurchaseResult(true, $"¡Compraste {item.DisplayName}!");

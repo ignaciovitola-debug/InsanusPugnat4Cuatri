@@ -370,8 +370,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: INSANUS PUGNAT
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1487909f60861e24d9feef447f94c86a, type: 2}
+  m_sharedMaterial: {fileID: 4673039279958496170, guid: 1487909f60861e24d9feef447f94c86a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -627,8 +627,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Vitola Ignacio - Matias Quijano
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1487909f60861e24d9feef447f94c86a, type: 2}
+  m_sharedMaterial: {fileID: 4673039279958496170, guid: 1487909f60861e24d9feef447f94c86a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

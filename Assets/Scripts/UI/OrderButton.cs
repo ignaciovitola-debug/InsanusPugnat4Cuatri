@@ -54,6 +54,15 @@ namespace GladiusAI
             image.color = cooldownOverlayColor;
             image.raycastTarget = false; // que no "robe" los toques del botón
 
+            // Copia la forma del botón (por ejemplo, esquinas redondeadas) para que la franja no asome por las esquinas.
+            var buttonImage = GetComponent<Image>();
+            if (buttonImage != null)
+            {
+                image.sprite = buttonImage.sprite;
+                image.type = buttonImage.type;
+                image.pixelsPerUnitMultiplier = buttonImage.pixelsPerUnitMultiplier;
+            }
+
             go.SetActive(false);
             return rt;
         }

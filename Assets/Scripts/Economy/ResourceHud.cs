@@ -9,6 +9,10 @@ namespace GladiusAI
     {
         private const float RefreshSeconds = 0.5f;
 
+        // Espadas cruzadas dentro del texto (Sprite Asset "Espadas" en Assets/Resources/Sprite Assets/),
+        // del mismo tamaño que la moneda de los denarios.
+        private const string EnergyIcon = "<sprite=\"Espadas\" name=\"Energia\">";
+
         [SerializeField] private TMP_Text denariiLabel;
         [SerializeField] private TMP_Text energyLabel;
 
@@ -40,14 +44,14 @@ namespace GladiusAI
         private void Refresh()
         {
             if (denariiLabel != null)
-                denariiLabel.text = $"{Denarii.Balance} denarios";
+                denariiLabel.text = DenariiText.Amount(Denarii.Balance);
 
             if (energyLabel == null) return;
 
             int current = Energy.Current;
             energyLabel.text = current >= Energy.Max
-                ? $"Energía {current}/{Energy.Max}"
-                : $"Energía {current}/{Energy.Max}  ·  próxima en {Energy.TimeToNextText()}";
+                ? $"{EnergyIcon} Energía {current}/{Energy.Max}"
+                : $"{EnergyIcon} Energía {current}/{Energy.Max}  ·  próxima en {Energy.TimeToNextText()}";
         }
     }
 }

@@ -22,6 +22,11 @@ namespace GladiusAI
         // el contorno en cada TextMeshPro, TMP crearía una copia del material por cartel.
         private static Material outlinedMaterial;
 
+        // Fuente de los carteles (Marathon). Está en Resources para poder cargarla desde código,
+        // ya que los carteles se crean por código y no tienen un objeto en la escena donde asignarla.
+        private const string FontResourcePath = "Fonts/Marathon SDF";
+        private static TMP_FontAsset font;
+
         private TextMeshPro label;
         private Color baseColor;
         private float age;
@@ -44,6 +49,7 @@ namespace GladiusAI
             Active.Clear();
             Pool.Clear();
             outlinedMaterial = null;
+            font = null;
         }
 
         // Saca un cartel del pool. Al cambiar de escena los carteles guardados se destruyen junto con
@@ -65,6 +71,11 @@ namespace GladiusAI
             var go = new GameObject("FloatingText");
 
             var label = go.AddComponent<TextMeshPro>();
+            // La fuente se carga una sola vez y se reusa. Si no estuviera, queda la fuente por defecto.
+            if (font == null)
+                font = Resources.Load<TMP_FontAsset>(FontResourcePath);
+            if (font != null)
+                label.font = font;   // primero la fuente: el material con contorno se copia del de esta fuente
             label.fontSize = FontSize;
             label.fontStyle = FontStyles.Bold;
             label.alignment = TextAlignmentOptions.Center;

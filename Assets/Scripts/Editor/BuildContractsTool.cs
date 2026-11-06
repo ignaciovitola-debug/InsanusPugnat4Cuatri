@@ -163,7 +163,7 @@ namespace GladiusAI.EditorTools
             title.fontStyle = FontStyles.Bold;
             var detail = NewText("Detalle", row, "Rivales y zona", 38, TextAlignmentOptions.TopLeft, new Vector2(0.03f, 0.05f), new Vector2(0.6f, 0.5f));
             detail.color = new Color(0.85f, 0.8f, 0.7f);
-            var reward = NewText("Premio", row, "0 denarios", 44, TextAlignmentOptions.Right, new Vector2(0.55f, 0.55f), new Vector2(0.97f, 0.95f));
+            var reward = NewText("Premio", row, DenariiText.Amount(0), 44, TextAlignmentOptions.Right, new Vector2(0.55f, 0.55f), new Vector2(0.97f, 0.95f));
             reward.color = new Color(1f, 0.85f, 0.3f);
 
             var buttonRect = NewRect("Boton_Combatir", row, new Vector2(0.65f, 0.08f), new Vector2(0.97f, 0.52f));

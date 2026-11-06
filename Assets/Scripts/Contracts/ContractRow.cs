@@ -18,7 +18,7 @@ namespace GladiusAI
             string rivals = contract.enemyCount == 1 ? "1 rival" : $"{contract.enemyCount} rivales";
             titleLabel.text = contract.difficulty.DisplayName;
             detailLabel.text = $"{rivals}  ·  {contract.zoneName}";
-            rewardLabel.text = $"{contract.reward} denarios";
+            rewardLabel.text = DenariiText.Amount(contract.reward);
 
             fightButton.onClick.RemoveAllListeners();
             fightButton.onClick.AddListener(() => onChoose(contract));
