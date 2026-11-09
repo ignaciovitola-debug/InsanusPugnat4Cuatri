@@ -48,7 +48,7 @@ namespace GladiusAI
         [SerializeField] private Transform enemySpawnPoint2;
 
         [Tooltip("Cuanto se corre el lugar de aparicion de cada punto (X costados, Z fondo).")]
-        [SerializeField] private Vector2 spawnJitter = new Vector2(1.5f, 3f);
+        [SerializeField] private Vector2 spawnJitter = new Vector2(1.5f, 1.5f);
 
         [Header("Oleadas secuenciales (opcional, Nivel 1)")]
         [Tooltip("Si tiene elementos, los enemigos salen uno tras otro con estas stats.")]
@@ -93,6 +93,7 @@ namespace GladiusAI
         private GladiatorPool enemyPool;
         private SpawnPicker spawnPicker;
         private TutorialFlow tutorial;
+        private BloodField blood;
 
         // True si el combate viene de un contrato elegido en la Ludus.
         private bool contractMode;
@@ -109,6 +110,14 @@ namespace GladiusAI
         {
             EventManager.Unsubscribe<GladiatorDiedEvent>(OnGladiatorDied);
             EventManager.Unsubscribe<GladiatorSurrenderedEvent>(OnGladiatorSurrendered);
+
+            // La sangre se guarda al irse de la arena (por fin de combate o por salir desde la pausa).
+            if (blood != null)
+            {
+                blood.Dispose();
+                blood = null;
+                EventManager.Raise(new SaveRequestedEvent());
+            }
         }
 
         private void Start()
@@ -116,6 +125,8 @@ namespace GladiusAI
             enemyPool = new GladiatorPool(factory, GladiatorKind.Enemy);
             spawnPicker = new SpawnPicker(spawnJitter);
             tutorial = new TutorialFlow(dialogue, tutorialHintLabel, orderButtons, intentController);
+            // Sangre de combates anteriores en esta arena, y la que salpiquen los golpes de ahora.
+            blood = new BloodField();
 
             if (!IsWaveMode && CombatSetup.Current != null)
                 BuildWavesFromContract(CombatSetup.Current);

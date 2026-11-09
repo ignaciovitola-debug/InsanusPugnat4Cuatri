@@ -10,5 +10,6 @@ namespace GladiusAI
         public EnergyMemento energy;
         public TrainingMemento training;
         public RosterMemento roster;
+        public BloodMemento blood;
     }
 }

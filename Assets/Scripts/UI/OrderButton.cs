@@ -10,10 +10,11 @@ namespace GladiusAI
     {
         [Tooltip("De acá se lee cuánto falta para poder dar otra orden.")]
         [SerializeField] private PlayerIntentController intentController;
-        [SerializeField] private Color cooldownOverlayColor = new Color(0f, 0f, 0f, 0.55f);
+        [SerializeField] private Color cooldownOverlayColor = new Color(0f, 0f, 0f, 0.75f);
 
         private Button button;
         private RectTransform cooldownOverlay;
+        private Image overlayImage;
         private float shownRemaining = -1f; // último valor dibujado (-1 = todavía no se dibujó nada)
 
         private void Awake()
@@ -34,7 +35,10 @@ namespace GladiusAI
             button.interactable = remaining <= 0f;
             cooldownOverlay.gameObject.SetActive(remaining > 0f);
             // La franja ocupa del borde izquierdo hasta "remaining": se achica de derecha a izquierda.
-            cooldownOverlay.anchorMax = new Vector2(remaining, 1f);
+            if (overlayImage.type == Image.Type.Filled)
+                overlayImage.fillAmount = remaining;   // botón con dibujo: se recorta sin deformarlo
+            else
+                cooldownOverlay.anchorMax = new Vector2(remaining, 1f);
         }
 
         // Crea la franja oscura por código, así no hay que armarla a mano en cada escena.
@@ -61,7 +65,19 @@ namespace GladiusAI
                 image.sprite = buttonImage.sprite;
                 image.type = buttonImage.type;
                 image.pixelsPerUnitMultiplier = buttonImage.pixelsPerUnitMultiplier;
+                image.preserveAspect = buttonImage.preserveAspect;
+
+                // Un botón con dibujo completo (no estirable) se deformaría al angostar la franja: en ese caso
+                // la franja tapa todo el botón y se "recorta" de derecha a izquierda con fillAmount.
+                if (buttonImage.sprite != null && buttonImage.type == Image.Type.Simple)
+                {
+                    image.type = Image.Type.Filled;
+                    image.fillMethod = Image.FillMethod.Horizontal;
+                    image.fillOrigin = (int)Image.OriginHorizontal.Left;
+                    image.fillAmount = 1f;
+                }
             }
+            overlayImage = image;
 
             go.SetActive(false);
             return rt;

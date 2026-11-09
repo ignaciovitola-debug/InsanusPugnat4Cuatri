@@ -464,6 +464,7 @@ namespace GladiusAI
 
             CurrentHP = Mathf.Max(0f, CurrentHP - damage);
             Log($"Recibió {damage} daño de {attackerName}. HP: {CurrentHP}/{maxHP}");
+            EventManager.Raise(new GladiatorHitEvent(this, attackerPosition, IsDead));
 
             if (IsDead)
             {

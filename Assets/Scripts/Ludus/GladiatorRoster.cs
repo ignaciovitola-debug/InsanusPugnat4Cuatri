@@ -68,15 +68,17 @@ namespace GladiusAI
         public static bool IsUnlocked(int index)
             => index >= 0 && index < slots.Count && slots[index].unlocked;
 
-        // Tu gladiador cayo en combate: ese puesto vuelve a stats basicas.
+        // Tu gladiador cayo en combate: pierde todo lo entrenado y vuelve a SUS stats de base
+        // (Tu Gladiador 100 de vida y 10-20 de daño, el Novato las suyas, cada recluta las que sacó al reclutarlo).
         public static void ResetSlotToBasic(int index)
         {
             if (index < 0 || index >= slots.Count) return;
 
-            var basic = BasicPreset();
-            basic.label = slots[index].label;
-            basic.skin = slots[index].skin;
-            slots[index] = basic;
+            var entry = slots[index];
+            if (!entry.HasBaseStats)
+                entry = WithRepairedBase(entry, index);
+            entry.RestoreBaseStats();
+            slots[index] = entry;
             Notify();
         }
 
@@ -93,6 +95,8 @@ namespace GladiusAI
                 entry.minDamage = Random.Range(MinDamageLow, MinDamageHigh);
                 entry.maxDamage = Random.Range(entry.minDamage + MaxDamageBonus, MaxDamageHigh);
                 entry.attackCooldown = Random.Range(MinCooldown, MaxCooldown);
+                entry.level = 0;
+                entry.SaveCurrentAsBase();   // lo que salió en el sorteo es su base
                 slots[i] = entry;
                 Notify();
                 return;
@@ -128,6 +132,9 @@ namespace GladiusAI
         {
             bool valid = memento.slots != null && memento.slots.Count == SlotCount;
             slots = valid ? new List<GladiatorRosterEntry>(memento.slots) : BuildDefaultRoster();
+            for (int i = 0; i < slots.Count; i++)
+                if (slots[i].unlocked && !slots[i].HasBaseStats)
+                    slots[i] = WithRepairedBase(slots[i], i);
             tutorialVersion = memento.tutorialVersion;
             arenaTutorialDone = memento.arenaTutorialDone;
             SelectedIndex = 0;
@@ -150,13 +157,33 @@ namespace GladiusAI
         private static GladiatorRosterEntry BasicPreset()
             => new GladiatorRosterEntry("Tu Gladiador", 100f, 10f, 20f, 1.2f);
 
+        private static GladiatorRosterEntry NovicePreset()
+            => new GladiatorRosterEntry("Novato", 90f, 9f, 17f, 1.3f);
+
+        // Partidas guardadas antes de que existieran las stats de base: se reconstruyen.
+        // Tu Gladiador y el Novato tienen base fija; un recluta sin entrenar ya está en su base. Para un
+        // recluta ya entrenado no hay forma de saber lo que sacó en el sorteo, así que se toma lo que tiene ahora.
+        private static GladiatorRosterEntry WithRepairedBase(GladiatorRosterEntry entry, int index)
+        {
+            GladiatorRosterEntry preset;
+            if (index == 0) preset = BasicPreset();
+            else if (index == 1) preset = NovicePreset();
+            else { entry.SaveCurrentAsBase(); return entry; }
+
+            entry.baseMaxHP = preset.baseMaxHP;
+            entry.baseMinDamage = preset.baseMinDamage;
+            entry.baseMaxDamage = preset.baseMaxDamage;
+            entry.baseAttackCooldown = preset.baseAttackCooldown;
+            return entry;
+        }
+
         // Partida nueva: cada puesto con su aspecto, y el Novato ya regalado para tener con quien pelear.
         private static List<GladiatorRosterEntry> BuildDefaultRoster()
         {
             var list = new List<GladiatorRosterEntry>
             {
                 BasicPreset(),
-                new GladiatorRosterEntry("Novato", 90f, 9f, 17f, 1.3f),
+                NovicePreset(),
                 new GladiatorRosterEntry("Veterano", 0f, 0f, 0f, 0f, unlocked: false),
                 new GladiatorRosterEntry("Agresivo", 0f, 0f, 0f, 0f, unlocked: false),
                 new GladiatorRosterEntry("Defensivo", 0f, 0f, 0f, 0f, unlocked: false),

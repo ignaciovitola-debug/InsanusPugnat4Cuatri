@@ -32,6 +32,7 @@ namespace GladiusAI
                 energy = Energy.CreateMemento(),
                 training = Training.CreateMemento(),
                 roster = GladiatorRoster.CreateMemento(),
+                blood = BloodRegistry.CreateMemento(),
             };
 
             try
@@ -58,6 +59,7 @@ namespace GladiusAI
                         Energy.RestoreMemento(memento.energy);
                         Training.RestoreMemento(memento.training);
                         GladiatorRoster.RestoreMemento(memento.roster);
+                        BloodRegistry.RestoreMemento(memento.blood);
                         return;
                     }
                 }
@@ -92,6 +94,7 @@ namespace GladiusAI
             Energy.ResetToNewGame();
             Training.ResetToNewGame();
             GladiatorRoster.ResetToNewGame();
+            BloodRegistry.ResetToNewGame();
         }
     }
 }

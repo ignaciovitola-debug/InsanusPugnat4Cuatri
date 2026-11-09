@@ -12,6 +12,21 @@ namespace GladiusAI
         }
     }
 
+    // Un gladiador recibió un golpe que le sacó vida (los bloqueados no cuentan). Lo usa BloodField.
+    public readonly struct GladiatorHitEvent
+    {
+        public readonly GladiatorNPC victim;
+        public readonly UnityEngine.Vector3 attackerPosition;
+        public readonly bool killingBlow;
+
+        public GladiatorHitEvent(GladiatorNPC victim, UnityEngine.Vector3 attackerPosition, bool killingBlow)
+        {
+            this.victim = victim;
+            this.attackerPosition = attackerPosition;
+            this.killingBlow = killingBlow;
+        }
+    }
+
     public readonly struct GladiatorSurrenderedEvent
     {
         public readonly GladiatorNPC gladiator;
