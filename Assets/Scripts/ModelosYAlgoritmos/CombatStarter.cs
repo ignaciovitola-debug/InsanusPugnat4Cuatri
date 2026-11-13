@@ -94,6 +94,7 @@ namespace GladiusAI
         private SpawnPicker spawnPicker;
         private TutorialFlow tutorial;
         private BloodField blood;
+        private CorpseField corpses;
 
         // True si el combate viene de un contrato elegido en la Ludus.
         private bool contractMode;
@@ -127,6 +128,8 @@ namespace GladiusAI
             tutorial = new TutorialFlow(dialogue, tutorialHintLabel, orderButtons, intentController);
             // Sangre de combates anteriores en esta arena, y la que salpiquen los golpes de ahora.
             blood = new BloodField();
+            // Cuerpos de combates anteriores en esta arena (se limpian cada 3 combates) y los que caigan ahora.
+            corpses = new CorpseField(factory != null ? factory.GetPrefab(GladiatorKind.Enemy) : null);
 
             if (!IsWaveMode && CombatSetup.Current != null)
                 BuildWavesFromContract(CombatSetup.Current);
@@ -227,6 +230,10 @@ namespace GladiusAI
         private void OnGladiatorDied(GladiatorDiedEvent e)
         {
             GladiatorNPC fallen = e.gladiator;
+
+            // El cuerpo queda en la arena para los próximos combates (rivales y tu gladiador).
+            if (corpses != null && (fallen == player || fallen == enemy || fallen == enemy2))
+                StartCoroutine(corpses.OnGladiatorDied(fallen));
 
             if (IsWaveMode)
             {

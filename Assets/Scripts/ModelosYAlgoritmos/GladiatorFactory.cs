@@ -24,6 +24,15 @@ namespace GladiusAI
                 prefabByKind[entry.kind] = entry.prefab;
         }
 
+        // El prefab de un tipo, sin crearlo (CorpseField copia de ahí el dibujo de los cuerpos).
+        public GladiatorNPC GetPrefab(GladiatorKind kind)
+        {
+            if (prefabByKind.Count == 0)
+                foreach (var entry in prefabs)
+                    prefabByKind[entry.kind] = entry.prefab;
+            return prefabByKind.TryGetValue(kind, out var prefab) ? prefab : null;
+        }
+
         public GladiatorNPC Create(GladiatorKind kind, Vector3 position, Quaternion rotation)
         {
             if (!prefabByKind.TryGetValue(kind, out var prefab) || prefab == null)

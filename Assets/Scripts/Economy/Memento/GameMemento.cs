@@ -11,5 +11,6 @@ namespace GladiusAI
         public TrainingMemento training;
         public RosterMemento roster;
         public BloodMemento blood;
+        public CorpseMemento corpses;
     }
 }

@@ -64,6 +64,9 @@ namespace GladiusAI
         public float CorpseLifetime => corpseLifetime;
         public EnemyArchetype Archetype => archetype;
 
+        // Aspecto puesto con ApplySkin (-1 = el que trae el prefab). Lo usa CorpseField para dibujar el cuerpo.
+        public int SkinIndex { get; private set; } = -1;
+
         // Sprite animado del personaje (no incluye la sombra de los pies).
         public SpriteRenderer CharacterSprite { get; private set; }
 
@@ -170,7 +173,15 @@ namespace GladiusAI
             FullyHeal();
             SetColor(Color.white);
             SetPhysicalBodyEnabled(true);
+            SetBodyVisible(true);
             animator.ResetToIdle();
+        }
+
+        // Muestra u oculta el dibujo (personaje y sombra). Al morir lo reemplaza el cuerpo fijo de CorpseField.
+        public void SetBodyVisible(bool visible)
+        {
+            foreach (var sprite in GetComponentsInChildren<SpriteRenderer>(true))
+                sprite.enabled = visible;
         }
 
         // Cambia el aspecto (Gladiator 1-3, Amazon 1-3): cada uno es un controlador de animacion con sus sprites.
@@ -180,6 +191,7 @@ namespace GladiusAI
             if (controller == null || bodyAnimator == null) return;
 
             bodyAnimator.runtimeAnimatorController = controller;
+            SkinIndex = skinIndex;
             animator.ResetToIdle();
         }
 
