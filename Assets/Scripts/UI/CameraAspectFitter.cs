@@ -9,9 +9,13 @@ namespace GladiusAI
     {
         [Tooltip("Resolución para la que se armó la escena (la misma que la del Canvas Scaler).")]
         [SerializeField] private Vector2 referenceResolution = new Vector2(2280f, 1080f);
+        [Tooltip("Si está activo, el borde de arriba queda igual que en la resolución de referencia y lo que se " +
+                 "gana de alto aparece abajo (más piso), en vez de repartirse arriba y abajo.")]
+        [SerializeField] private bool anclarArriba;
 
         private Camera cam;
         private float baseOrthoSize;   // el tamaño que tenía la cámara en la escena
+        private Vector3 basePosition;  // la posición que tenía la cámara en la escena
         private float referenceAspect; // ancho / alto de la referencia, calculado una sola vez
         private float lastAspect;      // última proporción de pantalla que ajustamos
 
@@ -19,6 +23,7 @@ namespace GladiusAI
         {
             cam = GetComponent<Camera>();
             baseOrthoSize = cam.orthographicSize;
+            basePosition = transform.position;
             referenceAspect = referenceResolution.x / referenceResolution.y;
         }
 
@@ -34,6 +39,11 @@ namespace GladiusAI
             cam.orthographicSize = aspect < referenceAspect
                 ? baseOrthoSize * referenceAspect / aspect
                 : baseOrthoSize;
+
+            // Bajar la cámara lo mismo que creció hacia arriba: así el borde de arriba no se mueve.
+            transform.position = anclarArriba
+                ? basePosition - transform.up * (cam.orthographicSize - baseOrthoSize)
+                : basePosition;
         }
     }
 }
