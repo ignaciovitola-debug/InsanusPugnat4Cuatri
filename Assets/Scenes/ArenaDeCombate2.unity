@@ -16536,7 +16536,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   referenceResolution: {x: 2280, y: 1080}
-  anclarArriba: 0
+  anclarArriba: 1
 --- !u!1001 &1569896324
 PrefabInstance:
   m_ObjectHideFlags: 0
