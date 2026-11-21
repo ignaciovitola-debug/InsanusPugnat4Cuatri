@@ -21,6 +21,10 @@ namespace GladiusAI
             public int minutes;
             public float bonusHP;
             public float bonusDamage;
+            [Tooltip("Probabilidad (0 a 1) de que la mejora salga doble.")]
+            public float doubleChance;
+            [Tooltip("Probabilidad (0 a 1) de mejorar la guardia (el bloqueo dura mas).")]
+            public float guardChance;
         }
 
         [Header("Energia")]
@@ -42,9 +46,9 @@ namespace GladiusAI
         [Header("Entrenamiento")]
         public TrainingTier[] trainingTiers =
         {
-            new TrainingTier { minutes = 5, bonusHP = 6f, bonusDamage = 1f },
-            new TrainingTier { minutes = 15, bonusHP = 20f, bonusDamage = 2.5f },
-            new TrainingTier { minutes = 30, bonusHP = 50f, bonusDamage = 5f },
+            new TrainingTier { minutes = 5, bonusHP = 6f, bonusDamage = 1f, doubleChance = 0.10f, guardChance = 0.05f },
+            new TrainingTier { minutes = 15, bonusHP = 20f, bonusDamage = 2.5f, doubleChance = 0.25f, guardChance = 0.15f },
+            new TrainingTier { minutes = 30, bonusHP = 50f, bonusDamage = 5f, doubleChance = 0.45f, guardChance = 0.30f },
         };
         [Tooltip("Denarios por cada minuto que falta para terminar al instante.")]
         public int rushCostPerMinute = 4;

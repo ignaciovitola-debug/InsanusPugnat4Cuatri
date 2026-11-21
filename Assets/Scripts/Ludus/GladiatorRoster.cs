@@ -103,17 +103,17 @@ namespace GladiusAI
             }
         }
 
-        // Termino un entrenamiento: el gladiador sube de nivel. Cuanto mas nivel, menos mejora (tabla).
-        public static void AddTrainingBonus(int index, float bonusHP, float bonusDamage)
+        // Termino un entrenamiento: suben la vida y el ataque, el gladiador sube de nivel y a veces mejora la guardia.
+        public static void ApplyTraining(int index, TrainingOutcome outcome)
         {
             if (index < 0 || index >= slots.Count) return;
 
             var entry = slots[index];
-            float scale = ProgressionTables.TrainingBonusForLevel(entry.level);
-            entry.maxHP += bonusHP * scale;
-            entry.minDamage += bonusDamage * scale;
-            entry.maxDamage += bonusDamage * scale;
+            entry.maxHP += outcome.bonusHP;
+            entry.minDamage += outcome.bonusDamage;
+            entry.maxDamage += outcome.bonusDamage;
             entry.level++;
+            if (outcome.guardUp) entry.guardLevel++;
             slots[index] = entry;
             Notify();
         }

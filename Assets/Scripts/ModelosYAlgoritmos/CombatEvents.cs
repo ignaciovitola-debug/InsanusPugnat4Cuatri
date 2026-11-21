@@ -52,4 +52,23 @@ namespace GladiusAI
     public readonly struct CombatStartedEvent
     {
     }
+
+    // Quienes pelean ahora (cambia con cada rival nuevo). Lo usa HealthBarsHud para mostrar las barras de vida.
+    public readonly struct CombatantsChangedEvent
+    {
+        public readonly GladiatorNPC player;
+        public readonly GladiatorNPC enemy;
+        public readonly GladiatorNPC enemy2;
+        public readonly string playerName;
+        public readonly string enemyName;
+
+        public CombatantsChangedEvent(GladiatorNPC player, GladiatorNPC enemy, GladiatorNPC enemy2, string playerName, string enemyName)
+        {
+            this.player = player;
+            this.enemy = enemy;
+            this.enemy2 = enemy2;
+            this.playerName = playerName;
+            this.enemyName = enemyName;
+        }
+    }
 }

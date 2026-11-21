@@ -39,8 +39,26 @@ namespace GladiusAI
 
         public int SelectedIndex => selectedIndex;
 
-        private void OnEnable() => EventManager.Subscribe<RosterChangedEvent>(OnRosterChanged);
-        private void OnDisable() => EventManager.Unsubscribe<RosterChangedEvent>(OnRosterChanged);
+        private void OnEnable()
+        {
+            EventManager.Subscribe<RosterChangedEvent>(OnRosterChanged);
+            EventManager.Subscribe<TrainingCompletedEvent>(OnTrainingCompleted);
+        }
+
+        private void OnDisable()
+        {
+            EventManager.Unsubscribe<RosterChangedEvent>(OnRosterChanged);
+            EventManager.Unsubscribe<TrainingCompletedEvent>(OnTrainingCompleted);
+        }
+
+        // Cartel sobre el gladiador que termino de entrenar, con lo que salio.
+        private void OnTrainingCompleted(TrainingCompletedEvent e)
+        {
+            if (e.slot < 0 || e.slot >= slots.Length) return;
+
+            var color = e.outcome.doubled || e.outcome.guardUp ? new Color(1f, 0.85f, 0.3f) : Color.white;
+            FloatingText.Spawn(slots[e.slot].transform.position + Vector3.up * 2f, e.outcome.Describe(), color);
+        }
 
         // El entrenamiento termina por reloj: cada medio segundo se revisa y se actualiza la cuenta regresiva.
         private void Update()

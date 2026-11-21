@@ -26837,9 +26837,15 @@ MonoBehaviour:
     - expression: 0
       talkWhileWriting: 1
       appearAgain: 0
+      highlight: 0
+      text: "Mira las barras de vida de los costados: la tuya a la izquierda y la del
+        rival a la derecha. \xA1Si la tuya se vac\xEDa, pierdes!"
+    - expression: 0
+      talkWhileWriting: 1
+      appearAgain: 0
       highlight: 2
       text: "Vas a pelear contra un Novato, as\xED que solamente dile a tu gladiador
-        que ataque."
+        que ataque. \xA1Atacar le da un impulso de velocidad por unos segundos!"
     requiredIntentToStart: 1
     tutorialHint: 
     invulnerable: 0

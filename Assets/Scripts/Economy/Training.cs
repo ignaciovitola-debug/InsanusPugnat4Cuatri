@@ -64,8 +64,13 @@ namespace GladiusAI
             int finishedSlot = slot;
             slot = -1;
 
-            GladiatorRoster.AddTrainingBonus(finishedSlot, finishedTier.bonusHP, finishedTier.bonusDamage);
+            // Cuanto mas nivel tiene el gladiador, menos sube (tabla). Despues se sortean los premios extra.
+            float levelScale = ProgressionTables.TrainingBonusForLevel(GladiatorRoster.Slots[finishedSlot].level);
+            var outcome = TrainingOutcome.Roll(finishedTier, levelScale, UnityEngine.Random.value, UnityEngine.Random.value);
+            GladiatorRoster.ApplyTraining(finishedSlot, outcome);
+
             Notify();
+            EventManager.Raise(new TrainingCompletedEvent(finishedSlot, outcome));
             return true;
         }
 

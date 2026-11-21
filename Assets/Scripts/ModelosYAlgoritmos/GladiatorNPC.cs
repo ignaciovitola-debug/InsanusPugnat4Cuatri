@@ -36,6 +36,19 @@ namespace GladiusAI
         [SerializeField] private float maxDamage = 20f;
         [SerializeField] private float attackCooldown = 1.2f;
 
+        [Header("Bufo al atacar (orden Atacar del jugador)")]
+        [Tooltip("Segundos que dura el bufo.")]
+        [SerializeField] private float frenzySeconds = 3f;
+        [Tooltip("Multiplica la velocidad al caminar mientras dura.")]
+        [SerializeField] private float frenzyMoveMultiplier = 1.6f;
+        [Tooltip("Multiplica la espera entre golpes (menos de 1 = golpea mas seguido).")]
+        [SerializeField] private float frenzyAttackMultiplier = 0.55f;
+        [SerializeField] private Color frenzyTint = new Color(1f, 0.72f, 0.5f);
+
+        [Header("Guardia")]
+        [Tooltip("Segundos que dura el bloqueo antes de entrenar la guardia.")]
+        [SerializeField] private float guardSeconds = 2f;
+
         [Header("Knockback / Stagger")]
         [SerializeField] private float knockbackForce = 5f;
         [SerializeField] private float staggerDuration = 0.4f;
@@ -56,8 +69,12 @@ namespace GladiusAI
         [Tooltip("Velocidad mínima para considerar que está caminando (si no, Idle).")]
         [SerializeField] private float walkSpeedThreshold = 0.2f;
 
+        // Segundos de bloqueo que suma cada mejora de guardia entrenada.
+        public const float GuardBonusPerLevel = 0.5f;
+
         public Blackboard Blackboard { get; private set; }
         public float CurrentHP { get; private set; }
+        public float MaxHP => maxHP;
         public bool IsDead => CurrentHP <= 0f;
         public bool HasSurrendered { get; private set; }
         public float OrderCooldownRatio => combat != null ? combat.OrderCooldownRatio : 0f;
@@ -87,6 +104,8 @@ namespace GladiusAI
         private bool corpseCleanupDone;
         private Color currentColor;
         private bool hasColor;
+        private int guardLevel;
+        private bool frenzyTinted;
 
         private void OnEnable() => All.Add(this);
         private void OnDisable() => All.Remove(this);
@@ -169,6 +188,8 @@ namespace GladiusAI
             HasSurrendered = false;
             invulnerable = false;
             archetype = null;
+            guardLevel = 0;
+            ShowFrenzyTint(false);
             lastAction = null;
             FullyHeal();
             SetColor(Color.white);
@@ -202,6 +223,9 @@ namespace GladiusAI
             if (controller != null)
                 controller.SetOwner(this);
         }
+
+        // Cuantas mejoras de guardia tiene entrenadas (cada una alarga el bloqueo).
+        public void SetGuardLevel(int level) => guardLevel = Mathf.Max(0, level);
 
         // Guarda el arquetipo compartido (Flyweight) y los stats propios de este rival.
         public void ApplyArchetype(EnemyArchetype newArchetype, CombatStats stats)
@@ -243,7 +267,11 @@ namespace GladiusAI
             // Los tiempos de espera corren aunque el combate esté en pausa;
             // si no, los botones quedaban bloqueados durante el cartel del tutorial.
             if (!IsDead)
+            {
                 combat.Tick(Time.deltaTime);
+                movement.SpeedMultiplier = combat.IsFrenzied ? frenzyMoveMultiplier : 1f;
+                ShowFrenzyTint(combat.IsFrenzied);
+            }
 
             if (!combatEnabled) return;
 
@@ -416,7 +444,8 @@ namespace GladiusAI
         // sin hacer nada y el jugador sentia que el gladiador lo ignoraba.
         private NodeState ApplyAttackIntent(Blackboard bb)
         {
-            if (combat.CanReceiveOrder && intentHandler.TryConsume(PlayerIntent.Attack) && combat.TryRedoubleAttack())
+            if (combat.CanReceiveOrder && intentHandler.TryConsume(PlayerIntent.Attack)
+                && combat.TryRedoubleAttack(frenzySeconds, frenzyAttackMultiplier))
             {
                 if (IsNewAction("Intent"))
                     Log($"{gladiatorName} redobla el ataque por orden del jugador!");
@@ -428,7 +457,8 @@ namespace GladiusAI
 
         private NodeState ApplyDefendIntent(Blackboard bb)
         {
-            if (combat.CanReceiveOrder && intentHandler.TryConsume(PlayerIntent.Defend) && combat.TryDefend(2f))
+            if (combat.CanReceiveOrder && intentHandler.TryConsume(PlayerIntent.Defend)
+                && combat.TryDefend(guardSeconds + guardLevel * GuardBonusPerLevel))
             {
                 if (IsNewAction("Intent"))
                     Log($"{gladiatorName} se pone en guardia por orden del jugador!");
@@ -554,6 +584,14 @@ namespace GladiusAI
 
         private bool IsBodyShapeVisible =>
             bodyRenderer != null && bodyRenderer.enabled && bodyRenderer.shadowCastingMode != ShadowCastingMode.ShadowsOnly;
+
+        // Tiñe el dibujo mientras dura el bufo de ataque, para que se note.
+        private void ShowFrenzyTint(bool on)
+        {
+            if (frenzyTinted == on || CharacterSprite == null) return;
+            frenzyTinted = on;
+            CharacterSprite.color = on ? frenzyTint : Color.white;
+        }
 
         private void ShowFeedback(string message, Color color)
             => FloatingText.Spawn(transform.position + Vector3.up * feedbackHeight, message, color);

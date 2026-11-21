@@ -32,6 +32,7 @@ namespace GladiusAI.EditorTools
         {
             CreateRendererRefs();
             LimitTextures();
+            FixUncompressedTextures();
             ConfigureSounds();
             LightenMobilePipeline();
             AssetDatabase.SaveAssets();
@@ -72,6 +73,34 @@ namespace GladiusAI.EditorTools
                 importer.SetPlatformTextureSettings(settings);
                 importer.SaveAndReimport();
                 Debug.Log($"[MobileTune] {Path.GetFileName(path)}: Android max {max}");
+            }
+        }
+
+        // Una textura de medidas raras con mipmaps no se comprime: sin mipmaps (no hacen falta con camara ortografica) si.
+        private static void FixUncompressedTextures()
+        {
+            foreach (string path in new[] { "Assets/Art/Texturas/Piso_Emblema_Plano.png",
+                                            "Assets/Art/Assets/coins/Espadas romanas cruzadas ornamentadas.png" })
+            {
+                var importer = AssetImporter.GetAtPath(path) as TextureImporter;
+                if (importer == null) continue;
+                importer.mipmapEnabled = false;
+                importer.SaveAndReimport();
+                Debug.Log($"[MobileTune] {Path.GetFileName(path)}: sin mipmaps");
+            }
+
+            // La textura de arena pixelada pasa de compresion alta a normal (menos peso, mismo tamaño).
+            var sand = AssetImporter.GetAtPath("Assets/Art/Modelos/Textura de arena pixelada con piedras.png") as TextureImporter;
+            if (sand != null)
+            {
+                var settings = sand.GetPlatformTextureSettings("Android");
+                settings.overridden = true;
+                settings.maxTextureSize = 2048;
+                settings.format = TextureImporterFormat.Automatic;
+                settings.textureCompression = TextureImporterCompression.Compressed;
+                sand.SetPlatformTextureSettings(settings);
+                sand.SaveAndReimport();
+                Debug.Log("[MobileTune] Textura de arena pixelada: compresion normal en Android");
             }
         }
 

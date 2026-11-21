@@ -32,6 +32,8 @@ namespace GladiusAI.EditorTools
             CheckMemento();
             CheckShopPresenter();
             CheckRemoteTuning();
+            CheckTrainingOutcome();
+            CheckFrenzy();
 
             Debug.Log(failures == 0 ? "[Checks] TODO PASS" : $"[Checks] FALLARON {failures}");
             EditorApplication.Exit(failures == 0 ? 0 : 1);
@@ -81,7 +83,7 @@ namespace GladiusAI.EditorTools
             Energy.TrySpend(2);
             Training.TryStart(0, 0, out _);
             GladiatorRoster.UnlockNext();
-            GladiatorRoster.AddTrainingBonus(1, 10f, 2f);
+            GladiatorRoster.ApplyTraining(1, new TrainingOutcome(10f, 2f, false, true));
             GladiatorRoster.LudusTutorialVersion = 3;
             GladiatorRoster.ArenaTutorialDone = true;
 
@@ -103,6 +105,7 @@ namespace GladiusAI.EditorTools
             Check("Memento restaura tutorial", GladiatorRoster.LudusTutorialVersion == 3);
             Check("Memento restaura tutorial de la Arena 1 completado", GladiatorRoster.ArenaTutorialDone);
             Check("Memento restaura nivel del gladiador", GladiatorRoster.Slots[1].level == 1);
+            Check("Memento restaura la guardia entrenada", GladiatorRoster.Slots[1].guardLevel == 1);
             Check("Memento ida y vuelta identica", json == JsonUtility.ToJson(Snapshot()));
 
             StartNew();
@@ -124,6 +127,54 @@ namespace GladiusAI.EditorTools
             Energy.ResetToNewGame();
             Training.ResetToNewGame();
             GladiatorRoster.ResetToNewGame();
+        }
+
+        private static void CheckTrainingOutcome()
+        {
+            var tier = new EconomyConfig.TrainingTier { minutes = 5, bonusHP = 6f, bonusDamage = 1f, doubleChance = 0.25f, guardChance = 0.15f };
+
+            var plain = TrainingOutcome.Roll(tier, 0.4f, 0.99f, 0.99f);
+            Check("Entrenar siempre sube al menos 1 de ataque", Near(plain.bonusDamage, 1f) && plain.bonusHP >= 1f);
+            Check("Sin suerte no hay doble ni guardia", !plain.doubled && !plain.guardUp);
+
+            var lucky = TrainingOutcome.Roll(tier, 1f, 0.1f, 0.1f);
+            Check("Con suerte sale doble", lucky.doubled && Near(lucky.bonusHP, 12f) && Near(lucky.bonusDamage, 2f));
+            Check("Con suerte sale mejora de guardia", lucky.guardUp);
+
+            var cfg = EconomyConfig.Instance.trainingTiers;
+            Check("Mas minutos dan mas chances de doble", cfg[0].doubleChance < cfg[1].doubleChance && cfg[1].doubleChance < cfg[2].doubleChance);
+            Check("Mas minutos dan mas chances de guardia", cfg[0].guardChance < cfg[1].guardChance && cfg[1].guardChance < cfg[2].guardChance);
+
+            StartNew();
+            float hpBefore = GladiatorRoster.Slots[1].maxHP;
+            GladiatorRoster.ApplyTraining(1, lucky);
+            var trained = GladiatorRoster.Slots[1];
+            Check("Aplicar el entrenamiento sube vida, nivel y guardia", Near(trained.maxHP, hpBefore + 12f) && trained.level == 1 && trained.guardLevel == 1);
+            GladiatorRoster.ResetSlotToBasic(1);
+            Check("Caer en combate pierde lo entrenado y la guardia", GladiatorRoster.Slots[1].guardLevel == 0 && GladiatorRoster.Slots[1].level == 0
+                && Near(GladiatorRoster.Slots[1].maxHP, hpBefore));
+            StartNew();
+        }
+
+        private static void CheckFrenzy()
+        {
+            var combat = new GladiatorCombat(10f, 20f, 1f, 0.4f);
+            combat.RegisterAttack();
+            combat.Tick(0.6f);
+            Check("Sin bufo el golpe espera el cooldown completo", combat.IsOnCooldown);
+
+            combat = new GladiatorCombat(10f, 20f, 1f, 0.4f);
+            Check("La orden Atacar activa el bufo", combat.TryRedoubleAttack(3f, 0.5f) && combat.IsFrenzied);
+            combat.RegisterAttack();
+            combat.Tick(0.6f);
+            Check("Con bufo golpea mas seguido", !combat.IsOnCooldown);
+            Check("No se puede dar otra orden enseguida", !combat.TryRedoubleAttack(3f, 0.5f));
+
+            combat.Tick(3f);
+            Check("El bufo termina solo", !combat.IsFrenzied);
+            combat.RegisterAttack();
+            combat.Tick(0.6f);
+            Check("Despues del bufo vuelve el cooldown normal", combat.IsOnCooldown);
         }
 
         private static void CheckRemoteTuning()

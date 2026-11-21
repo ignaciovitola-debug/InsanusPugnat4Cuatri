@@ -21,6 +21,17 @@ namespace GladiusAI
         private int slot;
         private float nextRefresh;
 
+        private void OnEnable() => EventManager.Subscribe<TrainingCompletedEvent>(OnTrainingCompleted);
+        private void OnDisable() => EventManager.Unsubscribe<TrainingCompletedEvent>(OnTrainingCompleted);
+
+        // Muestra lo que salio del entrenamiento que acaba de terminar.
+        private void OnTrainingCompleted(TrainingCompletedEvent e)
+        {
+            string name = GladiatorRoster.Slots[e.slot].label;
+            messageLabel.text = $"¡{name} terminó de entrenar! {e.outcome.Describe()}";
+            Refresh();
+        }
+
         private void Start()
         {
             rowTemplate.gameObject.SetActive(false);
@@ -80,7 +91,8 @@ namespace GladiusAI
             else
             {
                 var entry = roster[Mathf.Clamp(slot, 0, roster.Count - 1)];
-                statusLabel.text = entry.level > 0 ? $"Entrenar a {entry.label} (Nv {entry.level})" : $"Entrenar a {entry.label}";
+                string guard = entry.guardLevel > 0 ? $" · Guardia +{entry.guardLevel * GladiatorNPC.GuardBonusPerLevel:0.#}s" : string.Empty;
+                statusLabel.text = entry.level > 0 ? $"Entrenar a {entry.label} (Nv {entry.level}{guard})" : $"Entrenar a {entry.label}";
             }
 
             foreach (var row in rows)

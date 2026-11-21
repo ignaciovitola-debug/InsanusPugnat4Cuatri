@@ -14,6 +14,8 @@ namespace GladiusAI
         public bool unlocked;
         public int skin;
         public int level;
+        // Cuantas veces mejoro la guardia entrenando (cada una hace durar mas el bloqueo).
+        public int guardLevel;
 
         // Stats de base. En partidas guardadas antes de que existieran vienen en 0 (ver HasBaseStats).
         public float baseMaxHP;
@@ -25,6 +27,7 @@ namespace GladiusAI
         {
             this.skin = skin;
             level = 0;
+            guardLevel = 0;
             this.label = label;
             this.maxHP = maxHP;
             this.minDamage = minDamage;
@@ -56,6 +59,7 @@ namespace GladiusAI
             maxDamage = baseMaxDamage;
             attackCooldown = baseAttackCooldown;
             level = 0;
+            guardLevel = 0;
         }
     }
 }

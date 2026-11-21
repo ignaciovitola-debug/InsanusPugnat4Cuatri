@@ -16,6 +16,9 @@ namespace GladiusAI
         private readonly LayerMask obstacleLayer;
         private readonly float knockbackForce;
 
+        // Multiplica la velocidad al caminar (1 = normal). Lo sube el bufo de la orden Atacar.
+        public float SpeedMultiplier { get; set; } = 1f;
+
         public GladiatorMovement(Transform self, Rigidbody rb, float moveSpeed,
             float avoidCastDistance, float avoidRadius, LayerMask obstacleLayer,
             float knockbackForce)
@@ -68,7 +71,7 @@ namespace GladiusAI
 
         private void SetVelocity(Vector3 dir)
         {
-            Vector3 vel = dir * moveSpeed;
+            Vector3 vel = dir * (moveSpeed * SpeedMultiplier);
             vel.y = rb.linearVelocity.y;
             rb.linearVelocity = vel;
         }

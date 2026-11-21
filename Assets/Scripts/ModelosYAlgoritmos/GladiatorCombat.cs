@@ -15,7 +15,11 @@ namespace GladiusAI
         private float stunTimer;
         private float defendTimer;
         private float orderCooldownTimer;
+        private float frenzyTimer;
+        private float frenzyCooldownMultiplier = 1f;
 
+        // Bufo de la orden Atacar: mientras dura, el gladiador golpea mas seguido.
+        public bool IsFrenzied => frenzyTimer > 0f;
         public bool IsOnCooldown => attackTimer > 0f;
         public bool IsStunned => stunTimer > 0f;
         public bool IsDefending => defendTimer > 0f;
@@ -43,19 +47,25 @@ namespace GladiusAI
                 defendTimer -= deltaTime;
             if (orderCooldownTimer > 0f)
                 orderCooldownTimer -= deltaTime;
+            if (frenzyTimer > 0f)
+                frenzyTimer -= deltaTime;
         }
 
-        public void RegisterAttack() => attackTimer = attackCooldown;
+        // Con el bufo activo la espera entre golpes se acorta.
+        public void RegisterAttack() => attackTimer = attackCooldown * (IsFrenzied ? frenzyCooldownMultiplier : 1f);
         public float RollDamage() => Mathf.Round(Random.Range(minDamage, maxDamage));
 
         public void ApplyStagger() => stunTimer = staggerDuration;
 
-        // Consigna de "redoblar ataque": comparte cooldown con TryDefend para que no se pueda spamear ninguna orden.
-        public bool TryRedoubleAttack()
+        // Consigna de "redoblar ataque": golpea ya y queda con el bufo de ataque unos segundos.
+        // Comparte cooldown con TryDefend para que no se pueda spamear ninguna orden.
+        public bool TryRedoubleAttack(float frenzySeconds, float cooldownMultiplier)
         {
             if (orderCooldownTimer > 0f) return false;
             orderCooldownTimer = OrderCooldown;
             attackTimer = 0f;
+            frenzyTimer = frenzySeconds;
+            frenzyCooldownMultiplier = cooldownMultiplier;
             return true;
         }
 

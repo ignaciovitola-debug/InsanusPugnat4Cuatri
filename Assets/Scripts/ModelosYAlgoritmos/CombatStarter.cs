@@ -220,11 +220,25 @@ namespace GladiusAI
             }
 
             player?.SetIntentController(intentController);
+            player?.SetGuardLevel(selected.guardLevel);
 
             player?.SetCombatEnabled(false);
             enemy?.SetCombatEnabled(false);
 
+            AnnounceCombatants(selected.label, "Rival");
             StartCoroutine(RunCountdown(activateCombatAfter: true));
+        }
+
+        // Avisa quienes pelean para que se dibujen las barras de vida.
+        private void AnnounceCombatants(string playerName, string enemyName)
+            => EventManager.Raise(new CombatantsChangedEvent(player, enemy, enemy2, playerName, enemyName));
+
+        // "Rival 1 de 2: Mirmillon" -> "Mirmillon" (el nombre largo no entra al lado de la barra).
+        private static string ShortName(string label)
+        {
+            if (string.IsNullOrEmpty(label)) return "Rival";
+            int colon = label.LastIndexOf(':');
+            return colon >= 0 ? label.Substring(colon + 1).Trim() : label;
         }
 
         private void OnGladiatorDied(GladiatorDiedEvent e)
@@ -369,6 +383,7 @@ namespace GladiusAI
             {
                 var selected = GladiatorRoster.GetSelected();
                 player?.ConfigureStats(selected.maxHP, selected.minDamage, selected.maxDamage, selected.attackCooldown);
+                player?.SetGuardLevel(selected.guardLevel);
             }
             player?.SetIntentController(intentController);
             player?.SetCombatEnabled(false);
@@ -403,6 +418,7 @@ namespace GladiusAI
                     enemy.SetTarget(player.transform);
                 }
 
+                AnnounceCombatants(contractMode ? GladiatorRoster.GetSelected().label : "Tu Gladiador", ShortName(wave.label));
                 yield return ShowWaveTitle(wave.label);
                 yield return tutorial.PlayDialogue(wave.introDialogue);
 

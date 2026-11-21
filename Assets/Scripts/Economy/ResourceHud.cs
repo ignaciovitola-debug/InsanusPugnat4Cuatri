@@ -49,9 +49,10 @@ namespace GladiusAI
             if (energyLabel == null) return;
 
             int current = Energy.Current;
+            // El contador va corto ("· 14:22") para que el cartel no se meta debajo del titulo.
             energyLabel.text = current >= Energy.Max
                 ? $"{EnergyIcon} Energía {current}/{Energy.Max}"
-                : $"{EnergyIcon} Energía {current}/{Energy.Max}  ·  próxima en {Energy.TimeToNextText()}";
+                : $"{EnergyIcon} Energía {current}/{Energy.Max} · {Energy.TimeToNextText()}";
         }
     }
 }
