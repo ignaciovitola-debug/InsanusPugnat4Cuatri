@@ -12,14 +12,14 @@ namespace GladiusAI.EditorTools
     {
         private const string OutputPath = "D:/GladiusAI/Build/InsanusPugnat.apk";
 
-        private static readonly string[] Scenes =
+        // Usa las escenas tildadas en Build Settings, asi nunca falta una (por ejemplo las zonas de combate).
+        private static string[] Scenes()
         {
-            "Assets/Scenes/Splash.unity",
-            "Assets/Scenes/Menu.unity",
-            "Assets/Scenes/ArenaDeCombate1.unity",
-            "Assets/Scenes/Ludus.unity",
-            "Assets/Scenes/ArenaDeCombate2.unity",
-        };
+            var paths = new System.Collections.Generic.List<string>();
+            foreach (var scene in EditorBuildSettings.scenes)
+                if (scene.enabled) paths.Add(scene.path);
+            return paths.ToArray();
+        }
 
         [MenuItem("Tools/Insanus Pugnat/Generar APK")]
         public static void Run()
@@ -34,14 +34,14 @@ namespace GladiusAI.EditorTools
             PlayerSettings.productName = "Insanus Pugnat";
             PlayerSettings.SetApplicationIdentifier(NamedBuildTarget.Android, "com.vitolaquijano.insanuspugnat");
             PlayerSettings.bundleVersion = "1.0.0";
-            PlayerSettings.Android.bundleVersionCode = 2;
+            PlayerSettings.Android.bundleVersionCode = 3;
 
             EditorUserBuildSettings.buildAppBundle = false;
             EditorUserBuildSettings.development = false;
 
             var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions
             {
-                scenes = Scenes,
+                scenes = Scenes(),
                 locationPathName = OutputPath,
                 target = BuildTarget.Android,
                 targetGroup = BuildTargetGroup.Android,

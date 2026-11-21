@@ -23,7 +23,7 @@ namespace GladiusAI
                     zoneScene = zone.scene,
                     zoneName = zone.displayName,
                     enemyCount = difficulty.EnemyCount,
-                    reward = difficulty.Reward(),
+                    reward = Mathf.RoundToInt(difficulty.Reward() * RemoteTuning.RewardMultiplier),
                     levelMultiplier = levelMultiplier,
                 });
             }

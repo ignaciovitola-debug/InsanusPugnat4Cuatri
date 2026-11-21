@@ -31,6 +31,7 @@ namespace GladiusAI.EditorTools
             CheckStrategies();
             CheckMemento();
             CheckShopPresenter();
+            CheckRemoteTuning();
 
             Debug.Log(failures == 0 ? "[Checks] TODO PASS" : $"[Checks] FALLARON {failures}");
             EditorApplication.Exit(failures == 0 ? 0 : 1);
@@ -123,6 +124,30 @@ namespace GladiusAI.EditorTools
             Energy.ResetToNewGame();
             Training.ResetToNewGame();
             GladiatorRoster.ResetToNewGame();
+        }
+
+        private static void CheckRemoteTuning()
+        {
+            RemoteTuning.ResetToDefaults();
+            int localMax = EconomyConfig.Instance.maxEnergy;
+            Check("Remote sin datos usa los valores locales", RemoteTuning.MaxEnergy == localMax && Near(RemoteTuning.RewardMultiplier, 1f));
+
+            RemoteTuning.SetMaxEnergy(8);
+            RemoteTuning.SetRewardMultiplier(2f);
+            RemoteTuning.SetRushCostPerMinute(9);
+            RemoteTuning.SetMinutesPerEnergy(3f);
+            Check("Remote pisa los valores", RemoteTuning.MaxEnergy == 8 && Near(RemoteTuning.RewardMultiplier, 2f)
+                && RemoteTuning.RushCostPerMinute == 9 && Near(RemoteTuning.MinutesPerEnergy, 3f));
+            Check("Energy usa el maximo remoto", Energy.Max == 8);
+
+            RemoteTuning.SetMaxEnergy(9999);
+            RemoteTuning.SetRewardMultiplier(-5f);
+            RemoteTuning.SetMinutesPerEnergy(0f);
+            Check("Remote limita valores fuera de rango", RemoteTuning.MaxEnergy == 20 && Near(RemoteTuning.RewardMultiplier, 0f)
+                && Near(RemoteTuning.MinutesPerEnergy, 0.1f));
+
+            RemoteTuning.ResetToDefaults();
+            Check("Remote vuelve a los locales", RemoteTuning.MaxEnergy == localMax);
         }
 
         private static void CheckShopPresenter()

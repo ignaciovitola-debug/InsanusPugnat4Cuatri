@@ -10,10 +10,9 @@ namespace GladiusAI
         private static int current;
         private static long stampTicks;
 
-        private static EconomyConfig Config => EconomyConfig.Instance;
-        private static long IntervalTicks => TimeSpan.FromMinutes(Mathf.Max(0.01f, Config.minutesPerEnergy)).Ticks;
+        private static long IntervalTicks => TimeSpan.FromMinutes(Mathf.Max(0.01f, RemoteTuning.MinutesPerEnergy)).Ticks;
 
-        public static int Max => Config.maxEnergy;
+        public static int Max => RemoteTuning.MaxEnergy;
 
         public static int Current
         {

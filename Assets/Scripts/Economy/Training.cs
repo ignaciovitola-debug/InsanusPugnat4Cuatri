@@ -35,7 +35,7 @@ namespace GladiusAI
             return $"{(int)time.TotalMinutes:00}:{time.Seconds:00}";
         }
 
-        public static int RushCost => Mathf.CeilToInt(SecondsRemaining / 60f) * Config.rushCostPerMinute;
+        public static int RushCost => Mathf.CeilToInt(SecondsRemaining / 60f) * RemoteTuning.RushCostPerMinute;
 
         private static EconomyConfig.TrainingTier CurrentTier
             => Config.trainingTiers[Mathf.Clamp(tier, 0, Config.trainingTiers.Length - 1)];

@@ -303,7 +303,9 @@ namespace GladiusAI
             if (won && grantsGladiatorUnlock)
                 GladiatorRoster.UnlockNext();
 
-            int reward = won ? (contractMode ? CombatSetup.Current.reward : victoryReward) : 0;
+            // El premio del contrato ya viene con el multiplicador remoto; el de la arena fija se lo aplica acá.
+            int fixedReward = Mathf.RoundToInt(victoryReward * RemoteTuning.RewardMultiplier);
+            int reward = won ? (contractMode ? CombatSetup.Current.reward : fixedReward) : 0;
             Denarii.Add(reward);
             CombatSetup.Current = null;
 
