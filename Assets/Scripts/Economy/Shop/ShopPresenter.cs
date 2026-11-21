@@ -14,10 +14,18 @@ namespace GladiusAI
             this.model = model;
 
             view.BuyRequested += OnBuyRequested;
+            EventManager.Subscribe<AdFinishedEvent>(OnAdFinished);
             view.ShowOffers(model.GetOffers());
         }
 
-        public void Dispose() => view.BuyRequested -= OnBuyRequested;
+        public void Dispose()
+        {
+            view.BuyRequested -= OnBuyRequested;
+            EventManager.Unsubscribe<AdFinishedEvent>(OnAdFinished);
+        }
+
+        // El anuncio es asincrono: cuando termina, la tienda muestra que premio dio.
+        private void OnAdFinished(AdFinishedEvent e) => view.ShowMessage(e.message);
 
         private void OnBuyRequested(int index)
         {

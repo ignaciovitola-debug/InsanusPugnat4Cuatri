@@ -29,7 +29,7 @@ namespace GladiusAI
         {
             var offers = new List<ShopOffer>(items.Count);
             foreach (var item in items)
-                offers.Add(new ShopOffer(item.DisplayName, item.Description, item.Price));
+                offers.Add(new ShopOffer(item.DisplayName, item.Description, item.Price, item.PriceText));
             return offers;
         }
 
@@ -47,7 +47,7 @@ namespace GladiusAI
                 return new PurchaseResult(false, $"Te faltan {DenariiText.Amount(item.Price - Denarii.Balance)}");
 
             item.Apply();
-            return new PurchaseResult(true, $"¡Compraste {item.DisplayName}!");
+            return new PurchaseResult(true, item.PurchaseMessage);
         }
     }
 }

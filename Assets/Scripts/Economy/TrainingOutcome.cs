@@ -18,11 +18,12 @@ namespace GladiusAI
             this.guardUp = guardUp;
         }
 
-        // Siempre sube al menos 1 punto de vida y de ataque. Los dos números al azar (0 a 1) se pasan de afuera.
-        public static TrainingOutcome Roll(EconomyConfig.TrainingTier tier, float levelScale, float doubleRoll, float guardRoll)
+        // Todos los entrenamientos dan lo mismo (vida y ataque fijos); la duracion solo cambia las chances.
+        // Los dos números al azar (0 a 1) se pasan de afuera.
+        public static TrainingOutcome Roll(EconomyConfig.TrainingTier tier, float doubleRoll, float guardRoll)
         {
-            float hp = Mathf.Max(1f, tier.bonusHP * levelScale);
-            float damage = Mathf.Max(1f, tier.bonusDamage * levelScale);
+            float hp = tier.bonusHP;
+            float damage = tier.bonusDamage;
 
             bool doubled = doubleRoll < tier.doubleChance;
             if (doubled)

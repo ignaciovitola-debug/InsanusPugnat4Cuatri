@@ -33,20 +33,20 @@ MonoBehaviour:
     displayName: Patio
   trainingTiers:
   - minutes: 5
-    bonusHP: 6
-    bonusDamage: 1
-    doubleChance: 0.1
+    bonusHP: 5
+    bonusDamage: 2
+    doubleChance: 0.05
     guardChance: 0.05
   - minutes: 15
-    bonusHP: 20
-    bonusDamage: 2.5
-    doubleChance: 0.25
-    guardChance: 0.15
+    bonusHP: 5
+    bonusDamage: 2
+    doubleChance: 0.1
+    guardChance: 0.1
   - minutes: 30
-    bonusHP: 50
-    bonusDamage: 5
-    doubleChance: 0.45
-    guardChance: 0.3
+    bonusHP: 5
+    bonusDamage: 2
+    doubleChance: 0.15
+    guardChance: 0.15
   rushCostPerMinute: 4
   enemyScaleByLevel:
     serializedVersion: 2

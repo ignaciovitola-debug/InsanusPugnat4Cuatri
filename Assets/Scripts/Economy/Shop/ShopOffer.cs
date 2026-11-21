@@ -6,12 +6,14 @@ namespace GladiusAI
         public readonly string name;
         public readonly string description;
         public readonly int price;
+        public readonly string priceText;
 
-        public ShopOffer(string name, string description, int price)
+        public ShopOffer(string name, string description, int price, string priceText)
         {
             this.name = name;
             this.description = description;
             this.price = price;
+            this.priceText = priceText;
         }
     }
 }

@@ -17,7 +17,7 @@ namespace GladiusAI
         {
             nameLabel.text = offer.name;
             descriptionLabel.text = offer.description;
-            priceLabel.text = DenariiText.Amount(offer.price);
+            priceLabel.text = offer.priceText;
 
             buyButton.onClick.RemoveAllListeners();
             buyButton.onClick.AddListener(() => onBuy());

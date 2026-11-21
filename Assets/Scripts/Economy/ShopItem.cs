@@ -14,6 +14,12 @@ namespace GladiusAI
         public string Description => description;
         public int Price => price;
 
+        // Lo que se ve en la fila de la tienda en lugar del precio (por defecto, los denarios).
+        public virtual string PriceText => DenariiText.Amount(Price);
+
+        // Mensaje cuando la compra sale bien.
+        public virtual string PurchaseMessage => $"¡Compraste {DisplayName}!";
+
         // Si no se puede comprar ahora (aunque alcance la plata), explica por que.
         public abstract bool CanBuy(out string reason);
 

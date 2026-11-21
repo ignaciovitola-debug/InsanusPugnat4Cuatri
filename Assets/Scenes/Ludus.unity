@@ -3593,8 +3593,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 38
-  m_fontSizeBase: 38
+  m_fontSize: 32
+  m_fontSizeBase: 32
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -5557,7 +5557,7 @@ MonoBehaviour:
   m_MinWidth: -1
   m_MinHeight: -1
   m_PreferredWidth: -1
-  m_PreferredHeight: 240
+  m_PreferredHeight: 300
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
@@ -31089,6 +31089,7 @@ MonoBehaviour:
   items:
   - {fileID: 11400000, guid: 56eb1b2766b662d418725551adbecb3c, type: 2}
   - {fileID: 11400000, guid: b2c72bf6f565dc240ab12035b8191cfb, type: 2}
+  - {fileID: 11400000, guid: fe89b1302a5158743a8d1ce744c41908, type: 2}
 --- !u!1001 &2094039911
 PrefabInstance:
   m_ObjectHideFlags: 0

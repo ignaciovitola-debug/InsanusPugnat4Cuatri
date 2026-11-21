@@ -46,18 +46,16 @@ namespace GladiusAI
         [Header("Entrenamiento")]
         public TrainingTier[] trainingTiers =
         {
-            new TrainingTier { minutes = 5, bonusHP = 6f, bonusDamage = 1f, doubleChance = 0.10f, guardChance = 0.05f },
-            new TrainingTier { minutes = 15, bonusHP = 20f, bonusDamage = 2.5f, doubleChance = 0.25f, guardChance = 0.15f },
-            new TrainingTier { minutes = 30, bonusHP = 50f, bonusDamage = 5f, doubleChance = 0.45f, guardChance = 0.30f },
+            new TrainingTier { minutes = 5, bonusHP = 5f, bonusDamage = 2f, doubleChance = 0.05f, guardChance = 0.05f },
+            new TrainingTier { minutes = 15, bonusHP = 5f, bonusDamage = 2f, doubleChance = 0.10f, guardChance = 0.10f },
+            new TrainingTier { minutes = 30, bonusHP = 5f, bonusDamage = 2f, doubleChance = 0.15f, guardChance = 0.15f },
         };
         [Tooltip("Denarios por cada minuto que falta para terminar al instante.")]
         public int rushCostPerMinute = 4;
 
-        [Header("Curvas por nivel de gladiador (nivel 0 a 20)")]
+        [Header("Curva por nivel de gladiador (nivel 0 a 20)")]
         [Tooltip("Multiplica la fuerza de los rivales.")]
         public AnimationCurve enemyScaleByLevel = new AnimationCurve(new Keyframe(0f, 1f), new Keyframe(20f, 2f));
-        [Tooltip("Multiplica el bonus del entrenamiento (baja con los niveles).")]
-        public AnimationCurve trainingBonusByLevel = new AnimationCurve(new Keyframe(0f, 1f), new Keyframe(20f, 0.4f));
 
         private static EconomyConfig instance;
 

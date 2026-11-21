@@ -89,6 +89,7 @@ namespace GladiusAI
         private GladiatorNPC enemy;
         private GladiatorNPC enemy2;
         private bool singleEncounterEnded;
+        private bool offerCoinsAd;
         private bool fightResolved;
         private GladiatorPool enemyPool;
         private SpawnPicker spawnPicker;
@@ -323,6 +324,9 @@ namespace GladiusAI
             Denarii.Add(reward);
             CombatSetup.Current = null;
 
+            // Si ganaste plata y el anuncio esta listo, antes de salir se te ofrece ver uno para ganar mas.
+            offerCoinsAd = reward > 0 && AdsService.IsReady(AdSlot.Coins);
+
             SoundManager.Play(won ? SoundId.CrowdCheer : SoundId.CrowdBoo);
             GameSettings.Vibrate();
             EventManager.Raise(new CombatEndedEvent(result, reward));
@@ -332,6 +336,8 @@ namespace GladiusAI
         private IEnumerator LoadNextSceneAfterDelay()
         {
             yield return new WaitForSeconds(delayBeforeNextScene);
+            if (offerCoinsAd)
+                yield return PostCombatAdOffer.Offer();
             if (string.IsNullOrEmpty(nextSceneAfterCombat)) yield break;
 
             if (SceneFader.Instance != null)
@@ -393,6 +399,13 @@ namespace GladiusAI
 
             for (int i = 0; i < waves.Length; i++)
             {
+                // Si se rindio mientras se esperaba al proximo rival, el combate termina ahora.
+                if (player != null && player.HasSurrendered)
+                {
+                    EndCombat(CombatResult.Surrender);
+                    yield break;
+                }
+
                 EnemyWave wave = waves[i];
                 tutorial.ShowAvailableOrders(wave.availableOrders);
 
@@ -464,7 +477,8 @@ namespace GladiusAI
             bool hasMidFightDialogue = wave.midFightDialogue != null && wave.midFightDialogue.Length > 0;
             float fightTime = 0f;
 
-            while (!fightResolved && enemy != null && player != null)
+            // Tambien corta si el gladiador esta rendido, aunque se haya perdido el aviso.
+            while (!fightResolved && enemy != null && player != null && !player.HasSurrendered)
             {
                 if (hasMidFightDialogue && fightTime >= wave.midFightDelaySeconds)
                 {

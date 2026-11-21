@@ -21,10 +21,10 @@ namespace GladiusAI
         }
 
         // La primera vez va al tutorial; despues del tutorial va directo a la Ludus.
-        public void PlayLevel()
-        {
-            string target = GladiatorRoster.ArenaTutorialDone ? HomeScene : levelSceneName;
+        public void PlayLevel() => GoTo(GladiatorRoster.ArenaTutorialDone ? HomeScene : levelSceneName);
 
+        private static void GoTo(string target)
+        {
             if (SceneFader.Instance != null)
             {
                 SceneFader.Instance.FadeToScene(target);

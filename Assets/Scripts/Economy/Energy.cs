@@ -63,6 +63,18 @@ namespace GladiusAI
             Notify();
         }
 
+        // Suma energia (sin pasarse del maximo). Lo usa el premio de los anuncios.
+        public static void Add(int amount)
+        {
+            if (amount <= 0) return;
+
+            Regenerate();
+            current = Math.Min(Max, current + amount);
+            if (current >= Max)
+                stampTicks = DateTime.UtcNow.Ticks;
+            Notify();
+        }
+
         public static EnergyMemento CreateMemento() => new EnergyMemento { energy = current, stampTicks = stampTicks };
 
         public static void RestoreMemento(EnergyMemento memento)

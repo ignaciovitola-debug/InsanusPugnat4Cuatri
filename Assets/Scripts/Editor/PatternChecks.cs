@@ -34,6 +34,7 @@ namespace GladiusAI.EditorTools
             CheckRemoteTuning();
             CheckTrainingOutcome();
             CheckFrenzy();
+            CheckAds();
 
             Debug.Log(failures == 0 ? "[Checks] TODO PASS" : $"[Checks] FALLARON {failures}");
             EditorApplication.Exit(failures == 0 ? 0 : 1);
@@ -53,7 +54,6 @@ namespace GladiusAI.EditorTools
             Check("LUT valor exacto en una muestra", Near(table.ReturnValue(5f), 10f));
             Check("LUT interpola entre muestras", Near(table.ReturnValue(2.5f), 5f));
             Check("LUT enemigo mas fuerte con mas nivel", ProgressionTables.EnemyScaleForLevel(10) > ProgressionTables.EnemyScaleForLevel(0));
-            Check("LUT entrenamiento rinde menos con mas nivel", ProgressionTables.TrainingBonusForLevel(10) < ProgressionTables.TrainingBonusForLevel(0));
         }
 
         private static void CheckStrategies()
@@ -131,28 +131,68 @@ namespace GladiusAI.EditorTools
 
         private static void CheckTrainingOutcome()
         {
-            var tier = new EconomyConfig.TrainingTier { minutes = 5, bonusHP = 6f, bonusDamage = 1f, doubleChance = 0.25f, guardChance = 0.15f };
+            var tier = new EconomyConfig.TrainingTier { minutes = 5, bonusHP = 5f, bonusDamage = 2f, doubleChance = 0.25f, guardChance = 0.15f };
 
-            var plain = TrainingOutcome.Roll(tier, 0.4f, 0.99f, 0.99f);
-            Check("Entrenar siempre sube al menos 1 de ataque", Near(plain.bonusDamage, 1f) && plain.bonusHP >= 1f);
+            var plain = TrainingOutcome.Roll(tier, 0.99f, 0.99f);
+            Check("Entrenar da +5 de vida y +2 de ataque", Near(plain.bonusHP, 5f) && Near(plain.bonusDamage, 2f));
             Check("Sin suerte no hay doble ni guardia", !plain.doubled && !plain.guardUp);
 
-            var lucky = TrainingOutcome.Roll(tier, 1f, 0.1f, 0.1f);
-            Check("Con suerte sale doble", lucky.doubled && Near(lucky.bonusHP, 12f) && Near(lucky.bonusDamage, 2f));
+            var lucky = TrainingOutcome.Roll(tier, 0.1f, 0.1f);
+            Check("Con suerte sale doble (+10 y +4)", lucky.doubled && Near(lucky.bonusHP, 10f) && Near(lucky.bonusDamage, 4f));
             Check("Con suerte sale mejora de guardia", lucky.guardUp);
 
             var cfg = EconomyConfig.Instance.trainingTiers;
-            Check("Mas minutos dan mas chances de doble", cfg[0].doubleChance < cfg[1].doubleChance && cfg[1].doubleChance < cfg[2].doubleChance);
-            Check("Mas minutos dan mas chances de guardia", cfg[0].guardChance < cfg[1].guardChance && cfg[1].guardChance < cfg[2].guardChance);
+            bool flat = true;
+            foreach (var t in cfg) flat &= Near(t.bonusHP, 5f) && Near(t.bonusDamage, 2f);
+            Check("Los 3 entrenamientos dan lo mismo (+5 y +2)", cfg.Length == 3 && flat);
+            Check("Chances de doble de 5 en 5 (5, 10, 15%)", Near(cfg[0].doubleChance, 0.05f) && Near(cfg[1].doubleChance, 0.10f) && Near(cfg[2].doubleChance, 0.15f));
+            Check("Chances de guardia de 5 en 5 (5, 10, 15%)", Near(cfg[0].guardChance, 0.05f) && Near(cfg[1].guardChance, 0.10f) && Near(cfg[2].guardChance, 0.15f));
 
             StartNew();
             float hpBefore = GladiatorRoster.Slots[1].maxHP;
             GladiatorRoster.ApplyTraining(1, lucky);
             var trained = GladiatorRoster.Slots[1];
-            Check("Aplicar el entrenamiento sube vida, nivel y guardia", Near(trained.maxHP, hpBefore + 12f) && trained.level == 1 && trained.guardLevel == 1);
+            Check("Aplicar el entrenamiento sube vida, nivel y guardia", Near(trained.maxHP, hpBefore + 10f) && trained.level == 1 && trained.guardLevel == 1);
             GladiatorRoster.ResetSlotToBasic(1);
             Check("Caer en combate pierde lo entrenado y la guardia", GladiatorRoster.Slots[1].guardLevel == 0 && GladiatorRoster.Slots[1].level == 0
                 && Near(GladiatorRoster.Slots[1].maxHP, hpBefore));
+            StartNew();
+        }
+
+        private static void CheckAds()
+        {
+            var config = AdsConfig.Instance;
+            StartNew();
+            Energy.TrySpend(3);
+            AdRewards.Grant(AdSlot.Energy, AdOutcome.Skipped, config);
+            Check("Anuncio de energia cerrado antes da poca energia", Energy.Current == Energy.Max - 3 + config.energyIfSkipped);
+            AdRewards.Grant(AdSlot.Energy, AdOutcome.Completed, config);
+            Check("Anuncio de energia entero llena la energia", Energy.Current == Energy.Max);
+
+            StartNew();
+            AdRewards.Grant(AdSlot.Coins, AdOutcome.Skipped, config);
+            Check("Anuncio de monedas cerrado antes da poco", Denarii.Balance == config.coinsIfSkipped);
+            AdRewards.Grant(AdSlot.Coins, AdOutcome.Completed, config);
+            Check("Anuncio de monedas entero da el premio completo", Denarii.Balance == config.coinsIfSkipped + config.coinsIfCompleted);
+            Check("El premio entero es mayor que el de cerrarlo antes", config.coinsIfCompleted > config.coinsIfSkipped);
+
+            int before = Denarii.Balance;
+            string failMessage = AdRewards.Grant(AdSlot.Coins, AdOutcome.Failed, config);
+            Check("Si el anuncio falla no se da premio", Denarii.Balance == before && !string.IsNullOrEmpty(failMessage));
+
+            var item = ScriptableObject.CreateInstance<WatchAdItem>();
+            Check("El item del anuncio es gratis", item.PriceText == "Gratis");
+            Check("Con la energia llena no se ofrece el anuncio", !item.CanBuy(out _));
+            Energy.TrySpend(2);
+            Check("Sin anuncio cargado tampoco se puede comprar", !item.CanBuy(out string reason) && !string.IsNullOrEmpty(reason));
+            UnityEngine.Object.DestroyImmediate(item);
+
+            // El Presenter muestra en la vista el mensaje del premio cuando termina un anuncio.
+            var view = new FakeView();
+            var presenter = new ShopPresenter(view, new ShopModel(new ShopItem[0]));
+            EventManager.Raise(new AdFinishedEvent(AdSlot.Coins, AdOutcome.Completed, "mensaje de prueba"));
+            Check("La tienda muestra el premio del anuncio", view.lastMessage == "mensaje de prueba");
+            presenter.Dispose();
             StartNew();
         }
 

@@ -12,32 +12,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 469c24fdb3bd6431b92cc1465bd9166b, type: 3}
   m_Name: RemoteConfigDataStoreAsset
   m_EditorClassIdentifier: 
-  _rsKeyList: "[\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"6fc755c8-7cda-4a49-ab69-4afa6096350c\"\r\n   
+  _rsKeyList: "[\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"7f8704aa-cba9-41f9-b89d-672d9051d62c\"\r\n   
     },\r\n    \"rs\": {\r\n      \"key\": \"maxEnergy\",\r\n      \"type\": \"int\",\r\n     
     \"value\": 5\r\n    }\r\n  },\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\":
-    \"eb5ded4c-24cf-434e-8fb1-827775c98704\"\r\n    },\r\n    \"rs\": {\r\n     
+    \"463ad97c-eb19-4a7d-97dd-10034e9a54b9\"\r\n    },\r\n    \"rs\": {\r\n     
     \"key\": \"minutesPerEnergy\",\r\n      \"type\": \"float\",\r\n      \"value\":
-    15.0\r\n    }\r\n  },\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"87e09106-93c2-4561-87e5-59657d6e0726\"\r\n   
+    15.0\r\n    }\r\n  },\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"f016c6f6-aeb6-4896-a161-547ecfa7135e\"\r\n   
     },\r\n    \"rs\": {\r\n      \"key\": \"rushCostPerMinute\",\r\n      \"type\":
     \"int\",\r\n      \"value\": 4\r\n    }\r\n  },\r\n  {\r\n    \"metadata\": {\r\n     
-    \"entityId\": \"586e50e2-8501-4b51-afcd-01c93e959bba\"\r\n    },\r\n    \"rs\":
+    \"entityId\": \"e26d983f-3023-4154-a43d-6b3b5d6a962b\"\r\n    },\r\n    \"rs\":
     {\r\n      \"key\": \"rewardMultiplier\",\r\n      \"type\": \"float\",\r\n     
     \"value\": 1.0\r\n    }\r\n  },\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\":
-    \"4c305100-6d4d-4a2c-9ee9-ff6714747e00\"\r\n    },\r\n    \"rs\": {\r\n     
+    \"4f707341-d381-45c6-8e74-11db24d981a8\"\r\n    },\r\n    \"rs\": {\r\n     
     \"key\": \"outlineEnabled\",\r\n      \"type\": \"bool\",\r\n      \"value\":
     true\r\n    }\r\n  }\r\n]"
-  _rsLastCachedKeyList: "[\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"6fc755c8-7cda-4a49-ab69-4afa6096350c\"\r\n   
+  _rsLastCachedKeyList: "[\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"7f8704aa-cba9-41f9-b89d-672d9051d62c\"\r\n   
     },\r\n    \"rs\": {\r\n      \"key\": \"maxEnergy\",\r\n      \"type\": \"int\",\r\n     
     \"value\": 5\r\n    }\r\n  },\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\":
-    \"eb5ded4c-24cf-434e-8fb1-827775c98704\"\r\n    },\r\n    \"rs\": {\r\n     
+    \"463ad97c-eb19-4a7d-97dd-10034e9a54b9\"\r\n    },\r\n    \"rs\": {\r\n     
     \"key\": \"minutesPerEnergy\",\r\n      \"type\": \"float\",\r\n      \"value\":
-    15.0\r\n    }\r\n  },\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"87e09106-93c2-4561-87e5-59657d6e0726\"\r\n   
+    15.0\r\n    }\r\n  },\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"f016c6f6-aeb6-4896-a161-547ecfa7135e\"\r\n   
     },\r\n    \"rs\": {\r\n      \"key\": \"rushCostPerMinute\",\r\n      \"type\":
     \"int\",\r\n      \"value\": 4\r\n    }\r\n  },\r\n  {\r\n    \"metadata\": {\r\n     
-    \"entityId\": \"586e50e2-8501-4b51-afcd-01c93e959bba\"\r\n    },\r\n    \"rs\":
+    \"entityId\": \"e26d983f-3023-4154-a43d-6b3b5d6a962b\"\r\n    },\r\n    \"rs\":
     {\r\n      \"key\": \"rewardMultiplier\",\r\n      \"type\": \"float\",\r\n     
     \"value\": 1.0\r\n    }\r\n  },\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\":
-    \"4c305100-6d4d-4a2c-9ee9-ff6714747e00\"\r\n    },\r\n    \"rs\": {\r\n     
+    \"4f707341-d381-45c6-8e74-11db24d981a8\"\r\n    },\r\n    \"rs\": {\r\n     
     \"key\": \"outlineEnabled\",\r\n      \"type\": \"bool\",\r\n      \"value\":
     true\r\n    }\r\n  }\r\n]"
   _environments: "[\r\n  {\r\n    \"projectId\": \"3a1563b6-4b56-476b-ad79-e93c8d4ebfda\",\r\n   
