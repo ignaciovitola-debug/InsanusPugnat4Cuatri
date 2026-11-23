@@ -17,7 +17,9 @@ namespace GladiusAI.EditorTools
             ("Assets/Art/Texturas/Arena_Color.jpg", 1024),
             ("Assets/Art/Texturas/Piso_Emblema_Plano.png", 1024),
             ("Assets/Art/Assets/letras/boton menu principal.png", 1024),
-            ("Assets/Art/Assets/coins/Espadas romanas cruzadas ornamentadas.png", 512),
+            // Tiene que quedar en 256 como en las demas plataformas: el Sprite Asset "Espadas" (icono de energia)
+            // recorta 256x241; con otro tamaño se ve solo un pedazo de la imagen.
+            ("Assets/Art/Assets/coins/Espadas romanas cruzadas ornamentadas.png", 256),
         };
 
         // Sonidos largos de ambiente: en Android se comprimen y se leen en streaming.

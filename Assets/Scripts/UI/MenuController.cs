@@ -49,13 +49,6 @@ namespace GladiusAI
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
-        public void QuitGame()
-        {
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-#else
-            Application.Quit();
-#endif
-        }
+        public void QuitGame() => GameExit.Quit();
     }
 }
